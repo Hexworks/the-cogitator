@@ -1,0 +1,17 @@
+about_page_url: "/"
+pages:
+
+- title: "About"
+  url: "/"
+
+- title: "Posts"
+  url: "/posts.html"
+
+- title: "GitHub"
+  url: "https://github.com/adam-arold"
+
+- title: "StackOverflow"
+  url: "https://stackoverflow.com/users/485337/adam-arold"
+
+- title: "Contact"
+  url: "mailto:arold.adam@gmail.com"

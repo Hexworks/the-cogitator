@@ -1,0 +1,18 @@
+title: The Cogitator
+email: arold.adam@gmail.com
+description: >
+  I'm Adam Arold and my aim with this site is to share insight about technologies I touch during my work. I hope that it will be useful. If you have any questions feel free to reach out using the Contact link below.
+baseurl: ""
+url: "http://the-cogitator.com"
+twitter_username: addamsson
+github_username:  adam-arold
+markdown: kramdown
+incremental: true
+
+defaults:
+  -
+    scope:
+      path: ""
+    values:
+      layout: "default"
+      author: "Adam Arold"

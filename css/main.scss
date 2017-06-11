@@ -1,0 +1,312 @@
+---
+---
+
+@charset "utf-8";
+
+//$default-font: 'Varela Round', sans-serif;
+//$accent-font: 'Sanchez', serif;
+
+// fonts
+$default-font: 'PT Sans', sans-serif;
+$accent-font: 'PT Serif', serif;
+$code-font: Inconsolata, Consolas, monospace;
+
+// sizes
+$one-liner-height: 2.5em;
+$header-top-spacing: 1em;
+$header-bottom-spacing: 0.1em;
+$section-spacing: 1em;
+$max-chars: 80ch;
+
+
+// colors
+
+// http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
+$background-color: #F6F1CB;
+$accent-color: #93B23C;
+$accented-foreground-color: #29210A;
+$accented-background-color: #DFD4A7;
+$dark-foreground-color: #DFD4A7;
+$dark-background-color: #29210A;
+$foreground-color: #29210A;
+
+// http://www.colourlovers.com/palette/4456758/bubble_wrapped
+//$background-color: #FFEFD1;
+//$accent-color: #F55D48;
+//$accented-foreground-color: #23272A;
+//$accented-background-color: #D0C5A9;
+//$dark-foreground-color: #FFEFD1;
+//$dark-background-color: #23272A;
+//$foreground-color: #23272A;
+
+//$background-color: #E2EBED;
+//$accent-color: #1A7E96;
+//$accented-foreground-color: #595953;
+//$accented-background-color: #C5D7DB;
+//$dark-foreground-color: #E2EBED;
+//$dark-background-color: #1B2021;
+//$foreground-color: #1B2021;
+
+// http://www.colourlovers.com/palette/4457696/egg_plant_one
+//$background-color: #F9E8D4;
+//$accent-color: #AC938E;
+//$accented-foreground-color: #704358;
+//$accented-background-color: #EBC09D;
+//$dark-foreground-color: #F9E8D4;
+//$dark-background-color: #492A3A;
+//$foreground-color: #492A3A;
+
+// http://www.colourlovers.com/palette/4439174/bunny_hopping
+//$background-color: #F8E4C9;
+//$accent-color: #A05B3E;
+//$accented-foreground-color: #4D4143;
+//$accented-background-color: #D1BC9F;
+//$dark-foreground-color: #F8E4C9;
+//$dark-background-color: #4D4143;
+//$foreground-color: #4D4143;
+
+// http://www.colourlovers.com/palette/4454382/morning_stretch
+//$background-color: #F8F9D1;
+//$accent-color: #C06229;
+//$accented-foreground-color: #302217;
+//$accented-background-color: #95A250;
+//$dark-foreground-color: #95A250;
+//$dark-background-color: #302217;
+//$foreground-color: #302217;
+
+// Watch The World Burn
+//$background-color: #EAE6D5;
+//$accent-color: #F74E2B;
+//$accented-foreground-color: #804C49;
+//$accented-background-color: #CAC6B5;
+//$dark-foreground-color: #EAE6D5;
+//$dark-background-color: #4D4D4D;
+//$foreground-color: #4D4D4D;
+
+// http://www.colourlovers.com/palette/58881/FlashDen
+//$background-color: #F1ECDF;
+//$accent-color: #F58723;
+//$accented-foreground-color: #000000;
+//$accented-background-color: #D4C9AD;
+//$dark-foreground-color: #000000;
+//$dark-background-color: #C7BA99;
+//$foreground-color: #000000;
+
+//$background-color: #FFE5C8;
+//$accent-color: #E27C00;
+//$accented-foreground-color: #012028;
+//$accented-background-color: #FFD7AA;
+//$dark-foreground-color: #FFD7AA;
+//$dark-background-color: #010C0F;
+//$foreground-color: #010C0F;
+
+//$background-color: #E3DCC2;
+//$accent-color: #979B2E;
+//$accented-foreground-color: #51513D;
+//$accented-background-color: #E5DF9E;
+//$dark-foreground-color: #E3DCC2;
+//$dark-background-color: #1B2021;
+//$foreground-color: #1B2021;
+
+// general rules
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 16px
+}
+
+html {
+  border-top: 0.5em solid $accent-color;
+  font-family: $default-font;
+  font-size: 16px
+}
+
+li {
+  margin: 0 0 0.25em 1em
+}
+
+ul:last-child li:last-child {
+  margin-bottom: 0;
+}
+
+code, em, strong {
+  line-height: 1;
+}
+
+code {
+  color: $accented-foreground-color;
+  font-family: $code-font;
+}
+
+pre, .accent, blockquote {
+  background-color: $accented-background-color;
+  border-left: 0.25em solid $accent-color;
+  color: $accented-foreground-color;
+  padding: 0.5em;
+  font-size: 0.9em;
+  line-height: 1.4em
+}
+
+cite {
+  font-family: $accent-font;
+  font-style: italic;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  background-color: $background-color;
+  color: $foreground-color;
+  line-height: 1.4em
+}
+
+h2 {
+  font-family: $accent-font;
+  font-size: 1.5em;
+  line-height: 1.3em;
+  padding: $header-top-spacing 0 $header-bottom-spacing 0;
+}
+
+
+h3 {
+  font-size: 1em;
+  line-height: 1.1em;
+  padding: $header-top-spacing 0 $header-bottom-spacing 0;
+}
+
+// section rules
+
+#home {
+  position: absolute;
+  display: block;
+}
+
+#home a {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+header {
+  text-align: center;
+
+  h1 {
+    font-family: $accent-font;
+    text-align: center;
+    color: $foreground-color;
+    font-size: 3em;
+    line-height: 1em;
+    margin: 0;
+    padding-bottom: 0.75em;
+  }
+
+  p {
+    font-family: $accent-font;
+    color: $foreground-color;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+#post-meta {
+  padding-bottom: 1.5em;
+}
+
+#wrapper, #teaser, #footer, #page-navigation {
+  padding: 0 $section-spacing;
+  margin: 0 auto;
+  max-width: $max-chars;
+}
+
+#teaser {
+  padding-bottom: $section-spacing;
+}
+
+#next {
+  display: block;
+  float: right;
+}
+
+#intro {
+  margin: 0 auto;
+  max-width: $max-chars;
+}
+
+#teaser-section, #bottom {
+  background-color: $accented-background-color;
+  color: $foreground-color;
+}
+
+#page-navigation {
+  height: $one-liner-height;
+  line-height: $one-liner-height;
+}
+
+#notices, #notices a {
+  text-align: center;
+  line-height: 1.5em;
+  font-size: 0.8em;
+}
+
+footer {
+  background-color: $dark-background-color;
+  color: $dark-foreground-color;
+}
+
+footer h2 {
+  padding-top: $section-spacing;
+}
+
+footer nav {
+  text-align: center
+}
+
+footer nav a {
+  margin: 0 $section-spacing;
+  line-height: $one-liner-height;
+}
+
+/*
+ * footer bottom fix
+ * source: https://codepen.io/cbracco/pen/zekgx
+ */
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  position: relative;
+  padding-bottom: 6rem;
+  min-height: 100%;
+}
+
+#page {
+  margin: 0 auto 14em auto;
+  padding: 2.5em 0 0 0;
+}
+
+#bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* imports */
+@import "media";

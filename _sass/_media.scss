@@ -1,0 +1,132 @@
+@media (min-width: 400px) {
+  * {
+    font-size: 16px
+  }
+  #home {
+    width: 48px;
+    height: 48px;
+    background: url("/assets/logo_48.png");
+  }
+  header h1 {
+    padding-left: 48px;
+  }
+}
+@media (min-width: 470px) {
+  * {
+    font-size: 17px
+  }
+  #home {
+    top: 2.6em;
+    width: 48px;
+    height: 48px;
+    background: url("/assets/logo_48.png");
+  }
+  header h1 {
+    padding-left: 48px;
+  }
+}
+
+@media (min-width: 625px) {
+  * {
+    font-size: 18px
+  }
+  #home {
+    top: 2.7em;
+    width: 48px;
+    height: 48px;
+    background: url("/assets/logo_48.png");
+  }
+  header h1 {
+    padding-left: 48px;
+  }
+}
+
+@media (min-width: 802px) {
+  * {
+    font-size: 19px
+  }
+  #home {
+    top: 2.8em;
+    width: 48px;
+    height: 48px;
+    background: url("/assets/logo_48.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
+
+@media (min-width: 1003px) {
+  * {
+    font-size: 20px
+  }
+  #home {
+    top: 2.4em;
+    width: 64px;
+    height: 64px;
+    background: url("/assets/logo_64.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
+
+@media (min-width: 1225px) {
+  * {
+    font-size: 21px
+  }
+  #home {
+    top: 2.5em;
+    width: 64px;
+    height: 64px;
+    background: url("/assets/logo_64.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
+
+@media (min-width: 1496px) {
+  * {
+    font-size: 22px
+  }
+  #home {
+    top: 2.6em;
+    width: 64px;
+    height: 64px;
+    background: url("/assets/logo_64.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
+
+@media (min-width: 1736px) {
+  * {
+    font-size: 23px
+  }
+  #home {
+    top: 2.7em;
+    width: 64px;
+    height: 64px;
+    background: url("/assets/logo_64.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
+
+@media (min-width: 2025px) {
+  * {
+    font-size: 24px
+  }
+  #home {
+    top: 2.8em;
+    width: 64px;
+    height: 64px;
+    background: url("/assets/logo_64.png");
+  }
+  header h1 {
+    padding-left: 64px;
+  }
+}
