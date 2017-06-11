@@ -17,7 +17,7 @@ If your text takes up the whole screen it can be difficult to read and puts a st
 
 ## Did I pick the right colors?
 
-Black text on white background is hardly ideal for brightly lit screens so you should pick some colors which have enough contrast but do not burn your eyes out. You can use [Paletton](http://paletton.com/#uid=1000u0kllllaFw0g0qFqFg0w0aF) to mix something up or you can pick one which is created by others from [Colourlovers](http://www.colourlovers.com/palettes). If you pick one color for background and two complementer colors for content and emphasis you will do fine for start. Typical content which need emphasis: links, tables, code blocks.
+Black text on white background is hardly ideal for brightly lit screens so you should pick some colors which have enough contrast but do not burn your eyes out. You can use [Paletton](http://paletton.com/#uid=1000u0kllllaFw0g0qFqFg0w0aF) to mix something up or you can pick one which is created by others from [Colourlovers](http://www.colourlovers.com/palettes). If you pick one color for background and two complementary colors for content and emphasis you will do fine for start. Typical content which need emphasis: links, tables, code blocks.
 
 ## Am I using the right font?
 
@@ -25,11 +25,11 @@ Pick a font which is pleasant for the eyes. You can use [Google Fonts](https://f
 
 ## Are my sizes right?
 
-Similar elements should have similar size (paragraphs for example). Different elements should have significant difference in their sizes to add contrast (a header before a paragraph for example). Keep your sizes consistent accross your page.
+Similar elements should have similar size (paragraphs for example). Different elements should have significant difference in their sizes to add contrast (a header before a paragraph for example). Keep your sizes consistent across your page.
 
 ## Did I get spacings right?
 
-Elements placed near each other form groups. Content and visuals should be grouped togehter if they are related. Keep some whitespace between related elemens to avoid overcrowding your design but keep much larger whitespace between non-related items. Examples: - Pictures and their captions should have smaller whitespace between each other than the next picture - A header between two content blocks should be closer to its corresponding content block As a rule of thumb an 1:3 or greater is clearly separating the groups. It is also _very_ important to avoid extra but meaningless spacing like indentation.
+Elements placed near each other form groups. Content and visuals should be grouped together if they are related. Keep some whitespace between related elements to avoid overcrowding your design but keep much larger whitespace between non-related items. Examples: - Pictures and their captions should have smaller whitespace between each other than the next picture - A header between two content blocks should be closer to its corresponding content block As a rule of thumb an 1:3 or greater is clearly separating the groups. It is also _very_ important to avoid extra but meaningless spacing like indentation.
 
 ## Did I align things properly?
 
