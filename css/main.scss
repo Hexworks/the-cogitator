@@ -239,6 +239,10 @@ header {
   font-size: 0.8em;
 }
 
+#disqus {
+  margin-top: $section-spacing;
+}
+
 footer {
   background-color: $dark-background-color;
   color: $dark-foreground-color;
