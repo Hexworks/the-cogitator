@@ -18,7 +18,6 @@ $header-bottom-spacing: 0.1em;
 $section-spacing: 1em;
 $max-chars: 80ch;
 
-
 // colors
 
 // http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
@@ -94,13 +93,15 @@ $foreground-color: #29210A;
 * {
   margin: 0;
   padding: 0;
+}
+
+body {
   font-size: 16px
 }
 
 html {
   border-top: 0.5em solid $accent-color;
   font-family: $default-font;
-  font-size: 16px
 }
 
 li {
@@ -159,11 +160,17 @@ h2 {
   padding: $header-top-spacing 0 $header-bottom-spacing 0;
 }
 
-
 h3 {
   font-family: $accent-font;
   font-size: 1.2em;
   line-height: 1.3em;
+  padding: $header-top-spacing 0 $header-bottom-spacing 0;
+}
+
+h4 {
+  font-family: $accent-font;
+  font-size: 1em;
+  line-height: 1.1em;
   padding: $header-top-spacing 0 $header-bottom-spacing 0;
 }
 
@@ -243,6 +250,11 @@ header {
   text-align: center;
   line-height: 1.5em;
   font-size: 0.8em;
+}
+
+#latest-posts {
+  font-size: 0.8em;
+  line-height: 1em;
 }
 
 #disqus {

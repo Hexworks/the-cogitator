@@ -1,5 +1,18 @@
+@media (min-width: 300px) {
+  body {
+    font-size: 16px
+  }
+  #home {
+    width: 48px;
+    height: 48px;
+    background: url("/assets/logo_48.png");
+  }
+  header h1 {
+    padding-left: 48px;
+  }
+}
 @media (min-width: 400px) {
-  * {
+  body {
     font-size: 16px
   }
   #home {
@@ -12,7 +25,7 @@
   }
 }
 @media (min-width: 470px) {
-  * {
+  body {
     font-size: 17px
   }
   #home {
@@ -27,7 +40,7 @@
 }
 
 @media (min-width: 625px) {
-  * {
+  body {
     font-size: 18px
   }
   #home {
@@ -42,7 +55,7 @@
 }
 
 @media (min-width: 802px) {
-  * {
+  body {
     font-size: 19px
   }
   #home {
@@ -57,7 +70,7 @@
 }
 
 @media (min-width: 1003px) {
-  * {
+  body {
     font-size: 20px
   }
   #home {
@@ -72,7 +85,7 @@
 }
 
 @media (min-width: 1225px) {
-  * {
+  body {
     font-size: 21px
   }
   #home {
@@ -87,7 +100,7 @@
 }
 
 @media (min-width: 1496px) {
-  * {
+  body {
     font-size: 22px
   }
   #home {
@@ -102,7 +115,7 @@
 }
 
 @media (min-width: 1736px) {
-  * {
+  body {
     font-size: 23px
   }
   #home {
@@ -117,7 +130,7 @@
 }
 
 @media (min-width: 2025px) {
-  * {
+  body {
     font-size: 24px
   }
   #home {
