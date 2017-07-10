@@ -113,6 +113,10 @@ code, em, strong {
   line-height: 1;
 }
 
+.highlight  {
+  background: $accented-background-color;
+}
+
 code {
   color: $accented-foreground-color;
   font-family: $code-font;
@@ -311,3 +315,4 @@ body {
 
 /* imports */
 @import "media";
+@import "syntax";

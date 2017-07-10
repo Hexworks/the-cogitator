@@ -6,8 +6,12 @@ baseurl: ""
 url: "http://the-cogitator.com"
 twitter_username: addamsson
 github_username:  adam-arold
-markdown: kramdown
 incremental: true
+
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
+highlighter: redcarpet
+markdown: redcarpet
 
 defaults:
   -
