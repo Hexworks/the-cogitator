@@ -8,10 +8,7 @@ twitter_username: addamsson
 github_username:  adam-arold
 incremental: true
 
-redcarpet:
-  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
-highlighter: redcarpet
-markdown: redcarpet
+markdown: kramdown
 
 defaults:
   -
