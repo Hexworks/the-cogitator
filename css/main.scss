@@ -109,6 +109,13 @@ ul:last-child li:last-child {
   margin-bottom: 0;
 }
 
+img {
+  display: block;
+  margin: 1em auto;
+  padding: 1px;
+  border: 1px $accented-foreground-color solid;
+}
+
 code, em, strong {
   line-height: 1;
 }
@@ -130,6 +137,11 @@ pre, .accent, blockquote {
   font-size: 0.9em;
   line-height: 1.4em;
   margin: 0.5em 0;
+}
+
+pre {
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 cite {
