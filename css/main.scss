@@ -39,7 +39,6 @@ $dark-foreground-color: #DFD4A7;
 $dark-background-color: #29210A;
 $foreground-color: #29210A;
 
-
 // general rules
 * {
   margin: 0;
@@ -82,8 +81,13 @@ code, em, strong {
 code {
   color: $accented-foreground-color;
   font-family: $code-font;
-  font-kerning: none;
   font-style: italic;
+  font-size: 0.9em;
+}
+
+pre code {
+  font-style: normal;
+  font-size: 1em;
 }
 
 .accent, blockquote {
@@ -269,9 +273,9 @@ footer nav a {
 
 #bottom.stikybottom {
   position: fixed;
-  bottom:0;
+  bottom: 0;
   left: 0;
-  right:0;
+  right: 0;
 }
 
 /* imports */
