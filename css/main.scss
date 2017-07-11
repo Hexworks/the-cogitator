@@ -18,9 +18,19 @@ $header-bottom-spacing: 0.1em;
 $section-spacing: 1em;
 $max-chars: 80ch;
 
+// original (ghost of a chance)
+//$background-color: #F6F1CB;
+//$accent-color: #93B23C;
+//$accented-foreground-color: #29210A;
+//$accented-background-color: #DFD4A7;
+//$dark-foreground-color: #DFD4A7;
+//$dark-background-color: #29210A;
+//$foreground-color: #29210A;
+
 // colors
 
-// http://www.colourlovers.com/palette/4454375/ghost_of_a_chance
+$code-block-accent-color: #83a2aC;
+$code-block-background-color: #fFf4c7;
 $background-color: #F6F1CB;
 $accent-color: #93B23C;
 $accented-foreground-color: #29210A;
@@ -29,65 +39,6 @@ $dark-foreground-color: #DFD4A7;
 $dark-background-color: #29210A;
 $foreground-color: #29210A;
 
-// http://www.colourlovers.com/palette/4456758/bubble_wrapped
-//$background-color: #FFEFD1;
-//$accent-color: #F55D48;
-//$accented-foreground-color: #23272A;
-//$accented-background-color: #D0C5A9;
-//$dark-foreground-color: #FFEFD1;
-//$dark-background-color: #23272A;
-//$foreground-color: #23272A;
-
-//$background-color: #E2EBED;
-//$accent-color: #1A7E96;
-//$accented-foreground-color: #595953;
-//$accented-background-color: #C5D7DB;
-//$dark-foreground-color: #E2EBED;
-//$dark-background-color: #1B2021;
-//$foreground-color: #1B2021;
-
-// http://www.colourlovers.com/palette/4457696/egg_plant_one
-//$background-color: #F9E8D4;
-//$accent-color: #AC938E;
-//$accented-foreground-color: #704358;
-//$accented-background-color: #EBC09D;
-//$dark-foreground-color: #F9E8D4;
-//$dark-background-color: #492A3A;
-//$foreground-color: #492A3A;
-
-// http://www.colourlovers.com/palette/4439174/bunny_hopping
-//$background-color: #F8E4C9;
-//$accent-color: #A05B3E;
-//$accented-foreground-color: #4D4143;
-//$accented-background-color: #D1BC9F;
-//$dark-foreground-color: #F8E4C9;
-//$dark-background-color: #4D4143;
-//$foreground-color: #4D4143;
-
-// Watch The World Burn
-//$background-color: #EAE6D5;
-//$accent-color: #F74E2B;
-//$accented-foreground-color: #804C49;
-//$accented-background-color: #CAC6B5;
-//$dark-foreground-color: #EAE6D5;
-//$dark-background-color: #4D4D4D;
-//$foreground-color: #4D4D4D;
-
-//$background-color: #FFE5C8;
-//$accent-color: #E27C00;
-//$accented-foreground-color: #012028;
-//$accented-background-color: #FFD7AA;
-//$dark-foreground-color: #FFD7AA;
-//$dark-background-color: #010C0F;
-//$foreground-color: #010C0F;
-
-//$background-color: #E3DCC2;
-//$accent-color: #979B2E;
-//$accented-foreground-color: #51513D;
-//$accented-background-color: #E5DF9E;
-//$dark-foreground-color: #E3DCC2;
-//$dark-background-color: #1B2021;
-//$foreground-color: #1B2021;
 
 // general rules
 * {
@@ -107,6 +58,10 @@ li {
 
 ul:last-child li:last-child {
   margin-bottom: 0;
+}
+
+ul {
+  margin: $section-spacing 0;
 }
 
 article img {
@@ -129,7 +84,7 @@ code {
   font-family: $code-font;
 }
 
-pre, .accent, blockquote {
+.accent, blockquote {
   background-color: $accented-background-color;
   border-left: 0.25em solid $accent-color;
   color: $accented-foreground-color;
@@ -140,6 +95,13 @@ pre, .accent, blockquote {
 }
 
 pre {
+  border: 1px dashed $code-block-accent-color;
+  border-left: 0.3em solid $code-block-accent-color;
+  background-color: $code-block-background-color !important;
+  padding: 0.5em;
+  font-size: 0.75em;
+  line-height: 1.2em;
+  margin: 0.5em 0;
   overflow-y: hidden;
   overflow-x: auto;
 }
