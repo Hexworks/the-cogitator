@@ -82,6 +82,8 @@ code, em, strong {
 code {
   color: $accented-foreground-color;
   font-family: $code-font;
+  font-kerning: none;
+  font-style: italic;
 }
 
 .accent, blockquote {
