@@ -1,9 +1,10 @@
 <h4>Latest posts</h4>
 <ul id="latest-posts">
-    {% for post in site.posts %}
+    {% for post in site.posts limit:3 %}
     <li>
         <a href="{{ post.url }}">{{ post.title }}</a>:
         {{ post.excerpt }}
     </li>
     {% endfor %}
+    <p>More posts <a href="/posts">here</a></p>
 </ul>
