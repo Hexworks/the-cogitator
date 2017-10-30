@@ -6,26 +6,27 @@
 // fonts
 $default-font: 'PT Sans', sans-serif;
 $accent-font: 'PT Serif', serif;
-$code-font: Inconsolata, Consolas, monospace;
+$code-font: 'Source Code Pro', monospace;
 
 // sizes
 $one-liner-height: 2.5em;
 $header-top-spacing: 1em;
 $header-bottom-spacing: 0.1em;
 $section-spacing: 1em;
+$inline-spacing: 0.5em;
 $max-chars: 80ch;
+$accent-border-width: 0.25rem;
 
 // colors
 
-$code-block-accent-color: #83a2aC;
-$code-block-background-color: #fFf4c7;
-$background-color: #F6F1CB;
-$accent-color: #93B23C;
-$accented-foreground-color: #29210A;
-$accented-background-color: #DFD4A7;
-$dark-foreground-color: #DFD4A7;
-$dark-background-color: #29210A;
-$foreground-color: #29210A;
+$accent-color: #2aa198;
+$bright-foreground-color: #073642;
+$dark-foreground-color: #002b36;
+$bright-background-color: #fdf6e3;
+$dark-background-color: #eee8d5;
+
+// decoration
+$box-shadow: 0px 4px 5px 0px rgba(105,105,105,0.25);
 
 // general rules
 * {
@@ -34,9 +35,20 @@ $foreground-color: #29210A;
 }
 
 html {
-  border-top: 0.5em solid $accent-color;
   font-family: $default-font;
   font-size: 100%;
+}
+
+body {
+  background-color: $bright-background-color;
+  color: $dark-foreground-color;
+  line-height: 1.4em;
+}
+
+#line {
+  height: 0.5rem;
+  background: $accent-color;
+  box-shadow: $box-shadow;
 }
 
 li {
@@ -52,52 +64,94 @@ ul {
 }
 
 article img {
+  margin: $section-spacing auto;
+  border: 1px solid $accent-color;
+  width: 100%;
+  box-sizing: border-box;
   display: block;
-  margin: 1em auto;
-  padding: 1px;
-  border: 1px $accented-foreground-color solid;
 }
 
 code, em, strong {
   line-height: 1;
 }
 
-.highlight {
-  background: $accented-background-color;
-}
-
-code {
-  color: $accented-foreground-color;
+code, blockquote code {
+  color: $dark-foreground-color;
   font-family: $code-font;
-  font-style: italic;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
-pre code {
-  font-style: normal;
-  font-size: 1em;
-}
-
-.accent, blockquote {
-  background-color: $accented-background-color;
-  border-left: 0.25em solid $accent-color;
-  color: $accented-foreground-color;
+#tldr, blockquote {
+  background-color: $dark-background-color;
+  border-left: $accent-border-width solid $accent-color;
+  color: $dark-foreground-color;
   padding: 0.5em;
-  font-size: 0.9em;
+  box-shadow: $box-shadow;
+  box-sizing: border-box;
+}
+
+#tldr {
+  margin: 0 0 $section-spacing 0;
+}
+
+blockquote {
   line-height: 1.4em;
-  margin: 0.5em 0;
+  font-size: 0.85em;
+  font-style: italic;
+  margin: $section-spacing 0;
 }
 
-pre {
-  border: 1px dashed $code-block-accent-color;
-  border-left: 0.3em solid $code-block-accent-color;
-  background-color: $code-block-background-color !important;
-  padding: 0.5em;
-  font-size: 0.75em;
-  line-height: 1.2em;
-  margin: 1em 0;
-  overflow-y: hidden;
-  overflow-x: auto;
+blockquote li {
+  list-style-type: circle;
+}
+
+body .gist {
+  margin: $section-spacing 0;
+  box-shadow: $box-shadow;
+}
+
+body .gist .gist-file {
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0;
+}
+
+body .gist .gist-data {
+  border: none;
+  border-radius: 0;
+}
+
+body .gist .blob-wrapper {
+  background-color: $dark-background-color;
+  border: none;
+  border-radius: 0;
+}
+
+body .gist .highlight {
+  background-color: $dark-background-color;
+  border: none;
+  border-radius: 0;
+}
+
+body .gist .blob-code {
+  font-size: 1.1em !important;
+  font-family: $code-font !important;
+}
+
+body .gist tr:first-child td {
+  padding-top: 0.5em !important;
+}
+
+body .gist tr:last-child td {
+  padding-bottom: 0.5em !important;
+}
+
+body .gist .blob-num {
+  display: none;
+}
+
+body .gist .gist-meta {
+  display: none;
 }
 
 cite {
@@ -114,12 +168,6 @@ a {
 
 a:hover {
   text-decoration: underline;
-}
-
-body {
-  background-color: $background-color;
-  color: $foreground-color;
-  line-height: 1.4em;
 }
 
 h2 {
@@ -170,7 +218,7 @@ header {
   h1 {
     font-family: $accent-font;
     text-align: center;
-    color: $foreground-color;
+    color: $dark-foreground-color;
     font-size: 3em;
     line-height: 1em;
     margin: 0;
@@ -179,7 +227,7 @@ header {
 
   p {
     font-family: $accent-font;
-    color: $foreground-color;
+    color: $dark-foreground-color;
     margin: 0;
     padding: 0;
   }
@@ -205,13 +253,13 @@ header {
 }
 
 #intro {
-  margin: 0 auto;
+  margin: 0 auto $section-spacing auto;
   max-width: $max-chars;
 }
 
 #teaser-section, #bottom {
-  background-color: $accented-background-color;
-  color: $foreground-color;
+  background-color: $dark-background-color;
+  color: $dark-foreground-color;
 }
 
 #page-navigation {
@@ -232,18 +280,13 @@ header {
   font-size: 0.8em;
 }
 
-#latest-posts {
-  font-size: 0.9em;
-  line-height: 1.1em;
-}
-
 #disqus {
   margin-top: $section-spacing;
 }
 
 footer {
-  background-color: $dark-background-color;
-  color: $dark-foreground-color;
+  background-color: $bright-foreground-color;
+  color: $bright-background-color;
 }
 
 footer h2 {
@@ -268,4 +311,3 @@ footer nav a {
 
 /* imports */
 @import "media";
-@import "syntax";
