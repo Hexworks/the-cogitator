@@ -13,6 +13,6 @@ pages:
   id: "so-link"
   url: "https://stackoverflow.com/users/485337/adam-arold"
 
-- title: "Contact me"
+- title: "Contact"
   id: "contact-link"
   url: "mailto:adam.arold@appcraft.hu"
