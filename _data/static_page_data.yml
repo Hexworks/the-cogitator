@@ -1,17 +1,18 @@
 about_page_url: "/"
 pages:
 
-- title: "About"
-  url: "/"
-
 - title: "Posts"
+  id: "posts-link"
   url: "/posts.html"
 
 - title: "GitHub"
+  id: "github-link"
   url: "https://github.com/adam-arold"
 
-- title: "StackOverflow"
+- title: "Stack Overflow"
+  id: "so-link"
   url: "https://stackoverflow.com/users/485337/adam-arold"
 
-- title: "Contact"
-  url: "mailto:arold.adam@gmail.com"
+- title: "Contact me"
+  id: "contact-link"
+  url: "mailto:adam.arold@appcraft.hu"

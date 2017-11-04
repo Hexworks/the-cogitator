@@ -1,7 +1,0 @@
-<nav>
-    {% for item in site.data.static_page_data.pages %}
-        {% if item.url != page.url %}
-            <a href="{{ item.url }}" alt="{{ item.title }}">{{ item.title }}</a>
-        {% endif %}
-    {% endfor %}
-</nav>

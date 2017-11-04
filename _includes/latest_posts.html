@@ -1,10 +1,8 @@
-<h4>Latest posts</h4>
-<ul id="latest-posts">
+<h3>Check out my latest posts</h3>
+<div id="latest-posts">
     {% for post in site.posts limit:3 %}
-    <li>
-        <a href="{{ post.url }}">{{ post.title }}</a>:
-        {{ post.excerpt }}
-    </li>
+    <h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
+    <p>{{ post.excerpt }}</p>
     {% endfor %}
-    <p><a href="/posts">More posts &raquo;</a></p>
-</ul>
+    <h4><a href="/posts">More posts &raquo;</a></h4>
+</div>

@@ -26,11 +26,10 @@
         {% endif %}
     {% endif %}
     <footer>
-        <div id="footer">
+        <div id="footer-content">
             {% if page.url != site.data.static_page_data.about_page_url %}
                 {% include about.html %}
             {% endif %}
-            {% include static_pages.html %}
             {% include licenses.html %}
         </div>
     </footer>

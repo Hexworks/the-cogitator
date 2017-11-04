@@ -1,41 +1,23 @@
+@media (max-width: 600px) {
+  #page-navigation {
+    height: 5em;
+    line-height: 2.5em;
+  }
+}
+
 @media (min-width: 300px) {
   body {
     font-size: 16px
-  }
-  #home {
-    width: 48px;
-    height: 48px;
-    background: url("/assets/logo_48.png");
-  }
-  header h1 {
-    padding-left: 48px;
   }
 }
 @media (min-width: 400px) {
   body {
     font-size: 16px
   }
-  #home {
-    width: 48px;
-    height: 48px;
-    background: url("/assets/logo_48.png");
-  }
-  header h1 {
-    padding-left: 48px;
-  }
 }
 @media (min-width: 470px) {
   body {
     font-size: 17px
-  }
-  #home {
-    top: 2.6em;
-    width: 48px;
-    height: 48px;
-    background: url("/assets/logo_48.png");
-  }
-  header h1 {
-    padding-left: 48px;
   }
 }
 
@@ -43,29 +25,11 @@
   body {
     font-size: 18px
   }
-  #home {
-    top: 2.7em;
-    width: 48px;
-    height: 48px;
-    background: url("/assets/logo_48.png");
-  }
-  header h1 {
-    padding-left: 48px;
-  }
 }
 
 @media (min-width: 802px) {
   body {
     font-size: 19px
-  }
-  #home {
-    top: 2.8em;
-    width: 48px;
-    height: 48px;
-    background: url("/assets/logo_48.png");
-  }
-  header h1 {
-    padding-left: 64px;
   }
 }
 
@@ -73,29 +37,11 @@
   body {
     font-size: 20px
   }
-  #home {
-    top: 2.4em;
-    width: 64px;
-    height: 64px;
-    background: url("/assets/logo_64.png");
-  }
-  header h1 {
-    padding-left: 64px;
-  }
 }
 
 @media (min-width: 1225px) {
   body {
     font-size: 21px
-  }
-  #home {
-    top: 2.5em;
-    width: 64px;
-    height: 64px;
-    background: url("/assets/logo_64.png");
-  }
-  header h1 {
-    padding-left: 64px;
   }
 }
 
@@ -103,43 +49,16 @@
   body {
     font-size: 22px
   }
-  #home {
-    top: 2.6em;
-    width: 64px;
-    height: 64px;
-    background: url("/assets/logo_64.png");
-  }
-  header h1 {
-    padding-left: 64px;
-  }
 }
 
 @media (min-width: 1736px) {
   body {
     font-size: 23px
   }
-  #home {
-    top: 2.7em;
-    width: 64px;
-    height: 64px;
-    background: url("/assets/logo_64.png");
-  }
-  header h1 {
-    padding-left: 64px;
-  }
 }
 
 @media (min-width: 2025px) {
   body {
     font-size: 24px
-  }
-  #home {
-    top: 2.8em;
-    width: 64px;
-    height: 64px;
-    background: url("/assets/logo_64.png");
-  }
-  header h1 {
-    padding-left: 64px;
   }
 }
