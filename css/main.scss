@@ -78,20 +78,15 @@ article img {
   display: block;
 }
 
-code, em, strong {
-  line-height: 1;
-}
-
 code, blockquote code {
-  color: $dark-foreground-color;
   font-family: $code-font;
-  font-size: 0.8em;
+  font-style: italic;
+  color: $bright-foreground-color;
 }
 
 #tldr, blockquote {
   background-color: $dark-background-color;
   border-left: $accent-border-width solid $accent-color;
-  color: $dark-foreground-color;
   padding: 0.5em;
   box-shadow: $box-shadow;
   box-sizing: border-box;
@@ -192,7 +187,6 @@ header {
   h1 {
     font-family: $accent-font;
     text-align: center;
-    color: $dark-foreground-color;
     font-size: 2.5em;
     line-height: 1em;
     margin: 0;
@@ -201,9 +195,6 @@ header {
 
   p {
     font-family: $accent-font;
-    color: $dark-foreground-color;
-    margin: 0;
-    padding: 0;
   }
 }
 
