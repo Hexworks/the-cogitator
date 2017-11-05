@@ -92,7 +92,9 @@ code, blockquote code {
   box-sizing: border-box;
 }
 
-
+#tldr {
+  margin-bottom: $logical-separator-spacing;
+}
 
 blockquote {
   line-height: 1.4em;
