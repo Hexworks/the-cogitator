@@ -7,9 +7,9 @@ url: "http://the-cogitator.com"
 twitter_username: addamsson
 github_username:  adam-arold
 incremental: true
-
 markdown: kramdown
-
+plugins:
+  - jekyll-gist
 defaults:
   -
     scope:
