@@ -20,6 +20,7 @@ $accent-border-width: 0.25rem;
 
 // colors
 
+$info-color: #268bd2;
 $accent-color: #2aa198;
 $bright-foreground-color: #073642;
 $dark-foreground-color: #002b36;
@@ -54,12 +55,16 @@ nav {
 }
 
 nav a {
-  margin: 0 0.25em;
+  margin: 0 $inline-spacing;
   line-height: $one-liner-height;
 }
 
 li {
-  margin: 0 0 0.25em 1em
+  margin: 0 0 $inline-spacing $section-spacing
+}
+
+p {
+  margin: $section-spacing 0;
 }
 
 ul:last-child li:last-child {
@@ -78,22 +83,33 @@ article img {
   display: block;
 }
 
+/*
+ *  CODE BLOCKS
+ */
+
 code, blockquote code {
   font-family: $code-font;
   font-style: italic;
   color: $bright-foreground-color;
 }
 
-#tldr, blockquote {
+#tldr, blockquote, #series {
   background-color: $dark-background-color;
-  border-left: $accent-border-width solid $accent-color;
   padding: 0.5em;
   box-shadow: $box-shadow;
   box-sizing: border-box;
 }
 
-#tldr {
+#tldr, blockquote {
+  border-left: $accent-border-width solid $accent-color;
+}
+
+#tldr, #series {
   margin-bottom: $logical-separator-spacing;
+}
+
+#series {
+  border-left: $accent-border-width solid $info-color;
 }
 
 blockquote {
@@ -110,9 +126,13 @@ blockquote li {
 cite {
   font-family: $accent-font;
   font-style: italic;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: $section-spacing;
+  padding-right: $section-spacing;
 }
+
+/*
+ * LINKS
+ */
 
 a {
   color: $accent-color;
