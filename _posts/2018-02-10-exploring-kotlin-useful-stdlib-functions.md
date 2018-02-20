@@ -21,7 +21,7 @@ Kotlin comes with `Pair` and `Triple` which are basic generic *tuples*:
 
 Java does not have them so you might ask why are these useful?
 
-Ever wanted to [return two values]((https://discuss.kotlinlang.org/t/multiple-return-types-from-function/664)) from a function?
+Ever wanted to [return two values](https://discuss.kotlinlang.org/t/multiple-return-types-from-function/664) from a function?
 With `Pair`s this is rather easy to accomplish, you just have to use it as a return type. What's more useful is that we can 
 use [destructuring](https://kotlinlang.org/docs/reference/multi-declarations.html) to split a `Pair` into two values:
 
