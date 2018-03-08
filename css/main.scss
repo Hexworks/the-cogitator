@@ -231,6 +231,10 @@ header {
   position: relative;
 }
 
+#footer-content:last-child {
+  margin-bottom: 0;
+}
+
 #wrapper {
   margin-top: 1.5em;
 }
@@ -263,6 +267,7 @@ header {
   text-align: center;
   line-height: $one-liner-height;
   font-size: 0.8em;
+  margin-bottom: 0;
 }
 
 #disqus {
