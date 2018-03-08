@@ -2,15 +2,15 @@
 layout: post
 title:  "Exploring Kotlin: Useful Standard Library Functions"
 excerpt: As others have written about this before
-         Kotlin comes with a cornucopia of useful functions like let, apply, with or also. Less is written about what
+         Kotlin comes with a lot of useful functions like let, apply, with or also. Less is written about what
          comes with the collections, ranges, and other packages of the standard library. In this article we'll explore them.
 comments: true
 ---
 <div id="tldr">
 As <a href="http://beust.com/weblog/2015/10/30/exploring-the-kotlin-standard-library/">others have written about this before</a>
-Kotlin comes with a cornucopia of useful functions like <code>let</code>, <code>apply</code>, <code>with</code>
+Kotlin comes with a lot of handy functions like <code>let</code>, <code>apply</code>, <code>with</code>
  or <code>also</code>. Less is written about what comes with the <code>collections</code>, <code>ranges</code>,
- and other packages of the standard library. In this article we'll explore them.
+ and other packages of the standard library. I think that a lot more can be done using just the Kotlin standard library, so let's explore it in depth!
 </div>
 
 ## Tuples
@@ -19,19 +19,26 @@ Kotlin comes with `Pair` and `Triple` which are basic generic *tuples*:
 
 {% gist 4e2c9ce8f402c13abbfed0b1c23c8c11 %}
 
+Java does not have them so you might ask why are these useful?
 
-These can be used in a lot of ways like implementing [multiple return types](https://discuss.kotlinlang.org/t/multiple-return-types-from-function/664),
-or [destructuring](https://kotlinlang.org/docs/reference/multi-declarations.html) but most of the time we'll use them
-for `Map`s.
+Ever wanted to [return two values](https://discuss.kotlinlang.org/t/multiple-return-types-from-function/664) from a function?
+With `Pair`s this is rather easy to accomplish, you just have to use it as a return type. What's more useful is that we can 
+use [destructuring](https://kotlinlang.org/docs/reference/multi-declarations.html) to split a `Pair` into two values:
+
+{% gist d5c365366f26b04f9fcbebadb1b0c381 %}
+
+We can put tuples to good use when we work with `Map`s as well.
 
 `Pair` comes with an useful [`infix`](https://kotlinlang.org/docs/reference/functions.html#infix-notation) function, `to`
-which lets us create one like this:
+which lets us create a `Pair` like this:
 
 {% gist 5b514f7472945bb7f227c8e4c3e6edf2 %}
 
 Then we can use this syntax to create `Map`s in a much more readable way:
 
 {% gist 7e7c7026239636bbcbb5572215d9edd3 %}
+
+If you come from Java these might be a bit odd at first, but once you get used to it using `infix` functions and tuples will become second nature!
 
 ## Collections
 
@@ -67,6 +74,8 @@ We can also combine them:
 
 If we want to perform operations other than these we can turn our `Map` into a collection by calling `toList` or `asIterable`.
 
+These operations might be a bit odd if you come from Java, but after a while it makes sense if you start to think about `Map`s as a sequence of key-value `Pair`s.
+
 ### Conversions
 
 In addition to `toList`, `toMap` and other conversion functions there are also some specialized ones which are defined
@@ -77,7 +86,7 @@ like this:
 
 There is a `to*Array` defined for each primitive type. They all return a corresponding `*Array` type which is optimized.
 
-### Immutable Collections
+## Immutable Collections
 
 Immutable collections are perfect for functional programming since every operation defined on them returns a new version
 of the old collection without changing it.
@@ -89,6 +98,8 @@ Luckily most operations which work with mutable collections have an immutable co
 `removeAll`, `addAll` and `retainAll`:
 
 {% gist b0ad20c2b19dbf9d83d1b85e8fa35fc5 %}
+
+### Drop and take
 
 We can also work with collections in a way *offset* and *limit* works in *RDBMS*es. `drop` will return with a `List`
 without the first `n` elements:
@@ -107,10 +118,18 @@ For all of the above functions there is a `take` variant which works like `drop`
 
 {% gist e6a0aa4626102277d92a660b53bae3fb %}
 
+If you come from LISP these functions might be familiar to you: they are like `first` and `rest` in Clojure for example.
+
+In Kotlin you can define `first` as `take(1)` and `rest` as `drop(1)`.
+
+### Calculating distinct values
+
 These are useful but sometimes we only want to pick *distinct* values. We can do so by calling `distinct` or
 `distinctBy`. With `distinctBy` we can write our own selector function:
 
 {% gist 6844d7634ef43caf64af5a3dd1c2d0db %}
+
+### Grouping collections
 
 We've already seen ways we can turn `Map`s to `List`s but can we do it the other way around? The answer is yes.
 Kotlin comes with `groupBy`, `associate` and `associateBy` which lets us split our `List`s in different ways.
@@ -137,6 +156,8 @@ an example which does the same as the previous one but with `associateBy`:
 a predicate:
 
 {% gist a40b991a3ed82b655755ff8bc535e2a1 %}
+
+### Joining collections
 
 We've seen how we can split things but let's see what we have for *join*ing them!
 
@@ -166,6 +187,15 @@ Since joining to a `String` is so common we also have `joinToString`:
 
 {% gist 7faaa546dd4560140bb8795a9ec15694 %}
 
+## The takeaway
+
+As you have seen from the previous examples Kotlin collections work a bit differently from Java ones. When we use Java we have the Stream API which lets us perform most of these operations but they come at a price: we need to convert between streams and collections, and they also come with more boilerplate.
+
+Kotlin does not differentiate between streams and collections. All of the above funtions are defined for `Iterable`s, `Collection`s, `Map`s or `List`s. This lets us write programs more fluently and at the end of the day we'll end up with more readable code, by doing less work.
+
+Immutable collections are an added bonus: they help us write code which is less error-prone, without the need to write more.
+And since we can't mutate them we'll have less concurrency issues, like race conditions or deadlocks.
+
 ## Honorable mentions
 
 The examples above are far from exhaustive but there are some interesting functions which are really useful sometimes.
@@ -177,13 +207,6 @@ There are also `Range`s which are very useful for iteration. We can create them 
 useful `infix` operations:
 
 {% gist 50bb0da8237ce05317525a4cb17d6ff1 %}
-
-## A real life example
-
-These code snippets are nice but you might be wondering how a real life use case looks like. Let's see how we can
-process some log information with what we have learned so far:
-
-{% gist 8c0df247c4ce912a8a668c843db8d3cf %}
 
 ## Conclusion
 
