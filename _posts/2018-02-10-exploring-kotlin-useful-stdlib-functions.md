@@ -88,6 +88,10 @@ There is a `to*Array` defined for each primitive type. They all return a corresp
 
 ## Immutable Collections
 
+> Note that these collections in Kotlin are not immutable in fact, it is only the interface which does not allow mutation.
+ There are some pitfalls to this. Take a look at my [other article about the topic](http://the-cogitator.com/2017/10/02/kotlin-pitfalls-and-how-to-avoid-them.html#java-interop-with-unmodifiable-collections)
+ where I explain this problem.
+
 Immutable collections are perfect for functional programming since every operation defined on them returns a new version
 of the old collection without changing it.
 This also means that they are safe from a concurrency perspective since we don't need locks to work with them.
