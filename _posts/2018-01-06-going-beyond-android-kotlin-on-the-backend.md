@@ -6,7 +6,8 @@ excerpt: While most developers use Kotlin on Android it is also a viable option 
 comments: true
 ---
 <div id="series">
-This article is part of a <a href="http://the-cogitator.com/2017/12/21/beyond-android-exploring-kotlin-areas-of-application.html">series</a>.
+This article is part of a <a href="/2017/12/21/beyond-android-exploring-kotlin-areas-of-application.html">series</a>.
+Check out the next part <a href="/2018/04/25/going-beyond-android-kotlin-on-the-frontend.html">here</a>.
 </div>
 <div id="tldr">
 While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works on the backend.
