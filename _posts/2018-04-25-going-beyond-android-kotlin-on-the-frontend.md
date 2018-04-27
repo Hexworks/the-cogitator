@@ -10,7 +10,7 @@ This article is part of a <a href="/2017/12/21/beyond-android-exploring-kotlin-a
 Check out the previous part <a href="/2018/01/06/going-beyond-android-kotlin-on-the-backend.html">here</a>.
 </div>
 <div id="tldr">
-While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works in the browser.
+While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works in the browser. We'll walk through an example which is rather minimal but it comes with batteries included: testing, minification, and deployment.
 </div>
 
 While the *kotlin2js* plugin have been around for quite some time it was not considered production ready because
@@ -166,6 +166,7 @@ Now we have everything at our disposal to start working on **real** applications
 
 While this article is far from exhaustive we touched a lot of important points and I think that
 Kotlin development in the browser is definitely doable and since the `1.20` version of Kotlin it is also production ready!
+We have learned that deploying Kotlin code to the browser is not hard, and it only comes with a fixed amount of boilerplate which we only have to set up once.
 
 If you are interested there are a lot of other examples including the *kotlin-frontend-plugin* with [extra webpack config](https://github.com/Kotlin/kotlin-frontend-plugin/tree/master/examples/custom-webpack-config)
  or a [Kotlin Full-stack example](https://github.com/Kotlin/kotlin-fullstack-sample).
