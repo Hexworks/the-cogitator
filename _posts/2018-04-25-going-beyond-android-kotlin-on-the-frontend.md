@@ -104,6 +104,8 @@ and another one for bundling our project:
 The [`package.json`](https://docs.npmjs.com/files/package.json) file is essentially a way to manage locally installed [npm](https://www.npmjs.com/) packages (`npm` itself is a javascript
 build tool, like Maven or Gradle).
 
+> The example project uses [yarn](https://yarnpkg.com/lang/en/) which is an upgrade over npm, but yarn uses the npm package repository in the background.
+
 In our project we'll need a very simple setup with only some wiring for development and testing tools:
 
 {% gist 4beb4a887c6eaf1d4a5c038a29a74128 %}
@@ -156,6 +158,8 @@ Now if we run `./gradlew test` we'll be presented with a nice output for our tes
 While this covers unit testing we're still not out of the woods yet because we also need to test our program
 in its native environment: the browser.
 
+> Note that technically the unit tests also work in the browser, but they do not touch functionality provided by it like the `window` object in the following example.
+
 Fortunately we can use the *DOM* and we also have the option to write asynchronous tests:
 
 {% gist 31d7e78c72aa3c2bd3e488f684b2be51 %}
@@ -165,7 +169,7 @@ Now we have everything at our disposal to start working on **real** applications
 ## Conclusion
 
 While this article is far from exhaustive we touched a lot of important points and I think that
-Kotlin development in the browser is definitely doable and since the `1.20` version of Kotlin it is also production ready!
+Kotlin development in the browser is definitely doable and since the `1.2` version of Kotlin frontend development with it is also production ready!
 We have learned that deploying Kotlin code to the browser is not hard, and it only comes with a fixed amount of boilerplate which we only have to set up once.
 
 If you are interested there are a lot of other examples including the *kotlin-frontend-plugin* with [extra webpack config](https://github.com/Kotlin/kotlin-frontend-plugin/tree/master/examples/custom-webpack-config)
