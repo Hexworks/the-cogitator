@@ -41,8 +41,7 @@ First, in the `buildscript` next to the usual `kotlin-gradle-plugin` we'll also 
 This is a necessity because we'll delegate a lot of work to javascript libraries like [Karma](https://karma-runner.github.io/2.0/index.html)
 and [Webpack](https://github.com/webpack/webpack).
 
-> For those of you who want to **completely** get rid of javascript, I have bad news: Currently there is no way
-to completely do away with it. We are still stuck with *some* js tools.
+> For those of you who want to **completely** get rid of javascript, I have bad news: currently it is very hard to completely do away with it. We are either stuck with *some* js tools or we have to completely rewrite everything in Kotlin including tooling.
 
 Next, instead of applying the `kotlin` plugin we'll use the `kotlin-platform-js` along with `kotlin-dce-js` and `com.moowork.node`:
 
