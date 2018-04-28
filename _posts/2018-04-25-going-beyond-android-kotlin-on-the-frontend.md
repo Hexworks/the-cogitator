@@ -24,7 +24,7 @@ I'll talk about *Multiplatform Projects* in another article so now let's focus o
 
 ## Project Setup
 
-> The source code for this article can be found in [this](https://github.com/AppCraft-Projects/kotlin-in-browser-example) repository.
+> The source code for this article can be found in [this](https://github.com/AppCraft-Projects/kotlin-in-browser-example) repository. It is a simplified version of the code found [here](https://github.com/czyzby/kotlin-multiplatform-example).
 
 We'll be using [Gradle](https://gradle.org/) for building the project. There are other build tools out there but
 Gradle has the best support for Kotlin.
