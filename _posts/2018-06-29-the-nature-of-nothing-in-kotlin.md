@@ -1,11 +1,11 @@
 ---
 layout: post
 title:  "The Nature of Nothing in Kotlin"
-excerpt: For someone who comes from the Java world the concept of Nothing might be confusing. In this article I'll try to clean that up with some practical examples to boot.
+excerpt: For someone who comes from the Java world the concept of Nothing might be confusing. In this article, I'll try to clean that up with some practical examples to boot.
 comments: true
 ---
 <div id="tldr">
-For someone who comes from the Java world the concept of Nothing might be confusing. In this article I'll try to clean that up with some practical examples to boot.
+For someone who comes from the Java world the concept of Nothing might be confusing. In this article, I'll try to clean that up with some practical examples to boot.
 </div>
 
 ## What is `Nothing`?
@@ -20,7 +20,7 @@ Well, not quite. In Java, when a method has no return value we can declare its r
 
 {% gist 06706a4e4b6aa1c3fffa0092482f09a6 %}
 
-In Kotlin however we already have a type which is returned from functions which don't declare a return type: [`Unit`](https://kotlinlang.org/docs/reference/functions.html#unit-returning-functions).
+In Kotlin, however, we already have a type which is returned from functions which don't declare a return type: [`Unit`](https://kotlinlang.org/docs/reference/functions.html#unit-returning-functions).
 
 {% gist 3f5a995d91b52182c281424757dfa97e %}
 
@@ -41,7 +41,7 @@ case of returning `Nothing` you are right. Let's look at the actual implementati
 Since it has a private constructor and it is not called from the class itself this means that there can't be any
 instances of `Nothing`. `Nothing` is also a bottom type which means that it is a subtype of every other type (including `Unit`).
 
-## Signalling exceptional conditions with `Nothing`
+## Signaling exceptional conditions with `Nothing`
 
 Now you might begin to wonder why all this stuff is useful? Let's say that we have a function which interoperates with Java
 classes which might return `null`:
@@ -79,7 +79,7 @@ returned from a function which has the `Nothing?` return type:
 {% gist 6f367272c8a5cc06613fa77b67789932 %}
 
 Yes. The only value which can be returned from this method is `null`. This also means that `null` has the type of `Nothing?`. 
-Although this is hardly useful in our day-to-day work but now at least we understand it.
+Although this is hardly useful in our day-to-day work now at least we understand it.
 
 ## Algebraic data types
 
@@ -96,10 +96,10 @@ We can then use `Either` for example as a return type instead of throwing except
 
 {% gist 0abe7bcf1245004e547eb0cce1fd196c %}
 
-Note that if you replace `Nothing` with `Unit`, or any other type it simply won't compile, but here it represents what
+Note that if you replace `Nothing` with `Unit` or any other type it simply won't compile, but here it represents what
 it was made for: nothingness.
 
-Another fine example for using `Nothing` is a tree structure:
+Another fine example of using `Nothing` is a tree structure:
 
 {% gist 06d8075e5f721418a1f90101d8e44be4 %}
 
@@ -107,7 +107,7 @@ Here `Nothing` represents a missing left or right `Node` in a `Tree`.
 
 ## Conclusion
 
-Although `Nothing` might not be intuitive at first, but once we learn how it works it quickly becomes a useful asset
+Although `Nothing` might not be intuitive at first, once we learn how it works it quickly becomes a useful asset
 in our toolkit. We can use it to indicate nothingness in data structures, to signal the inevitability of `Exception`s
 being thrown or even `null`.
 
