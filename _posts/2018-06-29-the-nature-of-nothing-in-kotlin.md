@@ -60,7 +60,7 @@ But wait... This doesn't compile because `throwException` returns `Unit` and we 
 
 Our code now compiles. Why is that? The answer is that since `Nothing` is a subtype of every other class in Kotlin,
 the compiler can accept it, and because `throwException` is never going to return successfully, its assignment will never
-happen. In short: `Nothing` is **magic**. Better yet now you can start using it to explicitly state that a function
+happen. Better yet now you can start using it to explicitly state that a function
 will always throw an `Exception`.
 
 Understanding how `Nothing` works might be a bit hard but you can develop a nice intuition for it if you imagine `Nothing`
