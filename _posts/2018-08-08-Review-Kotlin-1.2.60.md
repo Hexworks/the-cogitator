@@ -35,12 +35,12 @@ on `@JvmStatic`, `@JvmOverloads`, and a bunch of other annotations.
 
 For some reason they do not brag about this, but I think that this is a big deal. If you have been using multiplatform
 projects for a while, you might have had to write common classes which need builders, or something similar in
-platform projects. Now having the option to put these annotations on those common classes will make life much more simpler.
+platform projects. Now having the option to put these annotations on those classes will be very helpful in the future.
 I'll explain why in the following example:
 
 ## The use case
 
-Suppose that we are writing a library for your project which implements commonly used functionality like sending data over HTTP. 
+Suppose that we are writing a library for our project which implements commonly used functionality like sending data over HTTP. 
 We don't want to write it twice so we put as much code in the common module as possible:
 
 {% gist 4ae6e652a871f4bb0db03fdded4dce56 %}
@@ -67,3 +67,5 @@ a uniform coroutine API which is usable on all platforms, adding more and more t
 having optional expected annotations are hinting at something. It seems that JetBrains has the goal to make Kotlin 
 platform independent, so at some point in the future, the JVM or even the browser might be an implementation detail
 and standard Kotlin code will have the ability to run anywhere. I would really like to see that happen!
+
+> The Hungarian version of this article can be read [here](http://appcraft.hu/posts/blog/2018/08/08/Kotlin-1.2.60-attekintes.html).
