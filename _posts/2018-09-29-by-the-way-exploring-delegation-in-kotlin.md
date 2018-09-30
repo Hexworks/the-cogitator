@@ -133,6 +133,9 @@ This looks good, but if we take a peek at the generated Java code we'll see a di
 set the value of the `positionable` property and leave `$$delegate_0` unchanged. This can lead to **pretty nasty**
 problems if you forget this so my advice is not to do this.
 
+> If you try to hack around this by renaming `positionable` to `$$delegate_0` it won't work, you'll get a
+> compiler error detailing a JVM name clash.
+
 ## Property delegation
 
 You might have seen code like this before:
