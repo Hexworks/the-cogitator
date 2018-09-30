@@ -220,7 +220,7 @@ delegation. The differences which cause the confusion are the `getValue`/`setVal
 within our property delegates but *not because of how delegation works, but because how overriding property access operators
 work*.
 
-Calling `lazy` to delegate to an instance of `Lazy` is the same on the code level as calling `fetchPositionable()` in the example
+Calling `lazy()` to delegate to an instance of `Lazy` is the same on the code level as calling `fetchPositionable()` in the example
 above to delegate to an instance of `Positionable`.
 
 
