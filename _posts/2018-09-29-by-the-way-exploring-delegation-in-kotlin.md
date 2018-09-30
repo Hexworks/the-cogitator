@@ -85,6 +85,9 @@ The resulting Java code is this:
 
 {% gist 30f3d827d4d921ace9e36547bb38d33a %}
 
+> This also means that with delegation we can unit test our building blocks in isolation (`DefaultPositionable` and
+`DefaultSizable` here) which is a significant improvement over inheritance in itself.
+
 So it turns out that with the `by` keyword we have a really powerful alternative to inheritance and the only limitation
 is that we have to use `interface`s on the right hand side of `by`: Kotlin can only delegate to interfaces.
 
