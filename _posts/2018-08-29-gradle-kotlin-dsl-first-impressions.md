@@ -4,6 +4,7 @@ title:  "Gradle Kotlin DSL - First impressions"
 excerpt: The Kotlin DSL for writing Gradle build scripts have been around for some time. In this article we'll take a look at it and see how useful it is.
 comments: true
 ---
+
 <div id="tldr">
 The Kotlin DSL for writing Gradle build scripts have been around for some time. In this article we'll take a look at it and see how useful it is.
 </div>
@@ -156,25 +157,4 @@ it gets adopted by more people. Most of its downsides come from this, and there 
 it won't get better in time. We are just not there yet.
 
 Of course if you are a pioneer type, or just hate Groovy then by all means go forth and use *kotlin-dsl* with impunity!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
