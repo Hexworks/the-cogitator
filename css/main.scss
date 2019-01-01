@@ -28,7 +28,7 @@ $bright-background-color: #fdf6e3;
 $dark-background-color: #eee8d5;
 
 // decoration
-$box-shadow: 0px 4px 5px 0px rgba(105,105,105,0.25);
+$box-shadow: 0px 4px 5px 0px rgba(105, 105, 105, 0.25);
 
 // general rules
 * {
@@ -172,27 +172,36 @@ h4 {
   background: url("/assets/logo_70.png");
   height: $sub-one-liner-height;
   width: $sub-one-liner-height;
-  background-size:cover;
+  background-size: cover;
   margin: 0.1em 0 0 0;
   text-decoration: none;
 }
 
-#contact-button {
+.contact-button {
   display: block;
   margin: $logical-separator-spacing auto;
   line-height: $one-liner-height;
-  padding: 0 $one-liner-height;
   background: $accent-color;
   color: $dark-background-color;
-  width: 6em;
+  width: 10em;
   text-align: center;
   border: 0.1em $accent-color solid;
+
+  &:hover {
+    text-decoration: none;
+    background: $dark-background-color;
+    color: $bright-foreground-color;
+  }
 }
 
-#contact-button:hover {
-  text-decoration: none;
-  background: $dark-background-color;
-  color: $bright-foreground-color;
+.patron-button {
+  display: block;
+  margin: $logical-separator-spacing auto;
+  width: 10em;
+
+  img {
+    width: 10em;
+  }
 }
 
 #home a:hover {
