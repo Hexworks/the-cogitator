@@ -1,0 +1,28 @@
+{% if page.previous.url or page.next.url or page.url == site.data.static_page_data.about_page_url %}
+{% if page.previous.url or page.next.url %}
+<div class="page-navigation">
+    {% if page.previous.url %}
+    <div class="prev page-nav-item">
+        <span>
+            &laquo; Prev: <a class="prev"
+                              href="{{page.previous.url | prepend:site.baseurl}}">{{page.previous.short_title}}</a>
+        </span>
+    </div>
+    {% endif %}
+    {% if page.next.url %}
+    <div class="next page-nav-item">
+        <span>
+            Next: <a class="next"
+                          href="{{page.next.url | prepend:site.baseurl}}">{{page.next.short_title}} &raquo;</a>
+        </span>
+    </div>
+    {% endif %}
+</div>
+{% else %}
+<section id="teaser-section">
+    <div id="teaser">
+        {% include latest_posts.html %}
+    </div>
+</section>
+{% endif %}
+{% endif %}

@@ -1,0 +1,8 @@
+<div class="content entries">
+    <div class="entry-list">
+        {% for entry in include.entries %}
+        {% include entry_card.html entry=entry %}
+        {% endfor %}
+    </div>
+    <div class="clear"></div>
+</div>

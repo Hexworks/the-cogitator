@@ -1,0 +1,21 @@
+<!--suppress ALL -->
+<nav class="main-nav">
+    <div class="wrapper">
+        <a class="main-logo" href="{{ site.baseurl }}/">
+            <img src="{{ site.baseurl }}/assets/icons/logo.png"/>
+        </a>
+        <ul>
+            {% for item in site.data.static_page_data.categories %}
+            <li>
+                <a href="{{ site.baseurl }}{{item.url}}"
+                   alt="{{ item.title }}"
+                   {% if item.id== page.category %}class="active" {% endif %}
+                   id="{{ item.id }}">
+                    {{ item.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% include external_nav.html type="light" %}
+    </div>
+</nav>

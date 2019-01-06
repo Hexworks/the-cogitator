@@ -1,0 +1,42 @@
+{% assign limit = seriesdata.size | minus: 1 %}
+
+{% for i in (0..limit) %}
+    {% if seriesdata[i].title == page.title %}
+        {% assign currIdx = i %}
+    {% endif %}
+{% endfor %}
+
+{% assign prevIdx = currIdx | minus: 1 %}
+{% assign nextIdx = currIdx | plus: 1 %}
+
+{% if seriesdata[prevIdx] and prevIdx >= 0 %}
+    {% assign prevItem = seriesdata[prevIdx] %}
+{% endif %}
+{% if seriesdata[nextIdx] and nextIdx >= 0 %}
+    {% assign nextItem = seriesdata[nextIdx] %}
+{% endif %}
+
+<div class="info-box series">
+    <p>This article is part of a series.
+    {% if prevItem or nextItem %}
+    </p>
+    <p>
+        <span id="prev">
+        {% if prevItem %}
+            Prev: <a class="prev" href="{{prevItem.url | prepend:site.baseurl}}">&laquo;{{prevItem.title}}</a>
+        {% else %}
+            &nbsp;
+        {% endif %}
+        </span>
+            <span id="next">
+            {% if nextItem %}
+                Next: <a class="next" href="{{nextItem.url | prepend:site.baseurl}}">{{nextItem.title}} &raquo;</a>
+            {% else %}
+                &nbsp;
+            {% endif %}
+        </span>
+    {% else %}
+        Stay tuned for the next article!
+    {% endif %}
+    </p>
+</div>

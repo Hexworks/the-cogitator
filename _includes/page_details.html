@@ -1,0 +1,35 @@
+<article class="content page" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        {% if page.tags %}
+        {% include tag_list.html tags = page.tags %}
+        {% endif %}
+        <h1 class="post-title"
+            itemprop="name headline">{{ page.title }}</h1>
+        <div id="post-meta">
+            <time datetime="{{ page.date | date_to_xmlschema }}"
+                  itemprop="datePublished">
+                {{ page.date | date: "%Y. %m. %d." }}
+            </time>
+            {% if page.author %}
+            <span itemprop="author"
+                  itemscope
+                  itemtype="http://schema.org/Person">
+                <span itemprop="name">
+                    <!--<a href="/authors/{{ page.author }}">-->
+                        {{ page.author }}
+                    <!--</a>-->
+                </span>
+            </span>
+            {% endif %}
+        </div>
+    </header>
+    <div id="post-body" itemprop="articleBody">
+        {% if page.series %}
+            {% assign seriesdata = site[page.collection] | where: "series", page.series %}
+            {% include series_nav.html seriesdata = seriesdata %}
+        {% endif %}
+        {{ content }}
+    </div>
+    {% include page_nav.html %}
+</article>
+

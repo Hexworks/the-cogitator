@@ -1,0 +1,18 @@
+<div class="entry-card {{ entry.collection }}-card diffusedshadow
+            {% if entry.highlighted %}card-highlight{% endif %}" data-date="{{ entry.date | date: '%Y%m%d' }}">
+    <p class="entry-title">
+        <a href="{{ entry.url | prepend:site.baseurl }}">{{ entry.short_title }}</a>
+    </p>
+
+    <p class="entry-meta">
+        <span class="entry-date">{{ entry.date | date: "%Y. %m. %d." }}</span>
+    </p>
+    <p class="entry-tldr">
+        {{ entry.excerpt }}
+    </p>
+    {% if entry.tags %}
+    <p class="entry-tags">
+        {% include tag_list.html tags = entry.tags %}
+    </p>
+    {% endif %}
+</div>

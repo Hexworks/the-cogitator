@@ -1,0 +1,21 @@
+---
+layout: default
+permalink: /tags/
+category: tags
+subcategory: all
+---
+<div id="tags" class="content">
+    <div id="tag-list">
+        {% for tag in site.tags %}
+        <div class="tag-card diffusedshadow">
+            <p class="tag-name">
+                <a href="{{ tag.url | prepend:site.baseurl }}">{{ tag.title }}</a>
+            </p>
+            <p class="tag-description">
+                {{ tag.description }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
