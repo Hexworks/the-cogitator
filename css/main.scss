@@ -132,6 +132,39 @@ blockquote {
 }
 
 //////////////////////
+// intro
+//////////////////////
+
+.contact-button {
+  display: block;
+  margin: $logical-separator-spacing auto;
+  line-height: $one-liner-height;
+  padding: 0 $one-liner-height;
+  background: $primary-accent-color;
+  color: $post-background-color !important;
+  width: 6em;
+  text-align: center;
+  border: 0.1em $primary-accent-color solid;
+
+  &:hover {
+    text-decoration: none !important;
+    background: $post-background-color;
+    color: $primary-accent-color !important;
+  }
+}
+
+.patron-button {
+  display: block;
+  margin: 0 auto;
+  width: 10em;
+
+  img {
+    width: 10em;
+  }
+}
+
+
+//////////////////////
 // code
 //////////////////////
 

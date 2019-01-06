@@ -20,4 +20,7 @@ the docs of the projects I'm working on (like [Cobalt](https://github.com/cobalt
 The code on this site is now not served from Gists but they are inlined using Jekyll's own code highlighter. This will
 make them load much much faster compared to the previous Gists.
 
-If you encounter a problem or just wanna comment on the overall design, feel free to comment below! 
+Another addition is the [Patreon page](https://www.patreon.com/join/addamsson) so now you can become a patron if you
+like what I'm writing about or [working on](https://github.com/adam-arold).
+
+If you encounter a problem or just wanna comment on the overall design, feel free to do so below! 

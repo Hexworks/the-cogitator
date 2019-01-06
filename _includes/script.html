@@ -1,4 +1,5 @@
 <!--suppress ALL -->
+<script src="/assets/js/anchor.min.js"></script>
 <script>
     function fixFooter() {
         var page = document.getElementById('page')
@@ -12,6 +13,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         fixFooter();
+        new AnchorJS().add();
     }, false);
 
     (function () {
