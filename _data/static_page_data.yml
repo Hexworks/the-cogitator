@@ -1,18 +1,30 @@
-about_page_url: "/"
-pages:
-
-- title: "Posts"
-  id: "posts-link"
-  url: "/posts.html"
-
+posts_page_url: "/"
+contact:
+  title: "CONTACT"
+  id: "contact"
+  url: "mailto:info@hexworks.org"
+about:
+  title: "ABOUT"
+  id: "about"
+  url: "/about/"
+categories:
+- title: "POSTS"
+  id: "posts"
+  url: "/posts/"
+- title: "ZIRCON"
+  id: "zircon"
+  url: "/projects/zircon/"
+- title: "PROJECTS"
+  id: "projects"
+  url: "/projects/"
+- title: "TAGS"
+  id: "tags"
+  url: "/tags/"
+external:
 - title: "GitHub"
-  id: "github-link"
-  url: "https://github.com/adam-arold"
+  id: "github"
+  url: "https://github.com/Hexworks"
+- title: "Twitter"
+  id: "twitter"
+  url: "https://twitter.com/addamsson"
 
-- title: "Stack Overflow"
-  id: "so-link"
-  url: "https://stackoverflow.com/users/485337/adam-arold"
-
-- title: "Contact"
-  id: "contact-link"
-  url: "mailto:adam.arold@appcraft.hu"

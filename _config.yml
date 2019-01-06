@@ -1,19 +1,136 @@
 title: The Cogitator
-email: info@hexworks.org
+
 description: >
   I'm Adam Arold and my aim with this site is to share insight about technologies I touch during my work. If you have any questions feel free to reach out using the Contact link above.
-baseurl: ""
 url: "http://the-cogitator.com"
 twitter_username: addamsson
 github_username:  adam-arold
-incremental: true
-markdown: kramdown
+
+email: arold.adam@gmail.com
+
+# Where things are
+source:          .
+destination:     _site
+collections_dir: .
+plugins_dir:     _plugins
+layouts_dir:     _layouts
+data_dir:        _data
+includes_dir:    _includes
+debug: false
+keywords: ["consulting", "open source", "kotlin", "java", "programming", "development"]
+collections:
+  blog:
+    output: true
+    permalink: "posts/:collection/:year/:month/:day/:title:output_ext"
+    category: "posts"
+    subcategory: "blog"
+    display: "Blog"
+  news:
+    output: true
+    permalink: "posts/:collection/:year/:month/:day/:title:output_ext"
+    category: "posts"
+    subcategory: "news"
+    display: "News"
+  tags:
+    output: true
+    permalink: "/tags/:name/"
+    category: "tags"
+
+
+# Handling Reading
+safe:                 false
+include:              [".htaccess"]
+exclude:              ["Gemfile", "Gemfile.lock", "node_modules", "vendor/bundle/", "vendor/cache/", "vendor/gems/", "vendor/ruby/"]
+keep_files:           [".git", ".svn"]
+encoding:             "utf-8"
+markdown_ext:         "markdown,mkdown,mkdn,mkd,md"
+strict_front_matter:  false
+
+# Filtering Content
+show_drafts: null
+limit_posts: 0
+future:      false
+unpublished: false
+
+# Plugins
+whitelist: []
 plugins:
   - jekyll-gist
+
+# Conversion
+markdown:    kramdown
+highlighter: rouge
+lsi:         false
+excerpt_separator: "\n\n"
+incremental: true
+
+# Serving
+detach:  false
+port:    4000
+host:    127.0.0.1
+baseurl: ""
+show_dir_listing: false
+
+# Outputting
+permalink:     date
+paginate_path: /page:num
+timezone:      null
+quiet:    false
+verbose:  false
 defaults:
-  -
-    scope:
+  - scope:
       path: ""
     values:
       layout: "default"
-      author: "Adam Arold"
+      author: "addamsson"
+
+  # These are the default settings for each collection defined above in collections.
+  #
+  # We need to redefine category and subcategory here because these variables will be
+  # loaded for each path which fits a collection. The category / subcategory defined
+  # in the categories above is not visible sadly from the `page` variable.
+  # Related Jekyll issue: https://github.com/jekyll/jekyll/issues/3044
+  - scope:
+      path: ""
+      type: "blog"
+    values:
+      layout: "blog_details"
+      regenerate: true
+      taggable: true
+      category: "posts"
+      subcategory: "blog"
+  - scope:
+      path: ""
+      type: "news"
+    values:
+      layout: "news_details"
+      regenerate: true
+      taggable: true
+      category: "posts"
+      subcategory: "news"
+  - scope:
+      path: ""
+      type: "tags"
+    values:
+      layout: "tag_details"
+      regenerate: true
+      category: "tags"
+liquid:
+  error_mode: warn
+
+# Markdown Processors
+rdiscount:
+  extensions: []
+
+redcarpet:
+  extensions: []
+
+kramdown:
+  auto_ids:       true
+  entity_output:  as_char
+  toc_levels:     1..6
+  smart_quotes:   lsquo,rsquo,ldquo,rdquo
+  input:          GFM
+  hard_wrap:      false
+  footnote_nr:    1
+  show_warnings:  false

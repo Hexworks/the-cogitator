@@ -1,14 +1,9 @@
 ---
 layout: default
+permalink: /posts/
+category: posts
+subcategory: all
 ---
-<div id="intro">
-    <header>
-        <h1>Posts</h1>
-    </header>
-    <div id="latest-posts">
-        {% for post in site.posts %}
-        <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
-        <p>{{ post.excerpt }}</p>
-        {% endfor %}
-    </div>
-</div>
+
+{% assign entries = site.documents | where: 'category', 'posts' | sort: 'date' | reverse %}
+{% include entry_list.html entries=entries %}
