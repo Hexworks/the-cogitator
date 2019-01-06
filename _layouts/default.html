@@ -2,16 +2,13 @@
 <html>
 {% include head.html %}
 <body id="site">
-    <div id="page">
-        {% include main_nav.html %}
-        {% include category_nav.html category=page.category selected=page.selected %}
-        <div class="wrapper">
-            {{ content }}
-        </div>
+<div id="page">
+    {% include main_nav.html %}
+    <div class="wrapper">
+        {{ content }}
     </div>
-
+</div>
 {% include footer.html %}
 {% include script.html %}
-
 </body>
 </html>

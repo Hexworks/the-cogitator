@@ -1,18 +1,15 @@
 ---
 title:  "Going Beyond Android: Kotlin on the Backend"
 short_title:  "Going Beyond Android: Kotlin on the Backend"
-tags: [kotlin]
+tags: [kotlin, web-servers, java]
 excerpt: While most developers use Kotlin on Android it is also a viable option on other platforms. In this article
           we'll look at how it works on the backend.
 comments: true
+series: beyond-android
 ---
-<div id="series">
-This article is part of a <a href="/2017/12/21/beyond-android-exploring-kotlin-areas-of-application.html">series</a>.
-Check out the next part <a href="/2018/04/25/going-beyond-android-kotlin-on-the-frontend.html">here</a>.
-</div>
-<div id="tldr">
-While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works on the backend.
-</div>
+
+> While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works on the backend.
+
 
 As [I have written about this before](http://the-cogitator.com/2017/05/19/kotlin-is-the-new-java.html) I think that the interop between Java and Kotlin is quite seamless. This also means that using Kotlin in place of Java on the backend is rather easy. Apart from a few nuisances, you can pretty much start writing your new features in Kotlin within your Java project or if you just want to try it out you can start by writing your tests with it.
 

@@ -1,15 +1,14 @@
 ---
 title:  "Why should you open source your code?"
 short_title:  "Why should you open source your code?"
-tags: [kotlin]
+tags: [open-source]
 excerpt: Open source software is all the buzz nowadays so it might be a good time to think about whether you can release parts of the project you are working on.
 comments: true
 ---
-<div id="tldr">
-If you have worked on a reasonably large project somewhere, chances are that the thought crossed your mind sometimes about
+
+> If you have worked on a reasonably large project somewhere, chances are that the thought crossed your mind sometimes about
 making the code you produced available for others to use. In this article I try to sum up the Pros and the Cons about
 doing so and provide a few pointers why it is useful if you have never worked on OSS before.
-</div>
 
 Working on open source software (OSS in short) on your own time is fun. You get to choose what to work on, when to do it and how to do it. If you produce something which is useful for others, people will eventually start to use it and this is where interesting things start to happen.
 

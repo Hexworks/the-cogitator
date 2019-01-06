@@ -1,17 +1,16 @@
 ---
 title:  "Exploring Kotlin: Useful Standard Library Functions"
 short_title:  "Exploring Kotlin: Useful Standard Library Functions"
-tags: [kotlin]
+tags: [kotlin, deep-dive]
 excerpt: Kotlin comes with a lot of useful functions like let, apply, with or also. Less is written about what
          comes with the collections, ranges, and other packages of the standard library. In this article we'll explore them.
 comments: true
 ---
-<div id="tldr">
-As <a href="http://beust.com/weblog/2015/10/30/exploring-the-kotlin-standard-library/">others have written about this before</a>
-Kotlin comes with a lot of handy functions like <code>let</code>, <code>apply</code>, <code>with</code>
- or <code>also</code>. Less is written about what comes with the <code>collections</code>, <code>ranges</code>,
- and other packages of the standard library. I think that a lot more can be done using just the Kotlin standard library, so let's explore it in depth!
-</div>
+
+> As [others have written about this before](http://beust.com/weblog/2015/10/30/exploring-the-kotlin-standard-library/)
+Kotlin comes with a lot of handy functions like `let`, `apply`, `with` or `also`.
+Less is written about what comes with the `collections`, `ranges`, and other packages of the standard library.
+I think that a lot more can be done using just the Kotlin standard library, so let's explore it in depth!
 
 ## Tuples
 

@@ -1,19 +1,17 @@
 ---
 title:  "Data Explorer: a hidden treasure chest for IT professionals"
 short_title:  "Data Explorer: a hidden treasure chest for IT professionals"
-tags: [kotlin]
+tags: [stack-overflow, tutorial]
 excerpt: You might have wondered about what technology do others use in the IT industry 
          or which tools are trending. Enter the Stack Exchange Data Explorer where you can find information about all
          Stack Exchange users.
 comments: true
 ---
-<div id="tldr">
-If you work in the IT industry you might have wondered about what technology others use in the field and which tools are trending.
-There are a lot of resources where you can read about this like <a href="https://trends.google.com/trends/">Google Trends</a>
-or <a href="https://www.itjobswatch.co.uk">ITJobswatch</a> but what if you want more insight?
-Enter the <a href="https://data.stackexchange.com/">Stack Exchange Data Explorer</a> where you can find fine grained information
-about <strong>all</strong> of the Stack Exchange users.
-</div>
+> If you work in the IT industry you might have wondered about what technology others use in the field and which tools are trending.
+There are a lot of resources where you can read about this like [Google Trends](https://trends.google.com/trends/)
+or [ITJobswatch](https://www.itjobswatch.co.uk) but what if you want more insight?
+Enter the [Stack Exchange Data Explorer](https://data.stackexchange.com/) where you can find fine grained information
+about **all** of the Stack Exchange users.
 
 ## So what is Stack Exchange?
 

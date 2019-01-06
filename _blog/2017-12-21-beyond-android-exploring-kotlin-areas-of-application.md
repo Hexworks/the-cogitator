@@ -1,18 +1,14 @@
 ---
 title:  "Going Beyond Android: Exploring Kotlin Areas of Application"
 short_title:  "Going Beyond Android: Exploring Kotlin Areas of Application"
-tags: [kotlin]
+tags: [kotlin, tutorial]
 excerpt: If you have written something in Kotlin chances are that you wrote it for Android. Kotlin, however, has other areas where it can be useful. In the following series, we'll explore what other fields exist where Kotlin can shine.
 comments: true
+series: beyond-android
 ---
-<div id="series">
-This article is part of a <a href="/2017/12/21/beyond-android-exploring-kotlin-areas-of-application.html">series</a>.
-Check out the next part <a href="/2018/01/06/going-beyond-android-kotlin-on-the-backend.html">here</a>.
-</div>
-<div id="tldr">
-If you have written something in Kotlin chances are that you wrote it for Android. Kotlin, however, has other areas where it can be useful.
+
+> If you have written something in Kotlin chances are that you wrote it for Android. Kotlin, however, has other areas where it can be useful.
 In the following series, we'll explore what other fields exist where Kotlin can shine and discuss how you can take advantage of them.
-</div>
 
 ## Branching out
 While Kotlin started out as a language for the JVM, its creators have started to give us options to use the language on other platforms as well. The [Kotlin Frontend Plugin](https://github.com/Kotlin/kotlin-frontend-plugin) is nothing new, but now we can [go native](https://github.com/JetBrains/kotlin-native/) or create [multiplatform projects](https://kotlinlang.org/docs/reference/multiplatform.html).

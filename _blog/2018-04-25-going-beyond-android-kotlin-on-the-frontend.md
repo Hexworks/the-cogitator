@@ -3,16 +3,12 @@ excerpt: While most developers use Kotlin on Android it is also a viable option 
           we'll look at how it works in the browser.
 title:  "Going Beyond Android: Kotlin on the Frontend"
 short_title:  "Going Beyond Android: Kotlin on the Frontend"
-tags: [kotlin]
+tags: [kotlin, frontend]
 comments: true
+series: beyond-android
 ---
-<div id="series">
-This article is part of a <a href="/2017/12/21/beyond-android-exploring-kotlin-areas-of-application.html">series</a>.
-Check out the previous part <a href="/2018/01/06/going-beyond-android-kotlin-on-the-backend.html">here</a>.
-</div>
-<div id="tldr">
-While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works in the browser. We'll walk through an example which is rather minimal but it comes with batteries included: testing, minification, and deployment.
-</div>
+
+> While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works in the browser. We'll walk through an example which is rather minimal but it comes with batteries included: testing, minification, and deployment.
 
 While the *kotlin2js* plugin have been around for quite some time it was not considered production ready because
 the javascript code it generated was measured in megabytes and it was also hard to set up testing and external javascript

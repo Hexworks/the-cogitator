@@ -1,17 +1,16 @@
 ---
 title:  "Kotlin is the new Java"
 short_title:  "Kotlin is the new Java"
-tags: [kotlin]
+tags: [kotlin, java]
 excerpt: If you are a Java developer you might be wondering what to learn next. Kotlin is in the sweet spot just where Java used to be and in this article my goal is to explain why.
 comments: true
 ---
-<div id="tldr">
-If you are a Java developer for a while now you might be wondering what to learn next.
-There are a bunch of languages out there which worth a look, like <a href="https://clojure.org/">Clojure</a>,
- <a href="https://www.rust-lang.org/en-US/">Rust</a> or <a href="https://www.haskell.org/">Haskell</a>.
+
+> If you are a Java developer for a while now you might be wondering what to learn next.
+There are a bunch of languages out there which worth a look, like [Clojure](https://clojure.org/),
+[Rust](https://www.rust-lang.org/en-US/) or [Haskell](https://www.haskell.org/).
 But what if you want to learn something with which you can pay the bills but it is not a pain to use?
 Kotlin is in the sweet spot just where Java used to be and in this article my goal is to explain why.
-</div>
 
 ## So what is Kotlin?
 - A home-grown programming language by [JetBrains](https://www.jetbrains.com/) who are the masterminds behind the acclaimed [IDEA](https://www.jetbrains.com/idea/) IDE and a bunch of other stuff.

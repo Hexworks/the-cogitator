@@ -5,10 +5,9 @@ short_title:  "Review: Kotlin 1.2.60"
 tags: [kotlin]
 comments: true
 ---
-<div id="tldr">
-Kotlin releases are quite frequent nowadays and the last few ones were not so remarkable, but 1.2.60 is somewhat special.
+
+> Kotlin releases are quite frequent nowadays and the last few ones were not so remarkable, but 1.2.60 is somewhat special.
 In this article I'll explain why.
-</div>
 
 ## The summary
 

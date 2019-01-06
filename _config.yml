@@ -35,6 +35,8 @@ collections:
     output: true
     permalink: "/tags/:name/"
     category: "tags"
+    subcategory: "tags"
+    display: "Tags"
 
 
 # Handling Reading
@@ -55,7 +57,6 @@ unpublished: false
 # Plugins
 whitelist: []
 plugins:
-  - jekyll-gist
 
 # Conversion
 markdown:    kramdown
@@ -115,6 +116,7 @@ defaults:
       layout: "tag_details"
       regenerate: true
       category: "tags"
+      subcategory: "tags"
 liquid:
   error_mode: warn
 

@@ -1,14 +1,13 @@
 ---
 title:  "Kotlin pitfalls and how to avoid them"
 short_title:  "Kotlin pitfalls and how to avoid them"
-tags: [kotlin]
+tags: [kotlin, tutorial]
 excerpt: Kotlin is all the rage lately and while I do agree that the language is well thought out it has - as everything else - its flaws. In this article I'll explain some of the pitfalls I encountered and try to help you avoid them.
 comments: true
 ---
-<div id="tldr">
-Kotlin is all the rage lately and while I do agree that the language is well thought out it has - as everything else - its flaws.
+
+> Kotlin is all the rage lately and while I do agree that the language is well thought out it has - as everything else - its flaws.
 In this article I'll explain some of the pitfalls I encountered and try to help you avoid them.
-</div>
 
 ## The mystery `null`
 
