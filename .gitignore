@@ -6,3 +6,5 @@ _site
 deploy.sh
 
 *.iml
+
+vendor/

@@ -22,11 +22,15 @@
             </span>
             {% endif %}
         </div>
+
     </header>
     <div id="post-body" itemprop="articleBody">
         {% if page.series %}
             {% assign seriesdata = site[page.collection] | where: "series", page.series %}
             {% include series_nav.html seriesdata = seriesdata %}
+        {% endif %}
+        {% if page.guest_post %}
+            {% include guest_details.html guest_name = page.guest_name guest_site = page.guest_site canonical_url = page.canonical_url %}
         {% endif %}
         {{ content }}
     </div>

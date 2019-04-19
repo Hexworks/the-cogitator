@@ -36,5 +36,9 @@
     <link rel="stylesheet" href="{{"
     /css/debug.css" | prepend: site.baseurl }}">
     {% endif %}
+    {% if page.canonical_url %}
+    <link rel="canonical" href="{{ page.canonical_url }}">
+    {% else %}
     <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl }}">
+    {% endif %}
 </head>
