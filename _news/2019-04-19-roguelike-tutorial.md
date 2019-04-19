@@ -15,10 +15,10 @@ lately which *I'm publishing here now*!
 I've decided to add the articles in the tutorial series to this site as well, so both the readers
 of *my blog* and the [Hexworks Site](https://hexworks.org/) get access to this tutorial!
 
-This tutorial is about *writing a [Roguelike](https://en.wikipedia.org/wiki/Roguelike) game in
+These posts are about writing a [Roguelike](https://en.wikipedia.org/wiki/Roguelike) game in
 [Kotlin](https://kotlinlang.org/). It starts with very simple *Kotlin* concepts so it can also
 be used to learn the language as well, not just roguelike development. You can check out
-the first post [here](/posts/blog/2018/12/04/how-to-make-a-roguelike.html)!
+the first one [here](/posts/blog/2018/12/04/how-to-make-a-roguelike.html)!
 
 Since there are already some article series on this site I'll soon add a proper *series navigation*
 page for them. I've seen a lot of blogs with series like these and navigating them is
