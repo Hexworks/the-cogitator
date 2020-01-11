@@ -6,6 +6,9 @@ author: addamsson
 short_title: "How To Make a Roguelike: #16 Aggressive Monsters"
 series: coz
 comments: true
+guest_post: true
+guest_site: https://hexworks.org
+guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/26/how-to-make-a-roguelike-aggressive-monsters.html
 ---
 

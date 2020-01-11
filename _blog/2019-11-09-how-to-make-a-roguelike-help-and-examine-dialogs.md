@@ -6,6 +6,9 @@ author: addamsson
 short_title: "How To Make a Roguelike: #18 Help and Examine Dialogs"
 series: coz
 comments: true
+guest_post: true
+guest_site: https://hexworks.org
+guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/30/how-to-make-a-roguelike-help-and-examine-dialogs.html
 ---
 

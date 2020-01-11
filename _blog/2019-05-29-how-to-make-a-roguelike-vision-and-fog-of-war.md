@@ -6,6 +6,9 @@ author: addamsson
 short_title: "How To Make a Roguelike: #10 Vision and Fog of War"
 series: coz
 comments: true
+guest_post: true
+guest_site: https://hexworks.org
+guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/04/27/how-to-make-a-roguelike-vision-and-fog-of-war.html 
 ---
 

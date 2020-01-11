@@ -6,6 +6,9 @@ author: addamsson
 short_title: "How To Make a Roguelike: #12 Items and Inventory"
 series: coz
 comments: true
+guest_post: true
+guest_site: https://hexworks.org
+guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/05/15/how-to-make-a-roguelike-items-and-inventory.html
 ---
 
