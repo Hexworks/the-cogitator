@@ -2,7 +2,7 @@
 excerpt: For someone who comes from the Java world the concept of Nothing might be confusing. In this article, I'll try to clean that up with some practical examples to boot.
 title:  "The Nature of Nothing in Kotlin"
 short_title:  "The Nature of Nothing in Kotlin"
-tags: [kotlin, deep-dive]
+tags: [kotlin]
 comments: true
 ---
 

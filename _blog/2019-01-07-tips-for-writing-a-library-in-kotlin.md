@@ -2,7 +2,7 @@
 excerpt: "Writing a library in Kotlin seems easy but it can get tricky if you want to support multiple platforms. In this article we'll explore ways for dealing with this problem."
 title:  "Tips for Writing a Library in Kotlin"
 short_title:  "Tips for Writing a Library in Kotlin"
-tags: [kotlin, deep-dive]
+tags: [kotlin]
 comments: true
 ---
 
