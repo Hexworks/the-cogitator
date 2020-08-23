@@ -10,6 +10,3 @@ published: false
 
 > React is mostly known as a frontend library but it can also be used for server-side rendering. Moreover, components can be shared between the two enabling some funky features as well! Let's take a look ata how it can be achieved.
 
-
-
-

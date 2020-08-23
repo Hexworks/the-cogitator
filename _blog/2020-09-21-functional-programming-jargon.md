@@ -10,4 +10,3 @@ published: false
 
 > Functional Programming is notoriously hard to grasp for most programmers. This series will guide you through the concepts in an easy to understand way.
 
-
