@@ -94,7 +94,14 @@ We can see that our `ComponentImpl` didn't have to override any of the methods i
 implementation of the `Movable` interface to `MovableImpl`.  Let's see how it works:
 
 ```kotlin
+val component = ComponentImpl()
 
+component.moveTo(Position(3, 4))
+println(component.position)
+// Position(x=3, y=4)
+component.moveBy(Position(1, 2))
+println(component.position)
+// Position(x=4, y=6)
 ```
 
 Congratulations! You've written and used a *mixin*!
