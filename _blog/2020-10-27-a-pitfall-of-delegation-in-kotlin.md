@@ -106,7 +106,7 @@ println(component.position)
 
 Congratulations! You've written and used a *mixin*!
 
-All is good...or is it?
+It is working, we have nothing to worry about, right?
 
 ## The Problem
 
