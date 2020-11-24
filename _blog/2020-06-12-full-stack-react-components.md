@@ -1,7 +1,7 @@
 ---
 excerpt: "React is not only for frontend development, it can be used on the server as well. Let's take a look at how we can make them work together."
 title: "React: Write Once, Run Everywhere"
-tags: [typescript, react, frontend, backend, nodejs]
+tags: [react, frontend, backend, nodejs, javascript]
 author: addamsson
 short_title: "React: Write Once, Run Everywhere"
 comments: true
