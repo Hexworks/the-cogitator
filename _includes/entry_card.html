@@ -1,5 +1,5 @@
 <div class="entry-card {{ entry.collection }}-card diffusedshadow
-            {% if entry.highlighted %}card-highlight{% endif %}" data-date="{{ entry.date | date: '%Y%m%d' }}">
+            {% if entry.highlighted %}card-highlight{% endif %}" data-date="{{ entry.updated_at | date: '%Y%m%d' }}">
     <p class="entry-title">
         <a href="{{ entry.url | prepend:site.baseurl }}">{{ entry.short_title }}</a>
     </p>

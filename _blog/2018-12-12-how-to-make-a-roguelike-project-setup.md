@@ -10,18 +10,17 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2018/12/12/how-to-make-a-roguelike-project-setup.html
-updated_at: 2018-12-12
+updated_at: 2020-12-12
 ---
 
-> Now that you are decided to write your own roguelike, the first thing to do is to
-  set up the project on your computer!
+> Now that you have decided to write your own roguelike, the first thing to do is to set up the project on your computer!
   
 ## What you'll need
 
 To get started with the project you'll need to install:
 
 - [Git](https://git-scm.com/)
-- [A JDK](https://openjdk.java.net/) and
+- [A JDK](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html) and
 - [Intellij IDEA Community Edition](https://www.jetbrains.com/idea/download/)
 
 The latter is not mandatory, but it is highly recommended.
@@ -54,25 +53,23 @@ then navigate to the newly created project:
 cd caves-of-zircon-tutorial
 ```
 
-This project contains the code from start to finish and for each article there is a Git *tag*.
+This project contains the code from start to finish and for each article there is a Git *commit*.
 So let's reset our project to see the initial project setup by running this command:
 
 ```bash
-git reset --hard PROJECT_SETUP
+git reset --hard 00047e1
 ```
-
-> Note that you can see all the milestones of this project by running `git tag` in the command line.
 
 ### Using Gradle
 
 We're not going to go into details about how to use Gradle, so the only thing you have to know
 is the command for building the project:
 
+> If the CLI complains about execution permissions run this command: `chmod +x gradlew`
+
 ```bash
 ./gradlew clean build
 ```
-
-> If the CLI complains about execution permissions run this command: `chmod +x gradlew`
 
 You can run this command any time you want to build a `.jar` file from your project.
 To run it you just have to call Java with your `.jar` file as a parameter:
@@ -84,6 +81,11 @@ java -jar build/libs/caves-of-zircon.jar
 With little luck you'll see this screen:
 
 ![Hello, from Caves of Zircon](/assets/img/hello_coz.png)
+
+> If you are curious the command above (`./gradlew clean build`) consists of 3 parts:
+ - `./gradlew`: this will call the `gradlew` script that will use the embedded build tool to compile our project
+ - `clean` will just delete the `build` folder. The results of a compilation go to this folder so deleting it will indeed clean up any previous builds
+ - `build` as its name suggests will compile our program and create a runnable `.jar` file
 
 ## Importing the project to IDEA
 
@@ -114,5 +116,4 @@ which is necessary to get started with our project and also imported it into our
 In the next article we'll take a look at how our tools work and how we can start writing
 our *actual* game.
 
-
- 
+> The code of this article can be found in commit #1.

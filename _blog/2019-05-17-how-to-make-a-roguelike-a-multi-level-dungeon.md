@@ -10,16 +10,14 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/04/17/how-to-make-a-roguelike-a-multi-level-dungeon.html
-updated_at: 2019-05-17
+updated_at: 2021-02-18
 ---
 
-> We have added multiple levels to our dungeon previously they are just not accessible yet. Let's add some stairs
-to our game and some UI upgrades so we can see the stats of our adventurer!
+> We have added multiple levels to our dungeon previously they are just not accessible yet. Let's add some stairs to our game and some UI upgrades so we can see the stats of our adventurer!
 
 ## Connecting the Levels
 
-Let's think about how we can connect our levels. There are a lot of known algorithms for this, but we're going to
-choose a very simple one:
+Let's think about how we can connect our levels. There are a lot of known algorithms for this, but we're going to choose a very simple one:
 
 1. Let the `current level` be the top level
 1. Pick a random *position* on the `current level` where the tile is a `floor` (we can only place stairs on floors, not on walls)
@@ -31,10 +29,7 @@ choose a very simple one:
 
 This algorithm is linear in complexity (`O(n)`) so it will be fine for our purposes. 
 
-> There is one theoretical problem though: what happens if we can't pick a position from the two levels we want to connect
-which are both *floors*? In this case we want to *reject* the level below and regenerate it. This is what happens in
-most procedurally generated games (including Dwarf Fortress!), but the chances are for this in our case are astronomically
-low, so implementing it is left to the reader as an exercise.
+> There is one theoretical problem though: what happens if we can't pick a position from the two levels we want to connect which are both *floors*? In this case we want to *reject* the level below and regenerate it. This is what happens in most procedurally generated games (including Dwarf Fortress!), but the chances are for this in our case are astronomically low, so implementing it is left to the reader as an exercise.
 
 ## Adding New Tiles
 
@@ -42,47 +37,56 @@ The first thing we need is a set of new tiles which we'll use to represent our t
 
 ```kotlin
 // Add these to GameTileRepository
-val STAIRS_UP = Tiles.newBuilder()
-        .withCharacter('<')
-        .withForegroundColor(GameColors.ACCENT_COLOR)
-        .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
-        .buildCharacterTile()
 
-val STAIRS_DOWN = Tiles.newBuilder()
-        .withCharacter('>')
-        .withForegroundColor(GameColors.ACCENT_COLOR)
-        .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
-        .buildCharacterTile()
+val STAIRS_UP = Tile.newBuilder()
+    .withCharacter('<')
+    .withForegroundColor(GameColors.ACCENT_COLOR)
+    .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
+    .buildCharacterTile()
+
+val STAIRS_DOWN = Tile.newBuilder()
+    .withCharacter('>')
+    .withForegroundColor(GameColors.ACCENT_COLOR)
+    .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
+    .buildCharacterTile()
 ```
 
 and add the corresponding entities as well.
 
 Add these to `EntityTypes.kt`:
+
 ```kotlin
 object StairsDown : BaseEntityType(
-        name = "stairs down")
+    name = "stairs down"
+)
 
 object StairsUp : BaseEntityType(
-        name = "stairs up")
+    name = "stairs up"
+)
 ```
 
-`EntityFactory`:
+to `EntityFactory`:
+
 ```kotlin
-import org.hexworks.cavesofzircon.attributes.types.StairsDown
-import org.hexworks.cavesofzircon.attributes.types.StairsUp
+import com.example.cavesofzircon.attributes.types.StairsDown
+import com.example.cavesofzircon.attributes.types.StairsUp
 
 fun newStairsDown() = newGameEntityOfType(StairsDown) {
-    attributes(EntityTile(GameTileRepository.STAIRS_DOWN),
-            EntityPosition())
+    attributes(
+        EntityTile(GameTileRepository.STAIRS_DOWN),
+        EntityPosition()
+    )
 }
 
 fun newStairsUp() = newGameEntityOfType(StairsUp) {
-    attributes(EntityTile(GameTileRepository.STAIRS_UP),
-            EntityPosition())
+    attributes(
+        EntityTile(GameTileRepository.STAIRS_UP),
+        EntityPosition()
+    )
 }
 ```
 
-and `GameBlockFactory`:
+and to `GameBlockFactory`:
 
 ```kotlin
 fun stairsDown() = GameBlock.createWith(EntityFactory.newStairsDown())
@@ -92,40 +96,37 @@ fun stairsUp() = GameBlock.createWith(EntityFactory.newStairsUp())
 
 ## Placing Stairs
 
-Now that we have our *blocks* in place we just have to connect the levels with them. For this we're going to add
-a function first which generates a `Sequence` of random positions for a given level:
+Now that we have our *blocks* in place we just have to connect the levels with them. For this we're going to add a function first, which generates a `Sequence` of random positions for a given level:
 
-> Kotlin `Sequence`s are similar to `Iterable`s in Java. Using them we can *generate* values lazily. They work
-in a similar way to how *generators* work in Python. The difference is that `yield` is not a keyword in Kotlin,
-but a function which can be used in `Sequence` builders. You can read more about how `Sequence`s work in Kotlin
-[here](https://blog.kotlin-academy.com/effective-kotlin-use-sequence-for-bigger-collections-with-more-than-one-processing-step-649a15bb4bf).
-If you are a visual type (like me) [here](https://typealias.com/guides/kotlin-sequences-illustrated-guide/) is a
-*Visual Guide to Kotlin Sequences*.
+> Kotlin `Sequence`s are similar to `Iterable`s in Java. Using them we can *generate* values lazily. They work in a similar way to how *generators* work in Python. The difference is that `yield` is not a keyword in Kotlin, but a function which can be used in `Sequence` builders. You can read more about how `Sequence`s work in Kotlin [here](https://blog.kotlin-academy.com/effective-kotlin-use-sequence-for-bigger-collections-with-more-than-one-processing-step-649a15bb4bf). If you are a visual type (like me) [here](https://typealias.com/guides/kotlin-sequences-illustrated-guide/) is a *Visual Guide to Kotlin Sequences*.
 
 ```kotlin
+// put these in WorldBuilder to the appropriate places
+
 import kotlin.random.Random
 
-// put this in WorldBuilder
-
-private val depth = worldSize.zLength
+private val depth = worldSize.yLength
+private val width = worldSize.xLength
+private val height = worldSize.zLength
 
 private fun generateRandomFloorPositionsOn(level: Int) = sequence { // 1
-    while (true) {      // 2
-        var pos = Position3D.unknown()                      // 3
-        while (pos.isUnknown()) {                           // 4
-            val candidate = Positions.create3DPosition(     // 5
-                    x = Random.nextInt(width - 1),
-                    y = Random.nextInt(depth - 1),
-                    z = level)
-            if (blocks[candidate].isEmptyFloor()) {         // 6
+    while (true) {                                                  // 2
+        var pos = Position3D.unknown()                              // 3
+        while (pos.isUnknown) {                                     // 4
+            val candidate = Position3D.create(                      // 5
+                x = Random.nextInt(width - 1),
+                y = Random.nextInt(depth - 1),
+                z = level
+            )
+            if (blocks[candidate].isEmptyFloor()) {                 // 6
                 pos = candidate
             }
         }
-        yield(pos)                                          // 7
+        yield(pos)                                                  // 7
     }
 }
 
-private fun GameBlock?.isEmptyFloor(): Boolean {        // 8
+private fun GameBlock?.isEmptyFloor(): Boolean {                    // 8
     return this?.isEmptyFloor ?: false
 }
 ```
@@ -145,19 +146,19 @@ Here we:
    In our example the *nullable* type is `GameBlock?` and it lets us call the `isEmptyFloor` function on a potentially
    `null` value. If we can't find the block in `blocks` this function will default to `false`
    
-> You might be wondering why do we define extension functions on `GameBlock?` in `WorldBuilder`. This pattern is very useful
-and common in Kotlin: by defining functions like this we make our code much more readable, while keeping the global namespace
-clean (the `private` extension function will only be visible in `WorldBuilder`).
+> You might be wondering why do we define extension functions on `GameBlock?` in `WorldBuilder`. This pattern is very useful and common in Kotlin: by defining functions like this we make our code much more readable, while keeping the global namespace clean (the `private` extension function will only be visible in `WorldBuilder`).
 
 Next, we define a function which can *connect* two levels with *stairs*:
 
 ```kotlin
+// put these in WorldBuilder
+
 private fun connectRegionDown(currentLevel: Int) {                      // 1
     val posToConnect = generateRandomFloorPositionsOn(currentLevel)     // 2
-            .first { pos ->                                       // 3
-                blocks[pos].isEmptyFloor() && blocks[pos.below()].isEmptyFloor()    // 4
-            }
-    blocks[posToConnect] = GameBlockFactory.stairsDown()                            // 5
+        .first { pos ->                                                 // 3
+            blocks[pos].isEmptyFloor() && blocks[pos.below()].isEmptyFloor()    // 4
+        }
+    blocks[posToConnect] = GameBlockFactory.stairsDown()                        // 5
     blocks[posToConnect.below()] = GameBlockFactory.stairsUp()
 
 }
@@ -173,14 +174,13 @@ What happens here is that we:
 4. where the block at the `current position` is an empty floor and the block below that as well
 5. then sets the proper stairs to those blocks
 
-Note that we use the *null safety operator* (`?:`) here so `posToConnect` will never be `null`. If we can't find
-a position we just throw an exception. This is not the cleanest solution, but it is a pragmatic approach: the chance
-to not be able to find a position which can be connected is astronomically low.
+Note that we use the *null safety operator* (`?:`) here so `posToConnect` will never be `null`. If we can't find a position we just throw an exception. This is not the cleanest solution, but it is a pragmatic approach: the chance to not be able to find a position which can be connected is almost zero.
 
 All that's left to do is to connect the levels now, when we make the caves:
 
 ```kotlin
 // modify WorldBuilder with these
+
 fun makeCaves(): WorldBuilder {
     return randomizeTiles()
             .smooth(8)
@@ -197,61 +197,54 @@ Here:
 1. we add `connectLevels` to our `makeCaves` function
 2. which just iterates the levels from top to bottom and connects them
 
-> Hey, what is this funky `::connectRegionDown` thing? It is the same as if we were typing this:
-`forEach { connectRegionDown(it) }`. It is just a function pointer which we can also use in Java 8, but
-Kotlin lets us reference the function pointers of an object as well, not just a class. Typing `::connectRegionDown`
-is the same as typing `this::connectRegionDown`.
+> Hey, what is this funky `::connectRegionDown` thing? It is the same as if we were typing this: `forEach { connectRegionDown(it) }`. It is just a function pointer which we can also use in Java 8, but Kotlin lets us reference the function pointers of an object as well, not just a class. Typing `::connectRegionDown` is the same as typing `this::connectRegionDown`.
 
 Now if we start our game we'll see something like this:
 
 ![Stairs down](/assets/img/stairs_down.gif)
 
-This is great, but nothing happens if we move onto the stairs. This is because we haven't defined the way we're going
-to interact with it! Let's make it happen.
+This is great, but nothing happens if we move onto the stairs. This is because we haven't defined the way we're going to interact with it! Let's make it happen.
 
 ## Traversing the Stairs
 
-So now we have stairs in place but we can't go up or down. Let's think about how we would like that to work. In some
-games there is an interaction key (like the `Spacebar`) which can be used to interact with whatever is at a given tile.
-The problem with this is that if there are multiple things to interact with a menu must be displayed from which the
-user can choose.
+So now we have stairs in place but we can't go up or down. Let's think about how we would like that to work. In some games there is an interaction key (like the `Spacebar`) which can be used to interact with whatever is at a given tile. The problem with this is that if there are multiple things to interact with a menu must be displayed from which the user can choose.
 
-According to the seminal UX book "Don't Make Me Think" it is better to have more steps in a process
-which are straightforward than having a few complex steps so we're going to have explicit keyboard shortcuts to our
-commands.
+According to the seminal UX book "Don't Make Me Think" it is better to have more steps in a process which are straightforward than having a few complex steps so we're going to have explicit keyboard shortcuts to our commands.
 
-> The book is a *very good read* I'd recommend reading it for anybody who works with UIs. It can be found
-[here](https://www.amazon.com/Dont-Make-Me-Think-Usability/dp/0321344758).
+> The book is a *very good read* I'd recommend reading it for anybody who works with UIs. It can be found [here](https://www.amazon.com/Dont-Make-Me-Think-Usability/dp/0321344758).
 
-Since we already have `w`, `a`, `s` and `d` as our movement keys it is a good idea if we assign some keys which
-are around them for `up`/`down` traversal of stairs. Let's use `r` for `up` and `f` for `down`!
+Since we already have `w`, `a`, `s` and `d` as our movement keys it is a good idea if we assign some keys which are around them for `up`/`down` traversal of stairs. Let's use `r` for `up` and `f` for `down`!
 
-First of all we're going to need two commands for this. `MoveUp`:
+First of all we're going to need two messages for this. `MoveUp`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.commands
+package com.example.cavesofzircon.messages
 
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.extensions.GameMessage
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.extensions.GameCommand
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.world.GameContext
 
-data class MoveUp(override val context: GameContext,
-                  override val source: GameEntity<EntityType>) : GameCommand<EntityType>
+data class MoveUp(
+    override val context: GameContext,
+    override val source: GameEntity<EntityType>
+) : GameMessage
 ```
 
 and `MoveDown`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.commands
+package com.example.cavesofzircon.messages
 
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.extensions.GameMessage
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.extensions.GameCommand
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.world.GameContext
 
-data class MoveDown(override val context: GameContext,
-                    override val source: GameEntity<EntityType>) : GameCommand<EntityType>
+data class MoveDown(
+    override val context: GameContext,
+    override val source: GameEntity<EntityType>
+) : GameMessage
 ```
 
 With this in place all we have to do is to refactor `InputReceiver` a bit:
@@ -259,21 +252,26 @@ With this in place all we have to do is to refactor `InputReceiver` a bit:
 > There is an *awesome* book on the topic of *Refactoring* by *Martin Fowler* I recommend reading [it](https://www.martinfowler.com/books/refactoring.html).
 
 ```kotlin
-// new imports
-import org.hexworks.cavesofzircon.attributes.types.Player
+// modify InputReceiver with these
+
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.attributes.types.Player
+import org.hexworks.zircon.api.data.Position3D
+import com.example.cavesofzircon.messages.MoveDown
+import com.example.cavesofzircon.messages.MoveUp
 import org.hexworks.cobalt.logging.api.LoggerFactory
-import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.cavesofzircon.commands.MoveDown
-import org.hexworks.cavesofzircon.commands.MoveUp
 
 object InputReceiver : BaseBehavior<GameContext>() {
 
+    // we also add a logger
     private val logger = LoggerFactory.getLogger(this::class)
 
     override fun update(entity: GameEntity<out EntityType>, context: GameContext): Boolean {
         val (_, _, uiEvent, player) = context
         val currentPos = player.position
         if (uiEvent is KeyboardEvent) {
+
+            // the whole when changes
             when (uiEvent.code) {
                 KeyCode.KEY_W -> player.moveTo(currentPos.withRelativeY(-1), context) // 1
                 KeyCode.KEY_A -> player.moveTo(currentPos.withRelativeX(-1), context)
@@ -289,16 +287,16 @@ object InputReceiver : BaseBehavior<GameContext>() {
         return true
     }
 
-    private fun GameEntity<Player>.moveTo(position: Position3D, context: GameContext) { // 2
-        executeCommand(MoveTo(context, this, position))
+    private suspend fun GameEntity<Player>.moveTo(position: Position3D, context: GameContext) { // 2
+        receiveMessage(MoveTo(context, this, position))
     }
 
-    private fun GameEntity<Player>.moveUp(context: GameContext) {   // 3
-        executeCommand(MoveUp(context, this))
+    private suspend fun GameEntity<Player>.moveUp(context: GameContext) {   // 3
+        receiveMessage(MoveUp(context, this))
     }
 
-    private fun GameEntity<Player>.moveDown(context: GameContext) {
-        executeCommand(MoveDown(context, this))
+    private suspend fun GameEntity<Player>.moveDown(context: GameContext) {
+        receiveMessage(MoveDown(context, this))
     }
 }
 ```
@@ -309,42 +307,40 @@ Here we:
 2. With *extension functions* for moving the player in all 4 directions
 3. And up or down
 
-This makes our code much more readable while still retaining the simplicity of the code.
-As for the actual climbing we're going to add the corresponding `Facet`s as well; `StairClimber` and `StairDescender`:
+This makes our code much more readable while still retaining the simplicity of the code. As for the actual climbing we're going to add the corresponding `Facet`s as well; `StairClimber` and `StairDescender`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.systems
+package com.example.cavesofzircon.systems
 
+import com.example.cavesofzircon.attributes.types.StairsUp
+import com.example.cavesofzircon.blocks.GameBlock
+import com.example.cavesofzircon.extensions.position
+import com.example.cavesofzircon.functions.logGameEvent
+import com.example.cavesofzircon.messages.MoveUp
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.Consumed
+import org.hexworks.amethyst.api.Response
 import org.hexworks.amethyst.api.base.BaseFacet
-import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.attributes.types.StairsUp
-import org.hexworks.cavesofzircon.blocks.GameBlock
-import org.hexworks.cavesofzircon.commands.MoveUp
-import org.hexworks.cavesofzircon.extensions.GameCommand
-import org.hexworks.cavesofzircon.extensions.position
-import org.hexworks.cavesofzircon.functions.logGameEvent
-import org.hexworks.cavesofzircon.world.GameContext
-import org.hexworks.cobalt.datatypes.extensions.map
 
-object StairClimber : BaseFacet<GameContext>() {
+object StairClimber : BaseFacet<GameContext, MoveUp>(MoveUp::class) {
 
-    override fun executeCommand(command: GameCommand<out EntityType>) = command.responseWhenCommandIs(MoveUp::class) { (context, player) ->
+    override suspend fun receive(message: MoveUp): Response {
+        val (context, player) = message
         val world = context.world
         val playerPos = player.position
         world.fetchBlockAt(playerPos).map { block ->
-            if (block.hasStairsUp) {    // 1
-                logGameEvent("You move up one level...")
-                world.moveEntity(player, playerPos.withRelativeZ(1))    // 2
-                world.scrollOneUp()                                     
+            if (block.hasStairsUp) {                                            // 1
+                logGameEvent("You move up one level...", StairClimber)
+                world.moveEntity(player, playerPos.withRelativeZ(1))            // 2
+                world.scrollOneUp()
             } else {
-                logGameEvent("You jump up and try to reach the ceiling. You fail.") // 3
+                logGameEvent("You jump up and try to reach the ceiling. You fail.", StairClimber) // 3
             }
         }
-        Consumed
+        return Consumed
     }
 
-    private val GameBlock.hasStairsUp: Boolean  // 
+    private val GameBlock.hasStairsUp: Boolean                                  // 4
         get() = this.entities.any { it.type == StairsUp }
 }
 ```
@@ -360,64 +356,62 @@ What we do here is:
 `StairDescender` is very similar:
 
 ```kotlin
-package org.hexworks.cavesofzircon.systems
+package com.example.cavesofzircon.systems
 
+import com.example.cavesofzircon.attributes.types.StairsDown
+import com.example.cavesofzircon.blocks.GameBlock
+import com.example.cavesofzircon.extensions.position
+import com.example.cavesofzircon.functions.logGameEvent
+import com.example.cavesofzircon.messages.MoveDown
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.Consumed
+import org.hexworks.amethyst.api.Response
 import org.hexworks.amethyst.api.base.BaseFacet
-import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.attributes.types.StairsDown
-import org.hexworks.cavesofzircon.blocks.GameBlock
-import org.hexworks.cavesofzircon.commands.MoveDown
-import org.hexworks.cavesofzircon.extensions.GameCommand
-import org.hexworks.cavesofzircon.extensions.position
-import org.hexworks.cavesofzircon.functions.logGameEvent
-import org.hexworks.cavesofzircon.world.GameContext
-import org.hexworks.cobalt.datatypes.extensions.map
 
-object StairDescender : BaseFacet<GameContext>() {
+object StairDescender : BaseFacet<GameContext, MoveDown>(MoveDown::class) {
 
-    override fun executeCommand(command: GameCommand<out EntityType>) = command.responseWhenCommandIs(MoveDown::class) { (context, player) ->
+    override suspend fun receive(message: MoveDown): Response {
+        val (context, player) = message
         val world = context.world
         val playerPos = player.position
         world.fetchBlockAt(playerPos).map { block ->
             if (block.hasStairsDown) {
-                logGameEvent("You move down one level...")
+                logGameEvent("You move down one level...", StairDescender)
                 world.moveEntity(player, playerPos.withRelativeZ(-1))
                 world.scrollOneDown()
             } else {
-                logGameEvent("You search for a trapdoor, but you find nothing.")
+                logGameEvent("You search for a trapdoor, but you find nothing.", StairDescender)
             }
         }
-        Consumed
+        return Consumed
     }
 
     private val GameBlock.hasStairsDown: Boolean
         get() = this.entities.any { it.type == StairsDown }
 }
+
 ```
 
-> Wait, isn't this a *horrible* case of code duplication? They look **very** similar so we should create an abstraction
-for this! Well, not so fast. One of the most useful virtue of a `System` is that it is self-contained and has *strong*
-cohesion. We *could* create an abstraction but then we can't make them work in a different way (going up needing ladders,
-going down needing ropes for example). With these two systems we might have more code, but it is easy to read, reason
-about and test.
+> Wait, isn't this a *horrible* case of code duplication? They look **very** similar so we should create an abstraction for this! Well, not so fast. One of the most useful virtue of a `System` is that it is self-contained and has *strong* cohesion. We *could* create an abstraction but then we can't make them work in a different way (going up needing ladders, going down needing ropes for example). With these two systems we might have more code, but it is easy to read, reason about, test and augment.
 
 Now all that is left is to give our *player* the ability to go up and down:
 
 ```kotlin
-// put this in EntityFactory
-import org.hexworks.cavesofzircon.systems.StairClimber
-import org.hexworks.cavesofzircon.systems.StairDescender
+// put these in EntityFactory
+import com.example.cavesofzircon.systems.StairClimber
+import com.example.cavesofzircon.systems.StairDescender
 
 fun newPlayer() = newGameEntityOfType(Player) {
     attributes(
-            EntityPosition(),
-            CombatStats.create(
-                    maxHp = 100,
-                    attackValue = 10,
-                    defenseValue = 5),
-            EntityTile(GameTileRepository.PLAYER),
-            EntityActions(Dig::class, Attack::class))
+        EntityPosition(),
+        EntityTile(GameTileRepository.PLAYER),
+        EntityActions(Dig::class, Attack::class),
+        CombatStats.create(
+            maxHp = 100,
+            attackValue = 10,
+            defenseValue = 5
+        )
+    )
     behaviors(InputReceiver)
     facets(Movable, CameraMover, StairClimber, StairDescender)
 }
@@ -431,12 +425,10 @@ We've *literally* added a new dimension to our game!
 
 ## Conclusion
 
-In this article we've connected our levels with stairs and also added the ability to our player to traverse them.
-We made the implementation generic so we can also add `StairClimber` and `StairDescender` to any entity which can move!
+In this article we've connected our levels with stairs and also added the ability to our player to traverse them. We made the implementation generic so we can also add `StairClimber` and `StairDescender` to any entity which can move!
 
-The only problem is that it is very easy to find our way down if there is no fog of war so in the next article we'll be
-adding it to our game.
+The only problem is that it is very easy to find our way down if there is no fog of war so in the next article we'll be adding it to our game.
 
 Until then go forth and *kode on*!
  
-> The code of this article can be found under the `9_MULTI_LEVEL_DUNGEON` tag.
+> The code of this article can be found in commit #9.

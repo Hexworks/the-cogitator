@@ -10,73 +10,72 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/05/07/how-to-make-a-roguelike-wandering-monsters.html 
-updated_at: 2019-06-15
+updated_at: 2021-03-25
 ---
 
-> Now that we have Fog of War in place which we can reveal let's make it a bit more exciting by
-adding some wandering monsters into the mix which can jump on us...or rather bump into us! This
-will also be the first instance of *real* combat: it won't be just beating things to a pulp
-like we did with fungi, because these creatures will hit back!
+> Now that we have Fog of War in place which we can reveal let's make it a bit more exciting by adding some wandering monsters into the mix that can jump on us...or rather bump into us! This will also be the first instance of *real* combat: it won't be just beating things to a pulp like we did with fungi, because these creatures will hit back!
+
+> ⚠️ **Bug report**: You might have noticed that if you're pressing the keys too fast the game spits out concurrent modification exceptions or other weird things. This was caused by a bug in *Amethyst*. Fortunately you can upgrade *Amethyst* to a new version that fixes this problem. Modify `gradle.properties` and set `amethyst_version` to `2021.0.1-RELEASE`.
 
 ## A Wild Bat Appears
 
-So let's think a bit about what we want to add. It should be something really simple which is easy to
-code and will serve as a good first example. One of the stereotypical cave dwellers is
-a *bat* so let's add one to our game!
+So let's think a bit about what we want to add. It should be something really simple which is easy to code and will serve as a good first example. One of the most likely cave dwellers is a *bat* so let's add one to our game!
 
-A *bat* is a very simple creature, it has a few hit points, it doesn't bite hard and it just flies
-around randomly. Let's see how we can implement it.
+A *bat* is a very simple creature, it has a few hit points, it doesn't bite hard and it just flies around randomly. Let's see how we can implement it.
 
 First of all, let's add a new color for our bat to `GameColors`:
 
 ```kotlin
-val BAT_COLOR = TileColors.fromString("#2348b2")
+val BAT_COLOR = TileColor.fromString("#2348b2")
 ```
 
 and this to `GameTileRepository`:
 
 ```kotlin
-val BAT = Tiles.newBuilder()
-        .withCharacter('b')
-        .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
-        .withForegroundColor(GameColors.BAT_COLOR)
-        .buildCharacterTile()
+val BAT = Tile.newBuilder()
+    .withCharacter('b')
+    .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
+    .withForegroundColor(GameColors.BAT_COLOR)
+    .buildCharacterTile()
 ```
 
 We also need a new `EntityType` so let's add this to `EntityTypes.kt`:
 
 ```kotlin
 object Bat : BaseEntityType(
-        name = "bat"), Combatant
+    name = "bat"
+), Combatant
 ```
 
 We're all set!
 
 ## The Wanderer Behavior
 
-With the plumbing in place now we can define a new behavior which we can call `Wanderer`. What this `Behavior` will
-do is it moves the entity around picking a random neighboring position. Simple enough, right? Let's see:
+With the plumbing in place now we can define a new behavior which we can call `Wanderer`. What this `Behavior` will do is it moves the entity around picking a random neighboring position. Simple enough, right? Let's see:
 
 ```kotlin
-package org.hexworks.cavesofzircon.systems
+package com.example.cavesofzircon.systems
 
+import com.example.cavesofzircon.extensions.position
+import com.example.cavesofzircon.extensions.sameLevelNeighborsShuffled
+import com.example.cavesofzircon.messages.MoveTo
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.base.BaseBehavior
+import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.commands.MoveTo
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.extensions.position
-import org.hexworks.cavesofzircon.extensions.sameLevelNeighborsShuffled
-import org.hexworks.cavesofzircon.world.GameContext
 
 object Wanderer : BaseBehavior<GameContext>() {
 
-    override fun update(entity: GameEntity<EntityType>, context: GameContext): Boolean {
+    override suspend fun update(entity: Entity<EntityType, GameContext>, context: GameContext): Boolean {
         val pos = entity.position
-        if (pos.isUnknown().not()) {        // 1
-            entity.executeCommand(MoveTo(   // 2
+        if (pos.isUnknown.not()) {      // 1
+            entity.receiveMessage(      // 2
+                MoveTo(
                     context = context,
                     source = entity,
-                    position = pos.sameLevelNeighborsShuffled().first()))   // 3
+                    position = pos.sameLevelNeighborsShuffled().first() // 3
+                )
+            )
             return true
         }
         return false
@@ -92,28 +91,28 @@ Here we:
 
 Simple enough!
 
-> You might be wondering why don't we just move the bat by hand. Why do we send a command to itself?
-The answer is that it might be possible that a bat has some state which prevents it from moving like
-being frozen or asleep! In this case the `Movable` facet might not even be present on the bat! By
-using commands we delegate all these problems to whatever system handles it thus keeping the separation
-of concerns and our code clean.
+> You might be wondering why don't we just move the bat by hand. Why do we send a command to itself? The answer is that it might be possible that a bat has some state which prevents it from moving like being frozen or asleep! In this case the `Movable` facet might not even be present on the bat! By using commands we delegate all these problems to whatever system handles it thus keeping the separation of concerns and our code clean.
 
 Now with our new `Wanderer` *system* in place we can finally create a *bat* `Entity`:
 
 ```kotlin
-// new imports
-import org.hexworks.cavesofzircon.attributes.types.Bat
-import org.hexworks.cavesofzircon.systems.Wanderer
+// add these to EntityFactory
+
+import com.example.cavesofzircon.attributes.types.Bat
+import com.example.cavesofzircon.systems.Wanderer
 
 fun newBat() = newGameEntityOfType(Bat) {
-    attributes(BlockOccupier,                   // 1
-            EntityPosition(),
-            EntityTile(GameTileRepository.BAT),
-            CombatStats.create(                 // 2
-                    maxHp = 5,
-                    attackValue = 2,
-                    defenseValue = 1),
-            EntityActions(Attack::class))       // 3
+    attributes(
+        BlockOccupier,                      // 1
+        EntityPosition(),
+        EntityTile(GameTileRepository.BAT),
+        CombatStats.create(                 // 2
+            maxHp = 5,
+            attackValue = 2,
+            defenseValue = 1
+        ),
+        EntityActions(Attack::class)        // 3
+    )                                       
     facets(Movable, Attackable, Destructible)   // 4
     behaviors(Wanderer)                         // 5
 }
@@ -133,14 +132,13 @@ Now to make this work we just need to add *bats* to our world. This goes to `Gam
 const val BATS_PER_LEVEL = 10
 ```
 
-and this one goes to `GameBuilder`:
+and these ones go to `GameBuilder`:
 
 ```kotlin
 // new imports
-import org.hexworks.cavesofzircon.GameConfig.BATS_PER_LEVEL
+import com.example.cavesofzircon.GameConfig.BATS_PER_LEVEL
 
 // add this to buildGame
-
 fun buildGame(): Game {
 
     // ...
@@ -160,21 +158,22 @@ private fun addBats() = also {
 }
 ```
 
-Now if we start the game we'll notice that the bat can move to the same tile as the *player* and it can't hit us either!
-Why is that? Well, we didn't make the *player* `Attackable`, `Destroyable` and it is not a `BlockOccupier`! Let's fix this:
+Now if we start the game we'll notice that the bat can move to the same tile as the *player* and it can't hit us either! Why is that? Well, we didn't make the *player* `Attackable`, `Destroyable` and it is not a `BlockOccupier`! Let's fix this:
 
 ```kotlin
 fun newPlayer() = newGameEntityOfType(Player) {
     attributes(
-            Vision(9),
-            EntityPosition(),
-            BlockOccupier,
-            CombatStats.create(
-                    maxHp = 100,
-                    attackValue = 10,
-                    defenseValue = 5),
-            EntityTile(GameTileRepository.PLAYER),
-            EntityActions(Dig::class, Attack::class))
+        Vision(9),
+        EntityPosition(),
+        BlockOccupier,
+        CombatStats.create(
+            maxHp = 100,
+            attackValue = 10,
+            defenseValue = 5
+        ),
+        EntityTile(GameTileRepository.PLAYER),
+        EntityActions(Dig::class, Attack::class)
+    )
     behaviors(InputReceiver)
     facets(Movable, CameraMover, StairClimber, StairDescender, Attackable, Destructible)
 }
@@ -188,13 +187,10 @@ Now this is much more interactive than stomping fungi!
 
 ## Conclusion
 
-As you can see with all the `System`s and `Attribute`s we have we can really start to be productive because the
-code we've written in the previous articles are reusable and cohesive. Here we reused `Movable`, `Attackable`,
-`Destructible`, and also the `EntityActions` to produce a completely new entity with only a little coding on
-our part.
+As you can see with all the `System`s and `Attribute`s we have we can really start to be productive because the code we've written in the previous articles are reusable and cohesive. Here we reused `Movable`, `Attackable`, `Destructible`, and also the `EntityActions` to produce a completely new entity with only a little coding on our part.
 
 Next we're going to take this to the next level by adding *items* and *inventory* to our game!
 
 Until then go forth and *kode on*!
  
-> The code of this article can be found under the `11_WANDERING_MONSTERS` tag.
+> The code of this article can be found in commit #11.

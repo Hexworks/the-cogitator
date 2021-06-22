@@ -10,138 +10,34 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/02/13/how-to-make-a-roguelike-the-player.html
-updated_at: 2019-02-13
+updated_at: 2020-12-17
 ---
 
-> With our cave in place the next thing to do is to add a Player to move around the cave.
-For this we'll use [Amethyst](https://github.com/Hexworks/amethyst), a very simple ECS(ish)
-library. We'll also upgrade our Zircon version which now has more useful support for component
-events!
-
-## Updating Zircon
-
-Since the last article Zircon received a major upgrade to input handling which will make our life
-much easier in the long run, so let's start by updating our `gradle.properties` file with the
-new versions:
-
-```groovy
-version=2019.0.1-PREVIEW
-
-kotlin_version=1.3.21
-
-cobalt_version=2018.1.1-PREVIEW
-amethyst_version=2019.0.4-PREVIEW
-zircon_version=2019.0.14-PREVIEW
-```
-
-In order for this to work we'll need to change some of our views which had buttons on them: `StartView`,
-`WinView` and `LoseView`. The change is minor, but very important: a new kind of event was added to input
-handling in Zircon: `ComponentEvent`s. So now we can listen to component activation events on all our
-components like this:
-
-```kotlin
-myComponent.onComponentEvent(ComponentEventType.ACTIVATED) { // 1
-    // 2
-    Processed // 3
-}
-```
-
-What happens here is:
-
-1. We add a listener for component events to our component. Here we listen to the `ACTIVATED` event. This either
-   means that the user clicked an interactable component (`Button`, `CheckBox` or something similar) or the user
-   pressed the activation key on a focused component ([Spacebar] right now).
-2. We process the event
-3. We return `Processed` which means that we handled the event
-
-> Clicking is straightforward, but what about "pressing the activation key"? Well, this is similar to what you do
-when you navigate in your browser using [Tab] and [Shift] + [Tab]. If you do so focus wanders around between the
-controls in your browser an when you press [Spacebar] the control is activated. Try it! This works the same way
-in Zircon.
-
-> And what's that `Processed` thingy we return from our listener? Well, that's part of the event propagation model
-which Zircon supports. You can read up on that topic [here](/zircon/docs/2018-11-21-input-handling).
-
-Armed with this knowledge let's modify our event listeners in the aforementioned views.
-
-`StartView`:
-
-```kotlin
-        startButton.onComponentEvent(ComponentEventType.ACTIVATED) {
-            replaceWith(PlayView())
-            close()
-            Processed
-        }
-```
-
-`WinView`:
-
-```kotlin
-        restartButton.onComponentEvent(ComponentEventType.ACTIVATED) {
-            replaceWith(PlayView())
-            close()
-            Processed
-        }
-
-        exitButton.onComponentEvent(ComponentEventType.ACTIVATED) {
-            System.exit(0)
-            Processed
-        }
-```
-
-and finally `LoseView`:
-
-```kotlin
-        restartButton.onComponentEvent(ComponentEventType.ACTIVATED) {
-            replaceWith(PlayView())
-            close()
-            Processed
-        }
-
-        exitButton.onComponentEvent(ComponentEventType.ACTIVATED) {
-            System.exit(0)
-            Processed
-        }
-```
-
-If your IDE doesn't help you
-these are the imports you will need to add to your views:
-
-```kotlin
-import org.hexworks.zircon.api.extensions.onComponentEvent
-import org.hexworks.zircon.api.uievent.ComponentEventType
-import org.hexworks.zircon.api.uievent.Processed
-```
-
+> With our cave in place the next thing to do is to add a Player to move around the cave. For this we'll use [Amethyst](https://github.com/Hexworks/amethyst), a very simple ECS(ish) library.
 ## Introducing Amethyst
 
-So what is Amethyst, and why is it useful for us? Amethyst is a small library which takes
-care of managing your game entities in a nutshell. It is similar to an [Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system)
+*Amethyst* is a small library that enables you to modularize your application by letting you decompose them into
+**Systems**, **Entities** and **Attributes** in an easy-to-use manner. It is similar to an[Entity Component System](https://en.wikipedia.org/wiki/Entity_component_system)
 but it is a bit different in some important aspects.
 
-"So what is a game entity anyway?", you might ask. A game entity can be anything which has its own behavior or state
-in your game, form a goblin, to a wall, or even immaterial effects, like shadows. What's important about a game entity
-is that it encapsulates all internal state of our goblin for example and it also contains all actions it can
-perform. This means that by using this concept we can maintain the [Cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science))
-of our game objects while still retaining the flexibility.
+The core abstraction in *Amethyst* is the **Entity** that encapsulates the internal state of our business objects and
+also their related operations. By using this concept we can maintain the [Cohesion](https://en.wikipedia.org/wiki/Cohesion_(computer_science))
+of our business objects while still retaining the flexibility.
 
-So how does it work? Let's look at the *SEA*:
+`So how does this work?`, you might ask. Let's take a look at a simple example.
 
-### Systems, Entities, Attributes
+## Systems, Entities, Attributes
 
-When working with an ECS, you'll probably see things like Entities, Components, and Systems. In Amethyst we have
-Systems, Entities and Attributes. I'm not going into detail about the difference between ECS and SEA, but explain how
-SEA works:
-
-Let's say that we want to add a *goblin* to our game. If we think about how things can behave and change over time
-we can conclude, that there are essentially two ways: internal, and external. For example a *goblin* can decide
-that it wants to explore the dungeon, or just take a look around (**internal change**) or the player can decide to bash
-the goblin to a pulpy mass with their club (**external change**). For this Amethyst has `System`s in place:
+Let's say that we're creating a game with mythical creatures, and we want to add a *goblin* to our game.
+If we think about how things can behave and change over time we can conclude, that there are essentially two ways:
+*internal*, and *external*. For example a *goblin* can decide  that it wants to explore a dungeon, or just take a
+look around (**internal change**), or the player can decide to bash the goblin to a pulpy mass with their club
+(**external change**). For this Amethyst has `System`s in place:
 
 ```kotlin
 /**
- * A [System] is responsible for updating the internal state
- * ([Attribute]s) of an [Entity].
+ * A [System] is responsible for updating the internal state of an [Entity].
+ * The internal state is represented by [Attribute]s.
  */
 interface System<C : Context>
 ```
@@ -150,84 +46,73 @@ There are several types of `System`s, and for our discussion here we need to kno
 
 ```kotlin
 /**
- * A [Behavior] is a [System] which performs actions autonomously
- * with entities whenever they are [update]d.
+ * A [Behavior] is a [System] that performs autonomous actions whenever
+ * [update] is called on them.
  */
-interface Behavior<C : Context> : System<C> {
-
-    fun update(entity: Entity<EntityType, C>, context: C): Boolean
-}
+interface Behavior<C : Context> : System<C>
 ```
 
-which lets our *goblin* interact with the world, and `Facet`:
+that lets our *goblin* interact with the world and `Facet`:
 
 ```kotlin
 /**
- * A [Facet] is a [System] which performs actions based on the
- * [Command]s they receive.
+ * A [Facet] is a [System] that performs actions based on the [Message] they receive.
+ * Each [Facet] only accepts a single type of [Message] of type [M]. This enforces
+ * that facets adhere to the *Single Responsibility Principle*.
  */
-interface Facet<C : Context> : System<C> {
-
-    fun executeCommand(command: Command<out EntityType, C>): Response
-}
+interface Facet<C : Context, M : Message<C>> : System<C>
 ```
 
-which lets whe **world** interact with our *goblin*.
+that lets whe **world** interact with our *goblin*.
 
 > There is also `Actor` which combines `Facet` and `Behavior`. We'll talk about it later.
 
-When a change happens over time to an entity (our *goblin* in this example) its state might change. To represent
-this, Amethyst gives us `Attribute`s:
+When changes happen over time to an entity (our *goblin* in this example) its state might change.
+To represent this, *Amethyst* gives us `Attribute`s:
 
 ```kotlin
 /**
- * An [Attribute] represents metadata about an entity which can
- * change over time.
+ * An [Attribute] represents metadata about an entity that can change over time.
  */
 interface Attribute
 ```
 
-An `Attribute` can be anything which you add to your entity, from health points to stomach contents. What's important
-is that `Attribute`s should **never have** behavior, they are supposed to be dumb data structures.
+An `Attribute` can be anything that you add to your *entity*, from health points to stomach contents.
+What's important is that `Attribute`s should **never have** behavior, they are supposed to be dumb data structures.
 
 On the other hand, `System`s should never have internal state. These two *important rules* allow us to compose `System`s
-and `Attribute`s into `Entity` objects which are flexible, cohesive and safe to use.
+and `Attribute`s into `Entity` objects that are flexible, cohesive and safe to use.
 
 The `Entity` itself is just a bag of `Attribute`s and `System`s:
 
 ```kotlin
-interface Entity<out T : EntityType, C : Context> {
-
+interface Entity<T : EntityType, C : Context> : AttributeAccessor, FacetAccessor<C>, BehaviorAccessor<C> {
+    
+    val id: UUID
     val type: T
-
     val name: String
-
     val description: String
-    
+
     val attributes: Sequence<Attribute>
-
-    val facets: Sequence<Facet<C>>
-    
     val behaviors: Sequence<Behavior<C>>
-    
-    fun sendCommand(command: Command<out EntityType, C>): Boolean
+    val facets: Sequence<FacetWithContext<C>>
 
-    fun executeCommand(command: Command<out EntityType, C>): Response
+    suspend fun sendMessage(message: Message<C>): Boolean
 
-    fun update(context: C): Boolean
+    suspend fun receiveMessage(message: Message<C>): Response
 
+    suspend fun update(context: C): Boolean
 }
 ```
 
-What's interesting here is `sendCommand`, `executeCommand` and `update`. It is not a coincidence that we have these in
-`Facet` and `Behavior`! When an `Entity` receives a `Command` it will try to apply it to its `Facet`s, and when an `Entity`
+What's interesting here is `sendMessage`, `receiveMessage` and `update`. It is not a coincidence that we have these in
+`Facet` and `Behavior`! When an `Entity` receives a `Message` it will try to apply it to its `Facet`s, and when an `Entity`
 is updated it lets its `Behavior`s interact with the world. What *world* means in this context is up to you, that's why
 `update` takes a `context` object which can be anything. In our case it will contain our `World` for example.
 
-Don't worry if this seems a bit complex, we'll see soon that the benefits of using such system outweigh the costs. 
+Don't worry if this seems a bit complex, we'll see soon that the benefits of using such system outweigh the costs.
 
-So how do these entities work together? We have `Engine` for that which handles them so we don't have to
-do it by hand:
+So how do these entities work together? We have `Engine` for that which handles them, so we don't have to do it by hand:
 
 ```kotlin
 interface Engine<T : Context> {
@@ -235,45 +120,86 @@ interface Engine<T : Context> {
     /**
      * Adds the given [Entity] to this [Engine].
      */
-    fun addEntity(entity: Entity<EntityType, T>)
+    fun addEntity(entity: Entity<out EntityType, T>)
 
     /**
      * Removes the given [Entity] from this [Engine].
      */
-    fun removeEntity(entity: Entity<EntityType, T>)
+    fun removeEntity(entity: Entity<out EntityType, T>)
 
     /**
      * Updates the [Entity] objects in this [Engine] with the given [context].
      */
-    fun update(context: T)
+    fun update(context: T): Job
 }
 ```
 
 As you can see the `Engine` is responsible for handling all your `Entity` objects and also for updating them.
 We'll take a look at how this works in practice below, so prepare your keyboard!
 
-## Enhancing our Game
+## Adding Amethyst to our Project
 
-The main goal of this tutorial session is to add a player to our `Game` which we can use to explore 
-the dungeon, remember?
-
-For this we're going to need a player `Entity` and a context object which is used when updating the 
-game world. The `Context`
-object is straightforward:
+In order to work with *Amethyst* we need to add it as a *dependency* to our project. When using a build tool like Gradle adding a library is much easier. Instead of downloading it by hand and copying the `.jar` file into a `libs` folder we just modify our `build.gradle.kts` file's `dependencies` block like this:
 
 ```kotlin
-package org.hexworks.cavesofzircon.world
+implementation("org.hexworks.amethyst:amethyst.core-jvm:$amethyst_version")
+```
+
+In order for this to work we also need to load the version from `gradle.properties` so we add it at the top of `build.gradle.kts` next to *Zircon*:
+
+```kotlin
+val amethyst_version: String by project
+```
+
+The version itself goes into `gradle.properties`:
+
+```ini
+amethyst_version=2020.1.1-RELEASE
+```
+
+Now this will work if you compile your code with `./gradlew clean build`, but we will also need to tell IDEA that something changed. On the right hand side there is a tab with the name `Gradle`. Click it, then click the "Reload all Gradle Projects" button. This should take care of our problem:
+
+![Reload Gradle](/assets/img/reload_gradle.png).
+
+## Troubleshooting IDEA
+
+At some point you'll run into problems when using IDEA. What you'll see is that the code looks good, but when you start it from idea it won't work. IDEA sometimes gets confused and we have to fix it.
+
+The first step is to check what happens if we compile our program. We can do this by running the build from the CLI then starting the game:
+
+```bash
+./gradlew clean build && java -jar build/libs/caves-of-zircon.jar
+```
+
+If this starts the game properly, then the problem is with IDEA. If not, there is a [PEBKAC](https://www.computerhope.com/jargon/p/pebkac.htm) situation. These are the things we can try to do in the former case:
+
+1. Restart IDEA
+2. Refresh the Gradle project (screenshot above)
+3. Run a clean build (`./gradlew clean build`)
+4. In the `File` dropdown click `Invalidate Caches and Restart`
+5. Delete the `out` folder (if it exists)
+
+Hope this helps!
+
+## Enhancing our Game
+
+The main goal of this tutorial session is to add a player to our `Game` which we can use to explore the dungeon, remember?
+
+For this we're going to need a player `Entity` and a context object which is used when updating the game world. The `Context` object is straightforward:
+
+```kotlin
+package com.example.cavesofzircon.world
 
 import org.hexworks.amethyst.api.Context
-import org.hexworks.cavesofzircon.attributes.types.Player
-import org.hexworks.cavesofzircon.extensions.GameEntity
 import org.hexworks.zircon.api.screen.Screen
 import org.hexworks.zircon.api.uievent.UIEvent
 
-data class GameContext(val world: World, // 1
-                       val screen: Screen,  // 2
-                       val uiEvent: UIEvent, // 3
-                       val player: GameEntity<Player>) : Context // 4
+data class GameContext(
+    val world: World,           // 1
+    val screen: Screen,         // 2
+    val uiEvent: UIEvent,       // 3
+    val player: GameEntity<Player>
+) : Context                     // 4
 ```
 
 What we need for an update is:
@@ -284,30 +210,21 @@ What we need for an update is:
 4. The object representing the player. This is optional, but because we use the player in a lot of
    places it makes sense to add it here
    
-> Wait, what is this funky \<Player\> thing? It is called generics which is supported by Kotlin. In case if you
-come from a dynamically typed language like Python this can be hard to grasp at first. I recommend reading
-about generics in general [here](https://www.oracle.com/technetwork/articles/java/juneau-generics-2255374.html) and
-about Kotlin generics [here](https://kotlinlang.org/docs/reference/generics.html).
+> Wait, what is this funky `<Player>` thing? It is called generics which is supported by Kotlin. In case if you come from a dynamically typed language like Python this can be hard to grasp at first. I recommend reading about generics in general [here](https://www.oracle.com/technetwork/articles/java/juneau-generics-2255374.html) and about Kotlin generics [here](https://kotlinlang.org/docs/reference/generics.html).
 
 ### Quick Detour: Typealiases and Extension Functions
 
-> You can read up on type aliases [here](https://kotlinlang.org/docs/reference/type-aliases.html) and extension functions [here](https://kotlinlang.org/docs/reference/extensions.html)
-if you need more information on the topic.
+> You can read up on type aliases [here](https://kotlinlang.org/docs/reference/type-aliases.html) and extension functions [here](https://kotlinlang.org/docs/reference/extensions.html) if you need more information on the topic.
 
 We're going to use a `typealias` soon. Let's explore what is a `typealias` and why is it useful!
 
-A `typealias` can be used to give names (aliases) to otherwise complex or hard to read types. For example in our
-game we will only use a single `Context` object which is `GameContext` so it makes sense to pre-fill the second
-generic type parameter for `Entity` with our `GameContext` type so we don't have to type it out every time:
+A `typealias` can be used to give names (aliases) to otherwise complex or hard to read types. For example in our game we will only use a single `Context` object which is `GameContext` so it makes sense to pre-fill the second generic type parameter for `Entity` with our `GameContext` type so we don't have to type it out every time:
 
 ```kotlin
 typealias GameEntity<T> = Entity<T, GameContext>
 ```
 
-What's good is that we can now use `GameEntity` in our code anywhere where we would have used `Entity<T, GameContext>`.
-One advantage of this is that our code gets more readable. This is a good thing in itself but there is another
-reason to use `typealias` which we're going to exploit. We can define extension functions on type aliases!
-This means that this code is perfectly valid:
+What's good is that we can now use `GameEntity` in our code anywhere where we would have used `Entity<T, GameContext>`. One advantage of this is that our code gets more readable. This is a good thing in itself but there is another reason to use `typealias` which we're going to exploit. We can define extension functions on type aliases! This means that this code is perfectly valid:
 
 ```kotlin
 fun GameContext.doSomething() {
@@ -325,37 +242,41 @@ We'll use this in the future for our advantage.
 So what's a `GameEntity` and `Player`? Let's take a look at them:
 
 ```kotlin
-package org.hexworks.cavesofzircon.extensions
+package com.example.cavesofzircon.extensions
 
 // put this in a file called TypeAliases.kt
 
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.entity.Entity
-import org.hexworks.cavesofzircon.world.GameContext
+import org.hexworks.amethyst.api.entity.EntityType
 
-typealias AnyGameEntity = Entity<EntityType, GameContext>
+typealias AnyGameEntity = GameEntity<EntityType>
 
 typealias GameEntity<T> = Entity<T, GameContext>
 ```
 
-Here we define `GameEntity` which is used to represent an `Entity` which uses *our* `GameContext` type
-parameter, and also `AnyGameEntity` which can be used to define functions later for all objects which
-are our game entities.
+Now we can also fix `GameContext` with the following imports:
+
+```kotlin
+import com.example.cavesofzircon.attributes.types.Player
+import com.example.cavesofzircon.extensions.GameEntity
+```
+
+Here we define `GameEntity` that is used to represent an `Entity` which uses *our* `GameContext` type parameter, and also `AnyGameEntity` which can be used to define functions later for all objects which are our game entities.
 
 `Player` is an `EntityType`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes.types
-
-// put this in a file called EntityTypes.kt
+package com.example.cavesofzircon.attributes.types
 
 import org.hexworks.amethyst.api.base.BaseEntityType
 
 object Player : BaseEntityType(
-        name = "player")
+    name = "player"
+)
 ```
 
-Each `Entity` in *Amethyst* must have an `EntityType`. This is necessary for easy identification of
-`Entity` objects. It looks like this:
+Each `Entity` in *Amethyst* must have an `EntityType`. This is necessary for easy identification of `Entity` objects. It looks like this:
 
 ```kotlin
 interface EntityType : Attribute {
@@ -366,39 +287,39 @@ interface EntityType : Attribute {
 }
 ```
 
-It is just a `name` and a `description`, and this type will also be added to our `Entity` as an `Attribute` later on.
-We used the `BaseEntityType` base class as you can see in the above code which is handy if we don't want to type much.
+It is just a `name` and a `description`, and this type will also be added to our `Entity` as an `Attribute` later on. We used the `BaseEntityType` base class as you can see in the above code which is handy if we don't want to type much.
 
-There are some more things which our player needs. In fact all of our game entities will need them: a *position*
-and a *tile*!
+There are some more things which our player needs. In fact all of our game entities will need them: a *position* and a *tile*!
 
 Let's create our first `Attribute`s now, `EntityPosition` and `EntityTile`!
 
 `EntityPosition` will hold the current position of an `Entity`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes
+package com.example.cavesofzircon.attributes
 
-import org.hexworks.amethyst.api.Attribute
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
-import org.hexworks.zircon.api.data.impl.Position3D
+import org.hexworks.amethyst.api.base.BaseAttribute
+import org.hexworks.cobalt.databinding.api.extension.toProperty
+import org.hexworks.zircon.api.data.Position3D
 
-class EntityPosition(initialPosition: Position3D = Position3D.unknown()) : Attribute { // 1
-    private val positionProperty = createPropertyFrom(initialPosition) // 2
+class EntityPosition(
+    initialPosition: Position3D = Position3D.unknown()
+) : BaseAttribute() { // 1
+
+    private val positionProperty = initialPosition.toProperty() // 2
 
     var position: Position3D by positionProperty.asDelegate() // 3
 }
-
 ```
 
-This is just 3 lines of code, but there are some new concepts introduced here:
+This is just a few lines of code, but there are some new concepts introduced here:
 
 1. We add `initialPosition` as a constructor parameter to our class and its default value is `unknown`.
    What's this? `Position3D` comes from Zircon and can be used to represent a point in 3D space (as we have
    discussed before), and `unknown` impelments the [Null Object Pattern](https://en.wikipedia.org/wiki/Null_object_pattern)
    for us.
 2. Here we create a private `Property` from the `initialPosition`. What's a `Property` you might ask? Well, it
-   is used for data binding. A `Property` is a wrapper for a value which can change over time. It can be bound
+   is used for data binding. A `Property` is a wrapper for a value that can change over time. It can be bound
    to other `Property` objects so their values change together and you can also add change listeners to them.
    `Property` comes from the [Cobalt library](https://github.com/Hexworks/cobalt) we use and it works in
    a very similar way as properties work in [JavaFX](https://docs.oracle.com/javafx/2/binding/jfxpub-binding.htm).
@@ -410,37 +331,30 @@ This is just 3 lines of code, but there are some new concepts introduced here:
 `EntityTile` is an `Attribute` which holds the `Tile` of an `Entity` we use to display it in our world:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes
+package com.example.cavesofzircon.attributes
 
-import org.hexworks.amethyst.api.Attribute
-import org.hexworks.zircon.api.Tiles
+import org.hexworks.amethyst.api.base.BaseAttribute
 import org.hexworks.zircon.api.data.Tile
 
-data class EntityTile(val tile: Tile = Tiles.empty()) : Attribute
-
+data class EntityTile(val tile: Tile = Tile.empty()) : BaseAttribute()
 ```
 
-We are using `Tiles.empty()` as a default value here.
+We are using `Tile.empty()` as a default value here.
    
-Now we're going to employ a little Kotlin trick and create some properties on `AnyGameObject` which will supply the
-position and tile of any of our entities!
+Now we're going to employ a little Kotlin trick and create some properties on `AnyGameObject` that will supply the position and tile of any of our entities!
 
 ```kotlin
-package org.hexworks.cavesofzircon.extensions
+package com.example.cavesofzircon.extensions
 
-// put this in a file called EntityExtensions.kt
-
+import com.example.cavesofzircon.attributes.EntityPosition
+import com.example.cavesofzircon.attributes.EntityTile
 import org.hexworks.amethyst.api.Attribute
-import org.hexworks.cavesofzircon.attributes.EntityPosition
-import org.hexworks.cavesofzircon.attributes.EntityTile
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cobalt.datatypes.extensions.orElseThrow
 import org.hexworks.zircon.api.data.Tile
 import kotlin.reflect.KClass
 
-var AnyGameEntity.position // 1
-    get() = tryToFindAttribute(EntityPosition::class).position // 2
-    set(value) { // 3
+var AnyGameEntity.position                                          // 1
+    get() = tryToFindAttribute(EntityPosition::class).position      // 2
+    set(value) {                                                    // 3
         findAttribute(EntityPosition::class).map {
             it.position = value
         }
@@ -449,7 +363,7 @@ var AnyGameEntity.position // 1
 val AnyGameEntity.tile: Tile
     get() = this.tryToFindAttribute(EntityTile::class).tile
 
-// 4
+                                                                    // 4
 fun <T : Attribute> AnyGameEntity.tryToFindAttribute(klass: KClass<T>): T = findAttribute(klass).orElseThrow {
     NoSuchElementException("Entity '$this' has no property with type '${klass.simpleName}'.")
 }
@@ -464,71 +378,67 @@ Here we
 4. Define a function which implements the "try to find or throw an exception" logic for both of our
    properties.
 
-> Typealiases, extension properties...why do we employ all this magic? If you have used an ECS library
-before you might have had the feeling that working with them is cumbersome and the resulting program
-won't be readable in a way that it expresses the intent properly. What we do here is plumbing which
-we can use later to write actual game code which is readable and easy to understand. In other words
-this is the same concept as [Plumbing and Porcelain](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain)
-in Git.
+> Typealiases, extension properties...why do we employ all this magic? If you have used an ECS library before you might have had the feeling that working with them is cumbersome and the resulting program won't be readable in a way that it expresses the intent properly. What we do here is plumbing which we can use later to write actual game code which is readable and easy to understand. In other words this is the same concept as [Plumbing and Porcelain](https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain) in Git.
 
 With this change now we can easily access the *position* and *tile* of any of our entities like this:
 
 ```kotlin
-
 myEntity.position
 myEntity.tile
-
 ```
 
 This makes reading and writing code which works with entities much easier.
 
-So far so good, but we still don't see the player! Let's create a `Tile` for the player and a
-factory object for creating entities now.
+So far so good, but we still don't see the player! Let's create a `Tile` for the player and a factory object for creating entities now.
 
 For the player `Tile` we're going to add a nice color to `GameColors`:
 
 ```kotlin
-val ACCENT_COLOR = TileColors.fromString("#FFCD22")
+val ACCENT_COLOR = TileColor.fromString("#FFCD22")
 ```
 
 and the tile itself to `GameTileRepository`:
 
 ```kotlin
-    val PLAYER = Tiles.newBuilder()
-            .withCharacter('@')
-            .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
-            .withForegroundColor(GameColors.ACCENT_COLOR)
-            .buildCharacterTile()
+// don't forget the proper imports!
+
+val PLAYER = Tile.newBuilder()
+    .withCharacter('@')
+    .withBackgroundColor(FLOOR_BACKGROUND)
+    .withForegroundColor(ACCENT_COLOR)
+    .buildCharacterTile()
 ```
 
 For creating the actual player `Entity` we'll have a factory object:
 
 ```kotlin
-package org.hexworks.cavesofzircon.builders
+package com.example.cavesofzircon.builders
 
-import org.hexworks.amethyst.api.Entities
+import com.example.cavesofzircon.attributes.EntityPosition
+import com.example.cavesofzircon.attributes.EntityTile
+import com.example.cavesofzircon.attributes.types.Player
+import com.example.cavesofzircon.builders.GameTileRepository.PLAYER
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.builder.EntityBuilder
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.attributes.EntityPosition
-import org.hexworks.cavesofzircon.attributes.EntityTile
-import org.hexworks.cavesofzircon.attributes.types.Player
-import org.hexworks.cavesofzircon.world.GameContext
+import org.hexworks.amethyst.api.newEntityOfType
 
-fun <T : EntityType> newGameEntityOfType(type: T, init: EntityBuilder<T, GameContext>.() -> Unit) =
-        Entities.newEntityOfType(type, init) // 1
+fun <T : EntityType> newGameEntityOfType(
+    type: T,
+    init: EntityBuilder<T, GameContext>.() -> Unit
+) = newEntityOfType(type, init)                          // 1
 
-object EntityFactory { // 2
+object EntityFactory {                                   // 2
 
-    fun newPlayer() = newGameEntityOfType(Player) { // 3
-        attributes(EntityPosition(), EntityTile(GameTileRepository.PLAYER)) // 4
+    fun newPlayer() = newGameEntityOfType(Player) {      // 3
+        attributes(EntityPosition(), EntityTile(PLAYER)) // 4
         behaviors()
         facets()
     }
 }
 ```
 
-> If you are wondering what the dot (`.`) means in this funky code: `EntityBuilder<T, GameContext>.() -> Unit`
-  then read on the topic of **receiver**s [here](https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin). 
+> If you are wondering what the dot (`.`) means in this funky code: `EntityBuilder<T, GameContext>.() -> Unit` then read on the topic of **receiver**s [here](https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin). The TL;DR is that this `init` function we pass will be run in the *context* of an `EntityBuilder`, eg: `this` will be bound to it, just like in our extension functions we created earlier.
 
 We're going to use `EntityFactory` in the future to create all our `Entity` objects. What happens here is:
 
@@ -542,69 +452,66 @@ We're going to use `EntityFactory` in the future to create all our `Entity` obje
 
 ### Firing up the Engine
 
-So now that we have the means of creating `Entity` objects we're going to put the `Engine` somewhere
-which will take care of them. For now this will belong to `World`. We'll also enable our `GameBlock`s
-to hold onto entities since most of the time we'll be interested in checking whether a given block
-has an `Entity` or not. Let's take a look at what we'll need to change:
+So now that we have the means of creating `Entity` objects we're going to put the `Engine` somewhere which will take care of them. For now this will belong to `World`. We'll also enable our `GameBlock`s to hold onto entities since most of the time we'll be interested in checking whether a given block has an `Entity` or not. Let's take a look at what we'll need to change:
 
 The `GameBlock` now contains entities:
 
 ```kotlin
-package org.hexworks.cavesofzircon.blocks
+package com.example.cavesofzircon.blocks
 
+import com.example.cavesofzircon.builders.GameTileRepository.FLOOR
+import com.example.cavesofzircon.builders.GameTileRepository.PLAYER
+import com.example.cavesofzircon.builders.GameTileRepository.WALL
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.extensions.tile
+import kotlinx.collections.immutable.persistentMapOf
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.builders.GameTileRepository
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.extensions.tile
-import org.hexworks.zircon.api.data.BlockSide
+import org.hexworks.zircon.api.data.BlockTileType
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.base.BlockBase
+import org.hexworks.zircon.api.data.base.BaseBlock
 
-class GameBlock(private var defaultTile: Tile = GameTileRepository.FLOOR,
-                private val currentEntities: MutableList<GameEntity<EntityType>>
-                 = mutableListOf()) // 1
-    : BlockBase<Tile>() {
+class GameBlock(
+    private var defaultTile: Tile = FLOOR,
+    private val currentEntities: MutableList<GameEntity<EntityType>> = mutableListOf(),  // 1
+) : BaseBlock<Tile>(
+    emptyTile = Tile.empty(),
+    tiles = persistentMapOf(BlockTileType.CONTENT to defaultTile)
+) {
 
     val isFloor: Boolean
-        get() = defaultTile == GameTileRepository.FLOOR
+        get() = defaultTile == FLOOR
 
     val isWall: Boolean
-        get() = defaultTile == GameTileRepository.WALL
-        
-    val isEmptyFloor: Boolean // 2
-            get() = currentEntities.isEmpty()     
+        get() = defaultTile == WALL
 
-    val entities: Iterable<GameEntity<EntityType>> // 3
+    val isEmptyFloor: Boolean                                       // 2
+        get() = currentEntities.isEmpty()
+
+    val entities: Iterable<GameEntity<EntityType>>                  // 3
         get() = currentEntities.toList()
 
-    override val layers: MutableList<Tile> // 4
-        get() {
-            val entityTiles = currentEntities.map { it.tile }
-            val tile = when {
-                entityTiles.contains(GameTileRepository.PLAYER) -> GameTileRepository.PLAYER // 5
-                entityTiles.isNotEmpty() -> entityTiles.first() // 6
-                else -> defaultTile // 7
-            }
-            return mutableListOf(tile)
-        }
-
-    fun addEntity(entity: GameEntity<EntityType>) { // 8
+    fun addEntity(entity: GameEntity<EntityType>) {                 // 4
         currentEntities.add(entity)
+        updateContent()
     }
 
-    fun removeEntity(entity: GameEntity<EntityType>) { // 9
+    fun removeEntity(entity: GameEntity<EntityType>) {              // 5
         currentEntities.remove(entity)
+        updateContent()
     }
 
-    override fun fetchSide(side: BlockSide): Tile {
-        return GameTileRepository.EMPTY
+    private fun updateContent() {                                   // 6
+        val entityTiles = currentEntities.map { it.tile }
+        content = when {
+            entityTiles.contains(PLAYER) -> PLAYER                  // 7
+            entityTiles.isNotEmpty() -> entityTiles.first()         // 8
+            else -> defaultTile                                     // 9
+        }
     }
 }
 ```
 
-> If you are puzzled by what these `get()`s are in the code then feel free to peruse
-the relevant [documentation](https://kotlinlang.org/docs/reference/properties.html) page.
-We'll use getters like this throughout the tutorial.
+> If you are puzzled by what these `get()`s are in the code then feel free to peruse the relevant [documentation](https://kotlinlang.org/docs/reference/properties.html) page. We'll use getters like this throughout the tutorial.
 
 What we changed is:
 
@@ -614,54 +521,48 @@ What we changed is:
 3. Exposed a getter for entities which takes a snapshot (defensive copy) of the current
    entities and returns them. We do this because we don't want to expose the internals of
    `GameBlock` which would make `currentEntities` mutable to the outside world
-4. Incorporated our entities to how we display a block by
-5. Checking if the player is at this block. If yes it is displayed on top
-6. Otherwise the first `Entity` is displayed if present
-7. Or the default tile if not
-8. We expose a function for adding an `Entity` to our block
-9. And also for removing one
+4. We expose a function for adding an `Entity` to our block
+5. And also for removing one   
+6. Incorporated our entities to how we display a block by
+7. Checking if the player is at this block. If yes it is displayed on top
+8. Otherwise the first `Entity` is displayed if present
+9. Or the default tile if not
 
-In our `World` class we're going to need to add functions for adding entities, and also
-for finding empty positions where we can add them. The upgraded `World` class looks like this:
+In our `World` class we're going to need to add functions for adding entities, and also for finding empty positions where we can add them. The upgraded `World` class looks like this:
 
 ```kotlin
-package org.hexworks.cavesofzircon.world
+package com.example.cavesofzircon.world
 
+import com.example.cavesofzircon.blocks.GameBlock
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.extensions.position
 import org.hexworks.amethyst.api.Engine
-import org.hexworks.amethyst.api.Engines
 import org.hexworks.amethyst.api.entity.Entity
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.blocks.GameBlock
-import org.hexworks.cavesofzircon.builders.GameBlockFactory
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.extensions.position
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cobalt.datatypes.extensions.fold
-import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.zircon.api.Positions
 import org.hexworks.zircon.api.builder.game.GameAreaBuilder
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size3D
 import org.hexworks.zircon.api.data.Tile
-import org.hexworks.zircon.api.data.impl.Position3D
-import org.hexworks.zircon.api.data.impl.Size3D
 import org.hexworks.zircon.api.game.GameArea
 
-class World(startingBlocks: Map<Position3D, GameBlock>,
-            visibleSize: Size3D,
-            actualSize: Size3D) : GameArea<Tile, GameBlock> by GameAreaBuilder.newBuilder<Tile, GameBlock>()
-        .withVisibleSize(visibleSize)
-        .withActualSize(actualSize)
-        .withDefaultBlock(DEFAULT_BLOCK)
-        .withLayersPerBlock(1)
-        .build() {
+class World(
+    startingBlocks: Map<Position3D, GameBlock>,
+    visibleSize: Size3D,
+    actualSize: Size3D
+) : GameArea<Tile, GameBlock> by GameAreaBuilder.newBuilder<Tile, GameBlock>()
+    .withVisibleSize(visibleSize)
+    .withActualSize(actualSize)
+    .build() {
 
-    private val engine: Engine<GameContext> = Engines.newEngine() // 1
+    private val engine: Engine<GameContext> = Engine.create()   // 1
 
     init {
-        startingBlocks.forEach { pos, block ->
+        startingBlocks.forEach { (pos, block) ->
             setBlockAt(pos, block)
             block.entities.forEach { entity ->
-                engine.addEntity(entity) // 2
-                entity.position = pos // 3
+                engine.addEntity(entity)                        // 2
+                entity.position = pos                           // 3
             }
         }
     }
@@ -670,8 +571,8 @@ class World(startingBlocks: Map<Position3D, GameBlock>,
      * Adds the given [Entity] at the given [Position3D].
      * Has no effect if this world already contains the
      * given [Entity].
-     */
-    fun addEntity(entity: Entity<EntityType, GameContext>, position: Position3D) { // 4
+     */                                                         // 4
+    fun addEntity(entity: Entity<EntityType, GameContext>, position: Position3D) {
         entity.position = position
         engine.addEntity(entity)
         fetchBlockAt(position).map {
@@ -679,17 +580,19 @@ class World(startingBlocks: Map<Position3D, GameBlock>,
         }
     }
 
-    fun addAtEmptyPosition(entity: GameEntity<EntityType>, // 5
-                           offset: Position3D = Positions.default3DPosition(),
-                           size: Size3D = actualSize()): Boolean {
+    fun addAtEmptyPosition(
+        entity: GameEntity<EntityType>,                         // 5
+        offset: Position3D = Position3D.create(0, 0, 0),
+        size: Size3D = actualSize
+    ): Boolean {
         return findEmptyLocationWithin(offset, size).fold(
-                whenEmpty = { // 6
-                    false
-                },
-                whenPresent = { location ->  // 7
-                    addEntity(entity, location)
-                    true
-                })
+            whenEmpty = {                                       // 6
+                false
+            },
+            whenPresent = { location ->                         // 7
+                addEntity(entity, location)
+                true
+            })
 
     }
 
@@ -701,10 +604,11 @@ class World(startingBlocks: Map<Position3D, GameBlock>,
         val maxTries = 10
         var currentTry = 0
         while (position.isPresent.not() && currentTry < maxTries) {
-            val pos = Positions.create3DPosition(
-                    x = (Math.random() * size.xLength).toInt() + offset.x,
-                    y = (Math.random() * size.yLength).toInt() + offset.y,
-                    z = (Math.random() * size.zLength).toInt() + offset.z)
+            val pos = Position3D.create(
+                x = (Math.random() * size.xLength).toInt() + offset.x,
+                y = (Math.random() * size.yLength).toInt() + offset.y,
+                z = (Math.random() * size.zLength).toInt() + offset.z
+            )
             fetchBlockAt(pos).map {
                 if (it.isEmptyFloor) {
                     position = Maybe.of(pos)
@@ -713,10 +617,6 @@ class World(startingBlocks: Map<Position3D, GameBlock>,
             currentTry++
         }
         return position
-    }
-
-    companion object {
-        private val DEFAULT_BLOCK = GameBlockFactory.floor()
     }
 }
 ```
@@ -740,70 +640,69 @@ What we changed:
 8. This function performs a random serach for an empty position. To prevent seraching
    endlessly in a `World` which has none, we limit the maximum number of tries to 10.
 
-This was our biggest change so far but now we are able to add entities to our
-blocks and find empty positions within our `World`!
+This was our biggest change so far but now we are able to add entities to our blocks and find empty positions within our `World`!
 
 ### Updating our Game
 
-Our `Game` object was relatively simple so far. It only took a `World` as a parameter in its constructor
-and we had a handy factory method for this which created a `World` for us.
-Now it will also take our player `Entity` we just created:
+Our `Game` object was relatively simple so far. It only took a `World` as a parameter in its constructor and we had a handy factory method for this which created a `World` for us. Now it will also take our player `Entity` we just created:
 
 ```kotlin
-package org.hexworks.cavesofzircon.world
+package com.example.cavesofzircon.world
 
-import org.hexworks.cavesofzircon.attributes.types.Player
-import org.hexworks.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.attributes.types.Player
+import com.example.cavesofzircon.extensions.GameEntity
 
-class Game(val world: World,
-           val player: GameEntity<Player>) {
+class Game(
+    val world: World,
+    val player: GameEntity<Player>
+) {
 
     companion object {
 
-        fun create(player: GameEntity<Player>,
-                   world: World) = Game(
-                world = world,
-                player = player)
+        fun create(
+            player: GameEntity<Player>,
+            world: World
+        ) = Game(
+            world = world,
+            player = player
+        )
     }
 }
 ```
 
-`World` will also come from the outside, we remove the usage of the `WorldBuilder` from here. What
-we're using here is called the [Dependency Inversion Principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle)
-which is very useful for creating abstraction boundaries in our program.
+`World` will also come from the outside, we remove the usage of the `WorldBuilder` from here. What we're using here is called the [Dependency Inversion Principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle) which is very useful for creating abstraction boundaries in our program.
 
-> The TL;DR for DIP is this: By stating **what** we need (the `World` here) but not
-**how** we get it we let the outside world decide how to provide it for us. This is also called
-"Wishful Thinking". This kind of *dependency inversion* lets the users of our program *inject* any kind of object
-which corresponds to the `World` contract. For example we can create an in-memory world, one which is stored in
-a database or one which is generated on the fly. `Game` won't care! This is in stark contrast to what we had before:
-an explicit instantiation of `World` by using the `WorldBuilder`.
+> The TL;DR for DIP is this: By stating **what** we need (the `World` here) but not **how** we get it we let the outside world decide how to provide it for us. This is also called "Wishful Thinking". This kind of *dependency inversion* lets the users of our program *inject* any kind of object that corresponds to the `World` contract. For example we can create an in-memory world, one which is stored in a database or one which is generated on the fly. `Game` won't care! This is in stark contrast to what we had before: an explicit instantiation of `World` by using the `WorldBuilder`.
 
-It seems that we are going to need a class which encapsulates creating a new `Game` from scratch,
-and which can be used from all these views, the `GameBuilder`:
+It seems that we are going to need a class which encapsulates creating a new `Game` from scratch, and which can be used from all these views, the `GameBuilder`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.world
+package com.example.cavesofzircon.world
 
-import org.hexworks.cavesofzircon.GameConfig
-import org.hexworks.cavesofzircon.GameConfig.WORLD_SIZE
-import org.hexworks.cavesofzircon.attributes.types.Player
-import org.hexworks.cavesofzircon.builders.EntityFactory
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.zircon.api.Positions
-import org.hexworks.zircon.api.Sizes
-import org.hexworks.zircon.api.data.impl.Size3D
+import com.example.cavesofzircon.GameConfig
+import com.example.cavesofzircon.GameConfig.LOG_AREA_HEIGHT
+import com.example.cavesofzircon.GameConfig.SIDEBAR_WIDTH
+import com.example.cavesofzircon.GameConfig.WINDOW_HEIGHT
+import com.example.cavesofzircon.GameConfig.WINDOW_WIDTH
+import com.example.cavesofzircon.GameConfig.WORLD_SIZE
+import com.example.cavesofzircon.attributes.types.Player
+import com.example.cavesofzircon.builders.EntityFactory
+import com.example.cavesofzircon.builders.WorldBuilder
+import com.example.cavesofzircon.extensions.GameEntity
+import org.hexworks.zircon.api.data.Position3D
+import org.hexworks.zircon.api.data.Size3D
 
-class GameBuilder(val worldSize: Size3D) { // 1
+class GameBuilder(val worldSize: Size3D) {          // 1
 
-    private val visibleSize = Sizes.create3DSize( // 2
-            xLength = GameConfig.WINDOW_WIDTH - GameConfig.SIDEBAR_WIDTH,
-            yLength = GameConfig.WINDOW_HEIGHT - GameConfig.LOG_AREA_HEIGHT,
-            zLength = 1)
+    private val visibleSize = Size3D.create(        // 2
+        xLength = WINDOW_WIDTH - SIDEBAR_WIDTH,
+        yLength = WINDOW_HEIGHT - LOG_AREA_HEIGHT,
+        zLength = 1
+    )
 
-    val world = WorldBuilder(worldSize) // 3
-            .makeCaves()
-            .build(visibleSize = visibleSize)
+    val world = WorldBuilder(worldSize)             // 3
+        .makeCaves()
+        .build(visibleSize = visibleSize)
 
     fun buildGame(): Game {
 
@@ -812,34 +711,35 @@ class GameBuilder(val worldSize: Size3D) { // 1
         val player = addPlayer()
 
         return Game.create(
-                player = player,
-                world = world)
+            player = player,
+            world = world
+        )
     }
 
-    private fun prepareWorld() = also { // 4
-        world.scrollUpBy(world.actualSize().zLength)
+    private fun prepareWorld() = also {             // 4
+        world.scrollUpBy(world.actualSize.zLength)
     }
 
-    private fun addPlayer(): GameEntity<Player> { 
-        val player = EntityFactory.newPlayer() // 5
-        world.addAtEmptyPosition(player, // 6
-                offset = Positions.default3DPosition().withZ(GameConfig.DUNGEON_LEVELS - 1), // 7
-                size = world.visibleSize().copy(zLength = 0)) // 8
+    private fun addPlayer(): GameEntity<Player> {
+        val player = EntityFactory.newPlayer()      // 5
+        world.addAtEmptyPosition(
+            player,                                 // 6
+            offset = Position3D.create(0, 0, GameConfig.DUNGEON_LEVELS - 1), // 7
+            size = world.visibleSize.copy(zLength = 0)
+        )                                           // 8
         return player
     }
 
     companion object {
 
-        fun defaultGame() = GameBuilder(
-                worldSize = WORLD_SIZE).buildGame()
+        fun create() = GameBuilder(
+            worldSize = WORLD_SIZE
+        ).buildGame()
     }
 }
 ```
 
-> Hey, what's this `also` thingy? `also` here is a [scoping function](https://kotlinlang.org/docs/reference/scope-functions.html).
-You can read more about them [here](https://kotlinlang.org/docs/reference/scope-functions.html). The TL;DR is that
-`also` creates a scope where we can invoke functions on the scoped object (the new `GameBlock` here) and after that
-the scoped object is returned. This is very useful for initializing objects after creation as you can see here.
+> Hey, what's this `also` thingy? `also` here is a [scoping function](https://kotlinlang.org/docs/reference/scope-functions.html). You can read more about them [here](https://kotlinlang.org/docs/reference/scope-functions.html). The TL;DR is that `also` creates a scope where we can invoke functions on the scoped object (the new `GameBlock` here) and after that the scoped object is returned. This is very useful for initializing objects after creation as you can see here.
 
 Here we:
 
@@ -857,11 +757,15 @@ Here we:
 We also need to modify the constructor of our `PlayView` to not create a `Game`, but use our builder instead:
 
 ```kotlin
-import org.hexworks.cavesofzircon.world.GameBuilder
+import com.example.cavesofzircon.world.GameBuilder
 
 // ...
 
-class PlayView(private val game: Game = GameBuilder.defaultGame()) : BaseView()
+class PlayView(
+    private val grid: TileGrid,
+    private val game: Game = GameBuilder.create(),
+    theme: ColorTheme = GameConfig.THEME
+) : BaseView(grid, theme) {
 ```
 
 Now if we run our program we'll something like this:
@@ -879,5 +783,5 @@ player actions, like digging into our game!
 
 Until then go forth and *kode on*!
  
-> The code of this article can be found under the `4_THE_PLAYER` tag.
+> The code of this article can be found in commit #4.
 

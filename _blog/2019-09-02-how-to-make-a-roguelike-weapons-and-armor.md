@@ -10,46 +10,43 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/21/how-to-make-a-roguelike-weapons-and-armor.html
-updated_at: 2019-09-02
+updated_at: 2021-05-11
 ---
 
-> Adding wearable items like weapons and armor is a staple of all roguelike games and *Caves of Zircon* is no different.
-In this article we'll figure out how to add them to our game.
+> Adding wearable items like weapons and armor is a staple of all roguelike games and *Caves of Zircon* is no different. In this article we'll figure out how to add them to our game.
 
 ## Implementing Combat Items
 
-Let's think about how we can implement *weapons* and *armor* and how they should work!
-First of all, we're going to keep it simple and say that each combat item can have an *attack* and a *defense*
-value which we'll just add to our base values when calculating combat results. We also make it have a *type*
-which we can display to the player as additional information:
+Let's think about how we can implement *weapons* and *armor* and how they should work! First of all, we're going to keep it simple and say that each combat item can have an *attack* and a *defense* value which we'll just add to our base values when calculating combat results. We also make it have a *type* which we can display to the player as additional information:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes
+package com.example.cavesofzircon.attributes
+
+import org.hexworks.amethyst.api.base.BaseAttribute
 
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Component
 
-data class ItemCombatStats(val attackValue: Int = 0,
-                           val defenseValue: Int = 0,
-                           val combatItemType: String) : DisplayableAttribute {
+data class ItemCombatStats(
+        val attackValue: Int = 0,
+        val defenseValue: Int = 0,
+        val combatItemType: String
+) : BaseAttribute(), DisplayableAttribute {
 
     override fun toComponent(width: Int): Component {
-        return Components.textBox()
-                .withContentWidth(width)
+        return Components.textBox(width)
                 .addParagraph("Type: $combatItemType", withNewLine = false)
                 .addParagraph("Attack: $attackValue", withNewLine = false)
                 .addParagraph("Defense: $defenseValue", withNewLine = false)
                 .build()
     }
-
 }
 ```
 
-We make this a `DisplayableAttribute` so we can display it on a details screen later.
-We're also going to need `CombatItem` as a base type for *weapon* and *armor*:
+We make this a `DisplayableAttribute` so we can display it on a details screen later. We're also going to need `CombatItem` as a base type for *weapon* and *armor*:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes.types
+package com.example.cavesofzircon.attributes.types
 
 interface CombatItem : Item
 ```
@@ -57,11 +54,11 @@ interface CombatItem : Item
 `Armor` itself:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes.types
+package com.example.cavesofzircon.attributes.types
 
+import com.example.cavesofzircon.attributes.ItemCombatStats
+import com.example.cavesofzircon.world.GameContext
 import org.hexworks.amethyst.api.entity.Entity
-import org.hexworks.cavesofzircon.attributes.ItemCombatStats
-import org.hexworks.cavesofzircon.world.GameContext
 
 interface Armor : CombatItem
 
@@ -72,14 +69,13 @@ val Entity<Armor, GameContext>.defenseValue: Int
     get() = findAttribute(ItemCombatStats::class).get().defenseValue
 ```
 
-and a `Weapon` type which we can use for easier implementation of
-the equip mechanics:
+and a `Weapon` type which we can use for easier implementation of the equip mechanics:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes.types
+package com.example.cavesofzircon.attributes.types
 
-import org.hexworks.cavesofzircon.attributes.ItemCombatStats
-import org.hexworks.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.attributes.ItemCombatStats
+import com.example.cavesofzircon.extensions.GameEntity
 
 interface Weapon : CombatItem
 
@@ -93,13 +89,13 @@ val GameEntity<Weapon>.defenseValue: Int
 As with `InventoryHolder` we're going to add a new entity type, `EquipmentHolder`:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes.types
+package com.example.cavesofzircon.attributes.types
 
+import com.example.cavesofzircon.attributes.Equipment
+import com.example.cavesofzircon.attributes.Inventory
+import com.example.cavesofzircon.extensions.GameCombatItem
+import com.example.cavesofzircon.extensions.GameEquipmentHolder
 import org.hexworks.amethyst.api.entity.EntityType
-import org.hexworks.cavesofzircon.attributes.Equipment
-import org.hexworks.cavesofzircon.attributes.Inventory
-import org.hexworks.cavesofzircon.extensions.GameCombatItem
-import org.hexworks.cavesofzircon.extensions.GameEquipmentHolder
 
 interface EquipmentHolder : EntityType
 
@@ -115,8 +111,8 @@ and the corresponding aliases:
 
 ```kotlin
 // add these to TypeAliases.kt
-import org.hexworks.cavesofzircon.attributes.types.CombatItem
-import org.hexworks.cavesofzircon.attributes.types.EquipmentHolder
+import com.example.cavesofzircon.attributes.types.CombatItem
+import com.example.cavesofzircon.attributes.types.EquipmentHolder
 
 typealias GameCombatItem = GameEntity<CombatItem>
 
@@ -126,23 +122,26 @@ typealias GameEquipmentHolder = GameEntity<EquipmentHolder>
 With these in place we can implement the `Equipment` *attribute*:
 
 ```kotlin
-package org.hexworks.cavesofzircon.attributes
+package com.example.cavesofzircon.attributes
 
-import org.hexworks.cavesofzircon.attributes.types.Armor
-import org.hexworks.cavesofzircon.attributes.types.Weapon
-import org.hexworks.cavesofzircon.attributes.types.attackValue
-import org.hexworks.cavesofzircon.attributes.types.defenseValue
-import org.hexworks.cavesofzircon.attributes.types.iconTile
-import org.hexworks.cavesofzircon.extensions.GameCombatItem
-import org.hexworks.cavesofzircon.extensions.GameEntity
-import org.hexworks.cavesofzircon.extensions.whenTypeIs
-import org.hexworks.cobalt.databinding.api.createPropertyFrom
+import com.example.cavesofzircon.attributes.types.Armor
+import com.example.cavesofzircon.attributes.types.Weapon
+import com.example.cavesofzircon.attributes.types.attackValue
+import com.example.cavesofzircon.attributes.types.defenseValue
+import com.example.cavesofzircon.attributes.types.iconTile
+import com.example.cavesofzircon.extensions.GameCombatItem
+import com.example.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.extensions.whenTypeIs
+import org.hexworks.amethyst.api.base.BaseAttribute
+import org.hexworks.cobalt.databinding.api.extension.createPropertyFrom
 import org.hexworks.cobalt.databinding.api.property.Property
 import org.hexworks.zircon.api.Components
 import org.hexworks.zircon.api.component.Component
 
-class Equipment(initialWeapon: GameEntity<Weapon>,
-                initialArmor: GameEntity<Armor>) : DisplayableAttribute {
+class Equipment(
+        initialWeapon: GameEntity<Weapon>,
+        initialArmor: GameEntity<Armor>
+) : BaseAttribute(), DisplayableAttribute {
 
     private val weaponProperty: Property<GameEntity<Weapon>> = createPropertyFrom(initialWeapon)    // 1
     private val armorProperty: Property<GameEntity<Armor>> = createPropertyFrom(initialArmor)
@@ -227,8 +226,7 @@ class Equipment(initialWeapon: GameEntity<Weapon>,
             armorStatsLabel.textProperty.value = armorStats
         }
 
-        return Components.textBox()
-                .withContentWidth(width)
+        return Components.textBox(width)
                 .addHeader("Weapon", withNewLine = false)
                 .addInlineComponent(weaponIcon)
                 .addInlineComponent(weaponNameLabel)
@@ -244,7 +242,6 @@ class Equipment(initialWeapon: GameEntity<Weapon>,
                 .commitInlineElements()
                 .build()
     }
-
 }
 ```
 
@@ -266,58 +263,56 @@ we can later find and equip. For this we're going to need some new *tiles*:
 // add these to GameTileRepository
 import org.hexworks.zircon.api.color.ANSITileColor
 
-val CLUB = Tiles.newBuilder()
+val CLUB = Tile.newBuilder()
         .withCharacter('(')
         .withForegroundColor(ANSITileColor.GRAY)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val DAGGER = Tiles.newBuilder()
+val DAGGER = Tile.newBuilder()
         .withCharacter('(')
         .withForegroundColor(ANSITileColor.WHITE)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val SWORD = Tiles.newBuilder()
+val SWORD = Tile.newBuilder()
         .withCharacter('(')
         .withForegroundColor(ANSITileColor.BRIGHT_WHITE)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val STAFF = Tiles.newBuilder()
+val STAFF = Tile.newBuilder()
         .withCharacter('(')
         .withForegroundColor(ANSITileColor.YELLOW)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val JACKET = Tiles.newBuilder()
+val JACKET = Tile.newBuilder()
         .withCharacter('[')
         .withForegroundColor(ANSITileColor.GRAY)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val LIGHT_ARMOR = Tiles.newBuilder()
+val LIGHT_ARMOR = Tile.newBuilder()
         .withCharacter('[')
         .withForegroundColor(ANSITileColor.GREEN)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val MEDIUM_ARMOR = Tiles.newBuilder()
+val MEDIUM_ARMOR = Tile.newBuilder()
         .withCharacter('[')
         .withForegroundColor(ANSITileColor.WHITE)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 
-val HEAVY_ARMOR = Tiles.newBuilder()
+val HEAVY_ARMOR = Tile.newBuilder()
         .withCharacter('[')
         .withForegroundColor(ANSITileColor.BRIGHT_WHITE)
         .withBackgroundColor(GameColors.FLOOR_BACKGROUND)
         .buildCharacterTile()
 ```
 
-*Zircon* comes with some built-in colors in the `ANSITileColor` class we can use in our projects. This above
-is an example for that. For simplicity's sake we're going to use the character `(` for our weapons and `[`
-for armor.
+*Zircon* comes with some built-in colors in the `ANSITileColor` class we can use in our projects. This above is an example for that. For simplicity's sake we're going to use the character `(` for our weapons and `[` for armor.
 
 For the *tile*s above we need to create the corresponding types:
 
@@ -326,63 +321,72 @@ For the *tile*s above we need to create the corresponding types:
 
 object Dagger : BaseEntityType(
         name = "Rusty Dagger",
-        description = "A small, rusty dagger made of some metal alloy."), Weapon
+        description = "A small, rusty dagger made of some metal alloy."
+), Weapon
 
 object Sword : BaseEntityType(
         name = "Iron Sword",
-        description = "A shiny sword made of iron. It is a two-hand weapon"), Weapon
+        description = "A shiny sword made of iron. It is a two-hand weapon"
+), Weapon
 
 object Staff : BaseEntityType(
         name = "Wooden Staff",
-        description = "A wooden staff made of birch. It has seen some use"), Weapon
+        description = "A wooden staff made of birch. It has seen some use"
+), Weapon
 
 object LightArmor : BaseEntityType(
         name = "Leather Tunic",
-        description = "A tunic made of rugged leather. It is very comfortable."), Armor
+        description = "A tunic made of rugged leather. It is very comfortable."
+), Armor
 
 object MediumArmor : BaseEntityType(
         name = "Chainmail",
-        description = "A sturdy chainmail armor made of interlocking iron chains."), Armor
+        description = "A sturdy chainmail armor made of interlocking iron chains."
+), Armor
 
 object HeavyArmor : BaseEntityType(
         name = "Platemail",
-        description = "A heavy and shiny platemail armor made of bronze."), Armor
+        description = "A heavy and shiny platemail armor made of bronze."
+), Armor
 
 object Club : BaseEntityType(
         name = "Club",
-        description = "A wooden club. It doesn't give you an edge over your opponent (haha)."), Weapon
+        description = "A wooden club. It doesn't give you an edge over your opponent (haha)."
+), Weapon
 
 object Jacket : BaseEntityType(
         name = "Leather jacket",
-        description = "Dirty and rugged jacket made of leather."), Armor
+        description = "Dirty and rugged jacket made of leather."
+), Armor
 ```
 
 And we should also modify `Player` to be an `EquipmentHolder` while we're at it:
 
 ```kotlin
 object Player : BaseEntityType(
-        name = "player"), Combatant, ItemHolder, EnergyUser, EquipmentHolder
+        name = "player"
+), Combatant, ItemHolder, EnergyUser, EquipmentHolder
 ```
 
 Then we can create the actual combat item *entities* in `EntityFactory`:
 
 ```kotlin
 // Add these to EntityFactory
-import org.hexworks.cavesofzircon.attributes.ItemCombatStats
-import org.hexworks.cavesofzircon.attributes.types.Club
-import org.hexworks.cavesofzircon.attributes.types.Dagger
-import org.hexworks.cavesofzircon.attributes.types.HeavyArmor
-import org.hexworks.cavesofzircon.attributes.types.Jacket
-import org.hexworks.cavesofzircon.attributes.types.LightArmor
-import org.hexworks.cavesofzircon.attributes.types.MediumArmor
-import org.hexworks.cavesofzircon.attributes.types.Staff
-import org.hexworks.cavesofzircon.attributes.types.Sword
+import com.example.cavesofzircon.attributes.ItemCombatStats
+import com.example.cavesofzircon.attributes.types.Club
+import com.example.cavesofzircon.attributes.types.Dagger
+import com.example.cavesofzircon.attributes.types.HeavyArmor
+import com.example.cavesofzircon.attributes.types.Jacket
+import com.example.cavesofzircon.attributes.types.LightArmor
+import com.example.cavesofzircon.attributes.types.MediumArmor
+import com.example.cavesofzircon.attributes.types.Staff
+import com.example.cavesofzircon.attributes.types.Sword
 
 fun newDagger() = newGameEntityOfType(Dagger) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("Dagger")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     attackValue = 4,
@@ -391,10 +395,10 @@ fun newDagger() = newGameEntityOfType(Dagger) {
 }
 
 fun newSword() = newGameEntityOfType(Sword) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("Short sword")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     attackValue = 6,
@@ -403,10 +407,10 @@ fun newSword() = newGameEntityOfType(Sword) {
 }
 
 fun newStaff() = newGameEntityOfType(Staff) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("staff")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     attackValue = 4,
@@ -416,10 +420,10 @@ fun newStaff() = newGameEntityOfType(Staff) {
 }
 
 fun newLightArmor() = newGameEntityOfType(LightArmor) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("Leather armor")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     defenseValue = 2,
@@ -428,10 +432,10 @@ fun newLightArmor() = newGameEntityOfType(LightArmor) {
 }
 
 fun newMediumArmor() = newGameEntityOfType(MediumArmor) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("Chain mail")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     defenseValue = 3,
@@ -440,10 +444,10 @@ fun newMediumArmor() = newGameEntityOfType(MediumArmor) {
 }
 
 fun newHeavyArmor() = newGameEntityOfType(HeavyArmor) {
-    attributes(ItemIcon(Tiles.newBuilder()
+    attributes(ItemIcon(Tile.newBuilder()
             .withName("Plate mail")
             .withTileset(GraphicalTilesetResources.nethack16x16())
-            .buildGraphicTile()),
+            .buildGraphicalTile()),
             EntityPosition(),
             ItemCombatStats(
                     defenseValue = 4,
@@ -455,34 +459,35 @@ fun newClub() = newGameEntityOfType(Club) {
     attributes(ItemCombatStats(combatItemType = "Weapon"),
             EntityTile(GameTileRepository.CLUB),
             EntityPosition(),
-            ItemIcon(Tiles.newBuilder()
+            ItemIcon(Tile.newBuilder()
                     .withName("Club")
                     .withTileset(GraphicalTilesetResources.nethack16x16())
-                    .buildGraphicTile()))
+                    .buildGraphicalTile()))
 }
 
 fun newJacket() = newGameEntityOfType(Jacket) {
     attributes(ItemCombatStats(combatItemType = "Armor"),
             EntityTile(GameTileRepository.JACKET),
             EntityPosition(),
-            ItemIcon(Tiles.newBuilder()
+            ItemIcon(Tile.newBuilder()
                     .withName("Leather jacket")
                     .withTileset(GraphicalTilesetResources.nethack16x16())
-                    .buildGraphicTile()))
+                    .buildGraphicalTile()))
 }
 ```
 
 Now as you might have guessed, we just add `Equipment` to our *player* `Entity`:
 
 ```kotlin
-import org.hexworks.cavesofzircon.attributes.Equipment
+import com.example.cavesofzircon.attributes.Equipment
 
 fun newPlayer() = newGameEntityOfType(Player) {
     attributes(
             // ...
             Equipment(
-                    initialWeapon = newClub(),
-                    initialArmor = newJacket()))
+                initialWeapon = newClub(),
+                initialArmor = newJacket()
+            )
 
     // ...
 }
@@ -494,16 +499,14 @@ Then if we start up our game we'll see our initial items on the sidebar:
 
 ## Augmenting The Combat System
 
-So far so good, but we not yet use our `Equipment` in combat! Let's take a look at how we can
-fix this. First of all we're going to add some extensions to simplify how we determine the
-attack / defense value of an `Entity`:
+So far so good, but we not yet use our `Equipment` in combat! Let's take a look at how we can fix this. First of all we're going to add some extensions to simplify how we determine the attack / defense value of an `Entity`:
 
 ```kotlin
 // add these to EntityExtensions.kt
 
-import org.hexworks.cavesofzircon.attributes.CombatStats
-import org.hexworks.cavesofzircon.attributes.Equipment
-import org.hexworks.cavesofzircon.attributes.ItemCombatStats
+import com.example.cavesofzircon.attributes.CombatStats
+import com.example.cavesofzircon.attributes.Equipment
+import com.example.cavesofzircon.attributes.ItemCombatStats
 
 val AnyGameEntity.attackValue: Int
     get() {
@@ -522,26 +525,21 @@ val AnyGameEntity.defenseValue: Int
     }
 ```
 
-Here we augment `AnyGameEntity` to have an `attackValue` and a `defenseValue` and we try to calculate
-them from the `CombatStats` which we added previously, the `Equipment` and the `ItemCombatStats`.
-This will calculate this properly for any entity even if it is the *player* or a sword. The fun
-part is that this system makes it possible to turn the *player* into a `Weapon` and enhance its abilities with this!
+Here we augment `AnyGameEntity` to have an `attackValue` and a `defenseValue` and we try to calculate them from the `CombatStats` which we added previously, the `Equipment` and the `ItemCombatStats`. This will calculate this properly for any entity even if it is the *player* or a sword. The fun part is that this system makes it possible to turn the *player* into a `Weapon` and enhance its abilities with this!
 
 Note that if the `Entity` has none of these *attributes* the attack/defense will correctly be `0`.
 
 Now modifying `Attackable` to take into account these values becomes trivial:
 
 ```kotlin
-import org.hexworks.cavesofzircon.extensions.attackValue
-import org.hexworks.cavesofzircon.extensions.defenseValue
+import com.example.cavesofzircon.extensions.attackValue
+import com.example.cavesofzircon.extensions.defenseValue
 
-object Attackable : BaseFacet<GameContext>() {
+object Attackable : BaseFacet<GameContext, Attack>(Attack::class) {
+    override suspend fun receive(message: Attack): Response {
+        val (context, attacker, target) = message
 
-    override fun executeCommand(command: GameCommand<out EntityType>) = command.responseWhenCommandIs(Attack::class) {
-
-        val (context, attacker, target) = it
-
-        if (attacker.isPlayer || target.isPlayer) {
+        return if (attacker.isPlayer || target.isPlayer) {
 
             val damage = Math.max(0, attacker.attackValue - target.defenseValue)
             val finalDamage = (Math.random() * damage).toInt() + 1
@@ -559,17 +557,15 @@ Here instead of accessing `combatStats` we just use `attackValue` and `defenseVa
 
 ## Finding Items
 
-Now we have our *weapons* and *armor*, as well as our initial items but we can't find them in the game yet!
-Let's add some random items to our world. Having swords and armor laying around it not very elegant, and we're
-going to change this later but for now this is going to do the trick.
+Now we have our *weapons* and *armor*, as well as our initial items but we can't find them in the game yet! Let's add some random items to our world. Having swords and armor laying around it not very elegant, and we're going to change this later but for now this is going to do the trick.
 
 For this we're going to add functions to generate random items to our `EntityFactory`:
 
 ```kotlin
 import kotlin.random.Random
-import org.hexworks.cavesofzircon.attributes.types.Armor
-import org.hexworks.cavesofzircon.attributes.types.Weapon
-import org.hexworks.cavesofzircon.extensions.GameEntity
+import com.example.cavesofzircon.attributes.types.Armor
+import com.example.cavesofzircon.attributes.types.Weapon
+import com.example.cavesofzircon.extensions.GameEntity
 
 fun newRandomWeapon(): GameEntity<Weapon> = when (Random.nextInt(3)) {
     0 -> newDagger()
@@ -584,8 +580,7 @@ fun newRandomArmor(): GameEntity<Armor> = when (Random.nextInt(3)) {
 }
 ```
 
-With this we can modify `GameBuilder` to incorporate some items laying on the floor, but first we add some
-additional configuration to `GameConfig`:
+With this we can modify `GameBuilder` to incorporate some items laying on the floor, but first we add some additional configuration to `GameConfig`:
 
 ```kotlin
 const val WEAPONS_PER_LEVEL = 3
@@ -595,8 +590,8 @@ const val ARMOR_PER_LEVEL = 3
 then we can make the change in `GameBuilder`:
 
 ```kotlin
-import org.hexworks.cavesofzircon.GameConfig.ARMOR_PER_LEVEL
-import org.hexworks.cavesofzircon.GameConfig.WEAPONS_PER_LEVEL
+import com.example.cavesofzircon.GameConfig.ARMOR_PER_LEVEL
+import com.example.cavesofzircon.GameConfig.WEAPONS_PER_LEVEL
 
 fun buildGame(): Game {
 
@@ -611,7 +606,7 @@ fun buildGame(): Game {
 }
 
 private fun addWeapons() = also {
-    repeat(world.actualSize().zLength) { level ->
+    repeat(world.actualSize.zLength) { level ->
         repeat(WEAPONS_PER_LEVEL) {
             EntityFactory.newRandomWeapon().addToWorld(level)
         }
@@ -619,7 +614,7 @@ private fun addWeapons() = also {
 }
 
 private fun addArmor() = also {
-    repeat(world.actualSize().zLength) { level ->
+    repeat(world.actualSize.zLength) { level ->
         repeat(ARMOR_PER_LEVEL) {
             EntityFactory.newRandomArmor().addToWorld(level)
         }
@@ -639,28 +634,28 @@ The *equip item* functionality will be accessible from the *Inventory* screen.
 First, let's modify `InventoryRowFragment` to have this change:
 
 ```kotlin
-import org.hexworks.cavesofzircon.attributes.types.CombatItem
+import com.example.cavesofzircon.attributes.types.CombatItem
 
 class InventoryRowFragment(width: Int, item: GameItem) : Fragment {
 
     // ...
     
     val equipButton = Components.button()
-            .wrapSides(false)
-            .withText("Equip")
-            .build()
+        .withDecorations()
+        .withText("Equip")
+        .build()
             
    override val root = Components.hbox()
-               .withSpacing(1)
-               .withSize(width, 1)
-               .build().apply {
+        .withSpacing(1)
+        .withSize(width, 1)
+        .build().apply {
                     
-                   // ...
-               
-                   item.whenTypeIs<CombatItem> {
-                       addComponent(equipButton)
-                   }
-               }      
+            // ...
+        
+            item.whenTypeIs<CombatItem> {
+                addComponent(equipButton)
+            }
+        }      
 }   
 ```
 
@@ -670,52 +665,47 @@ and incorporate it in `InventoryFragment`:
 import org.hexworks.zircon.api.component.VBox
 import org.hexworks.cobalt.datatypes.Maybe
 import org.hexworks.cobalt.datatypes.extensions.map
-import org.hexworks.cavesofzircon.GameConfig
+import com.example.cavesofzircon.GameConfig
 
-class InventoryFragment(inventory: Inventory,
-                        width: Int,
-                        private val onDrop: (GameItem) -> Unit,
-                        private val onEat: (GameItem) -> Unit,
-                        private val onEquip: (GameItem) -> Maybe<GameItem>) : Fragment { // 1
+class InventoryFragment(
+        inventory: Inventory,
+        width: Int,
+        private val onDrop: (GameItem) -> Unit,
+        private val onEat: (GameItem) -> Unit,
+        private val onEquip: (GameItem) -> Maybe<GameItem> // 1
+) : Fragment {
 
     override val root = Components.vbox()
             .withSize(width, inventory.size + 1)
             .build().apply {
                 val list = this
-                addComponent(Components.hbox()
-                        .withSpacing(1)
-                        .withSize(width, 1)
-                        .build().apply {
-                            addComponent(Components.label().withText("").withSize(1, 1))
-                            addComponent(Components.header().withText("Name").withSize(NAME_COLUMN_WIDTH, 1))
-                            addComponent(Components.header().withText("Actions").withSize(ACTIONS_COLUMN_WIDTH, 1))
-                        })
-                inventory.items.forEach { item ->
-                    addRow(width, item, list)       // 2
+                
+                // ...
+
+                inventory.items.forEach { item ->       // 2
+                    addRow(width, item, list)
                 }
             }
 
     private fun addRow(width: Int, item: GameItem, list: VBox) {
-        list.addFragment(InventoryRowFragment(width, item).apply {
-            dropButton.onComponentEvent(ACTIVATED) {
-                list.removeComponent(this.root)
+        val row = InventoryRowFragment(width, item)
+        list.addFragment(row).apply {
+            row.dropButton.onActivated {
+                detach()
                 onDrop(item)
-                Processed
             }
-            eatButton.onComponentEvent(ACTIVATED) {
-                list.removeComponent(this.root)
+            row.eatButton.onActivated {
+                detach()
                 onEat(item)
-                Processed
             }
-            equipButton.onComponentEvent(ACTIVATED) {
+            row.equipButton.onActivated {
                 onEquip(item).map { oldItem ->          // 3
-                    list.removeComponent(this.root)
+                    detach()
                     addRow(width, oldItem, list)
                 }
-                Processed
             }
-        })
-        list.applyColorTheme(GameConfig.THEME)
+        }
+        list.theme = GameConfig.THEME
     }
 
     // ...
@@ -726,7 +716,7 @@ Here we:
 
 1. Add a callback, `onEquip` to our class which takes a `GameItem` and returns a `Maybe` of `GameItem`.
    Why a `Maybe`? Because if we fail to equip an item (becuase it is not a combat item for example) there
-   is no previously equipped item to return!
+   is no previously equipped item to return! Note that we also have to change the other callbacks to be `private val`s.
 2. Create an `addRow` function which we use to add a row to our *inventory*. This is important because we'll
    call this again when a new item is equipped to put the old item into the list.
 3. What we do when the *equip* button is clicked it that if the equip is successful (it returned an old item)
@@ -736,11 +726,11 @@ Here we:
 Then we modify `InventoryInspector` to swap the *equipment* when this happens:
 
 ```kotlin
-import org.hexworks.cavesofzircon.attributes.types.CombatItem
-import org.hexworks.cavesofzircon.attributes.types.EquipmentHolder
-import org.hexworks.cavesofzircon.attributes.types.equip
+import com.example.cavesofzircon.attributes.types.CombatItem
+import com.example.cavesofzircon.attributes.types.EquipmentHolder
+import com.example.cavesofzircon.attributes.types.equip
 import org.hexworks.cobalt.datatypes.Maybe
-import org.hexworks.cavesofzircon.extensions.GameItem
+import com.example.cavesofzircon.extensions.GameItem
 
 object InventoryInspector : BaseFacet<GameContext>() {
 
@@ -778,13 +768,10 @@ Now if we start this up and take a look around we'll see the whole thing coming 
 
 ## Conclusion
 
-In this article we've added *weapons* and *armor* and also a simple *equipment* system in one
-fell swoop. Now we can run around our dungeon and find actual items which we can use!
+In this article we've added *weapons* and *armor* and also a simple *equipment* system in one fell swoop. Now we can run around our dungeon and find actual items which we can use!
 
-In the next article we're going to add a new type of monster which is agressive and attacks us
-if it sees us! We'll also modify the code we have for *weapons* and *armor* so that they won't be
-just lying around...we'll loot them from monsters!
+In the next article we're going to add a new type of monster which is agressive and attacks us if it sees us! We'll also modify the code we have for *weapons* and *armor* so that they won't be just lying around...we'll loot them from monsters!
 
 Until then go forth and *kode on*!
- 
-> The code of this article can be found under the `15_WEAPONS_AND_ARMOR` tag.
+
+> The code of this article can be found in commit #15.
