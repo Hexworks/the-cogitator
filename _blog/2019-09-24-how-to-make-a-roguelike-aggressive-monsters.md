@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/26/how-to-make-a-roguelike-aggressive-monsters.html
+updated_at: 2019-09-24
 ---
 
 > Strolling around a dungeon and looting items randomly lying on the ground is only so much fun.

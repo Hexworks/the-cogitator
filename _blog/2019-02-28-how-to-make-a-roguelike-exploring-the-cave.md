@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/02/28/how-to-make-a-roguelike-exploring-the-cave.html
+updated_at: 2019-02-28
 ---
 
 > In the previous article we introduced [Amethyst](https://github.com/Hexworks/amethyst) which

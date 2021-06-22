@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2018/12/04/how-to-make-a-roguelike.html
+updated_at: 2018-12-04
 ---
 
 > This tutorial series is loosely based on [Trystan's Awesome Roguelike Tutorial](http://trystans.blogspot.com/2016/01/roguelike-tutorial-00-table-of-contents.html).

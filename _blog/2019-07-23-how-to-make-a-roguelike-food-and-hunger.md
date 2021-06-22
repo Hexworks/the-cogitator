@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/05/23/how-to-make-a-roguelike-food-and-hunger.html
+updated_at: 2019-07-23
 ---
 
 > Now, that we are able to pick up items and take a look at them in the inventory we can start to add more

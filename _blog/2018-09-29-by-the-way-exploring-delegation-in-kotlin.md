@@ -4,6 +4,7 @@ title:  "By the way - exploring delegation in Kotlin"
 short_title:  "By the way - exploring delegation in Kotlin"
 tags: [kotlin]
 comments: true
+updated_at: 2018-09-29
 ---
 
 > Kotlin has an interesting keyword: `by` which can be used for delegation. There is a lot of confusion around it so in this article we'll clean that up.

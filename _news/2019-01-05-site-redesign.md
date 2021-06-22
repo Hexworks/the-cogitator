@@ -4,6 +4,7 @@ title:  "New year, new design"
 short_title:  "New year, new design"
 tags: [site-update]
 comments: true
+updated_at: 2019-01-05
 ---
 
 > New year, new design. The site received an overhaul to its design and also some new content categories were added like

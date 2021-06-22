@@ -6,6 +6,7 @@ excerpt: While most developers use Kotlin on Android it is also a viable option 
           we'll look at how it works on the backend.
 comments: true
 series: beyond-android
+updated_at: 2018-01-06
 ---
 
 > While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works on the backend.

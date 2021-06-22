@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2018/12/28/how-to-make-a-roguelike-views-screens-inputs.html
+updated_at: 2018-12-28
 ---
 
 > Having a skeleton project is nice, but we should start doing some actual work on our project.

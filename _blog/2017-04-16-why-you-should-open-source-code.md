@@ -4,6 +4,7 @@ short_title:  "Why should you open source your code?"
 tags: [open-source]
 excerpt: Open source software is all the buzz nowadays so it might be a good time to think about whether you can release parts of the project you are working on.
 comments: true
+updated_at: 2017-04-16
 ---
 
 > If you have worked on a reasonably large project somewhere, chances are that the thought crossed your mind sometimes about

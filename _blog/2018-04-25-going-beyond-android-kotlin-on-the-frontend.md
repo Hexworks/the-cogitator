@@ -6,6 +6,7 @@ short_title:  "Going Beyond Android: Kotlin on the Frontend"
 tags: [kotlin, frontend]
 comments: true
 series: beyond-android
+updated_at: 2018-04-25
 ---
 
 > While most developers use Kotlin on Android it is also a viable option on other platforms. In this article we'll look at how it works in the browser. We'll walk through an example which is rather minimal but it comes with batteries included: testing, minification, and deployment.

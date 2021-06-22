@@ -7,6 +7,7 @@ short_title: "How to Set Up a Node.js Project"
 comments: true
 published: true
 series: full-stack-node-guide
+updated_at: 2020-02-19
 ---
 
 > Node.js is a simple tool, but setting it up involves a lot of ceremony. Let's learn how to make it work properly.

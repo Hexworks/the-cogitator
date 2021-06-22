@@ -5,6 +5,7 @@ tags: [kotlin]
 excerpt: Kotlin comes with a lot of useful functions like let, apply, with or also. Less is written about what
          comes with the collections, ranges, and other packages of the standard library. In this article we'll explore them.
 comments: true
+updated_at: 2018-02-10
 ---
 
 > As [others have written about this before](http://beust.com/weblog/2015/10/30/exploring-the-kotlin-standard-library/)

@@ -5,6 +5,7 @@ tags: [kotlin]
 author: addamsson
 short_title: "A Strategy for Deprecating Classes"
 comments: true
+updated_at: 2020-08-12
 ---
 
 > If you have worked on a library before then chances are that you've tried to deprecate and remove classes form your API. In this article we'll explore how this can be done in a civilized way.

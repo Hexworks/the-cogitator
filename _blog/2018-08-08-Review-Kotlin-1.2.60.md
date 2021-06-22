@@ -4,6 +4,7 @@ title:  "Review: Kotlin 1.2.60"
 short_title:  "Review: Kotlin 1.2.60"
 tags: [kotlin]
 comments: true
+updated_at: 2018-08-08
 ---
 
 > Kotlin releases are quite frequent nowadays and the last few ones were not so remarkable, but 1.2.60 is somewhat special.

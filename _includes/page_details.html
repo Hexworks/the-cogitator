@@ -6,9 +6,9 @@
         <h1 class="post-title"
             itemprop="name headline">{{ page.title }}</h1>
         <div id="post-meta">
-            <time datetime="{{ page.date | date_to_xmlschema }}"
+            <time datetime="{{ page.updated_at | date_to_xmlschema }}"
                   itemprop="datePublished">
-                {{ page.date | date: "%Y. %m. %d." }} &nbsp;
+                {{ page.updated_at | date: "%Y. %m. %d." }} &nbsp;
             </time>
             {% if page.author %}
             <span itemprop="author"

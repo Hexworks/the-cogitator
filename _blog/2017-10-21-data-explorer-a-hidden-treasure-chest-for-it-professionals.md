@@ -6,7 +6,9 @@ excerpt: You might have wondered about what technology do others use in the IT i
          or which tools are trending. Enter the Stack Exchange Data Explorer where you can find information about all
          Stack Exchange users.
 comments: true
+updated_at: 2017-10-21
 ---
+
 > If you work in the IT industry you might have wondered about what technology others use in the field and which tools are trending.
 There are a lot of resources where you can read about this like [Google Trends](https://trends.google.com/trends/)
 or [ITJobswatch](https://www.itjobswatch.co.uk) but what if you want more insight?

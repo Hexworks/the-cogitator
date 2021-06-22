@@ -4,6 +4,7 @@ title:  "Gradle Kotlin DSL - First impressions"
 short_title:  "Gradle Kotlin DSL - First impressions"
 tags: [kotlin, gradle]
 comments: true
+updated_at: 2018-08-29
 ---
 
 > The Kotlin DSL for writing Gradle build scripts have been around for some time. In this article we'll take a look at it and see how useful it is.

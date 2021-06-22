@@ -5,6 +5,7 @@ tags: [kotlin, delegation]
 author: addamsson
 short_title: "A Pitfall of Delegation in Kotlin"
 comments: true
+updated_at: 2020-10-27
 ---
 
 > Delegation is a great tool that can help a lot with reducing boilerplate. It is not free of its pitfalls however as we'll see in this article.

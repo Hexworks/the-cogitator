@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/04/17/how-to-make-a-roguelike-a-multi-level-dungeon.html
+updated_at: 2019-05-17
 ---
 
 > We have added multiple levels to our dungeon previously they are just not accessible yet. Let's add some stairs

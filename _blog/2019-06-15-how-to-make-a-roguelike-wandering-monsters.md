@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/05/07/how-to-make-a-roguelike-wandering-monsters.html 
+updated_at: 2019-06-15
 ---
 
 > Now that we have Fog of War in place which we can reveal let's make it a bit more exciting by

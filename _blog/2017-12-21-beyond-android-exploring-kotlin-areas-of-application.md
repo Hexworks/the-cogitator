@@ -5,6 +5,7 @@ tags: [kotlin, tutorial]
 excerpt: If you have written something in Kotlin chances are that you wrote it for Android. Kotlin, however, has other areas where it can be useful. In the following series, we'll explore what other fields exist where Kotlin can shine.
 comments: true
 series: beyond-android
+updated_at: 2017-12-21
 ---
 
 > If you have written something in Kotlin chances are that you wrote it for Android. Kotlin, however, has other areas where it can be useful.

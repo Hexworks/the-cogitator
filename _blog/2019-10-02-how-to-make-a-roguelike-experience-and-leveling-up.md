@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/28/how-to-make-a-roguelike-experience-and-leveling-up.html
+updated_at: 2019-10-02
 ---
 
 > Killing *zombies*, *fungi* and *bats* are fun, especially when we get loot and food from them. What's

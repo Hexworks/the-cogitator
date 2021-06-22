@@ -6,6 +6,7 @@ author: addamsson
 short_title: "Publishing Multiplatform Projects to Maven Central"
 comments: true
 published: false
+updated_at: 2020-03-24
 ---
 
 > Many of you have asked about how to deploy artifacts to Maven Central. In this article we'll take a look at how it can be achieved with minimal effort.

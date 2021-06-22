@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/03/21/how-to-make-a-roguelike-stationary-monsters.html
+updated_at: 2019-03-21
 ---
 
 > Last time we added interactions between our entities and taught the Player how to *dig*. Now it

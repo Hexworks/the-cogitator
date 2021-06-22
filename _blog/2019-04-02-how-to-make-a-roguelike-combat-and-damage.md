@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/04/02/how-to-make-a-roguelike-combat-and-damage.html
+updated_at: 2019-04-02
 ---
 
 > We already have monsters in our game but hitting them just results in an instagib. Now we're going

@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/05/15/how-to-make-a-roguelike-items-and-inventory.html
+updated_at: 2019-07-08
 ---
 
 > We have almost everything for our game. We can explore the cave, fight with monsters, traverse levels, but

@@ -5,6 +5,6 @@ category: posts
 subcategory: news
 ---
 
-{% assign entries = site.documents | where: 'collection', page.subcategory | sort: 'date' | reverse %}
+{% assign entries = site.documents | where: 'collection', page.subcategory | sort: 'updated_at' | reverse %}
 
 {% include entry_list.html entries=entries %}

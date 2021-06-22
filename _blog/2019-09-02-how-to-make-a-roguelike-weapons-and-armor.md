@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/21/how-to-make-a-roguelike-weapons-and-armor.html
+updated_at: 2019-09-02
 ---
 
 > Adding wearable items like weapons and armor is a staple of all roguelike games and *Caves of Zircon* is no different.

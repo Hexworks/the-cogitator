@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/07/01/how-to-make-a-roguelike-win-and-lose-conditions.html
+updated_at: 2019-12-28
 ---
 
 > Our game has everything it needs: items, monsters, exploration, hunger and experience levels.

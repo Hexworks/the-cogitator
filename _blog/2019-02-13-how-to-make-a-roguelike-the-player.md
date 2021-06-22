@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/02/13/how-to-make-a-roguelike-the-player.html
+updated_at: 2019-02-13
 ---
 
 > With our cave in place the next thing to do is to add a Player to move around the cave.

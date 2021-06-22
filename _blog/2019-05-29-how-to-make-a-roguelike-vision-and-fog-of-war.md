@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/04/27/how-to-make-a-roguelike-vision-and-fog-of-war.html 
+updated_at: 2019-05-29
 ---
 
 > The last time around we connected the levels of our dungeon effectively adding a new *dimension* to

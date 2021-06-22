@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/01/05/how-to-make-a-roguelike-generating-random-caves.html
+updated_at: 2019-01-05
 ---
 
 > Now, that we have set up our Views it is time to start using the `GameArea` and generate caves

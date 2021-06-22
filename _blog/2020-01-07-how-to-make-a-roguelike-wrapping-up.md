@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/07/02/how-to-make-a-roguelike-wrapping-up.html
+updated_at: 2020-01-07
 ---
 
 > With a complete roguelike game under our belts we can now think about the next steps in our

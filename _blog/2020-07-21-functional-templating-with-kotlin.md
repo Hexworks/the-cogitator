@@ -6,6 +6,7 @@ author: addamsson
 short_title: "Functional Templating with Kotlin"
 series: functional-templating
 comments: true
+updated_at: 2020-07-21
 ---
 
 > If you have used Kotlin on the web, chances are that you've tried generating HTML templates at some point. Let's take a deep dive into how this can be achieved with little to no library support using Functional Programming techniques.

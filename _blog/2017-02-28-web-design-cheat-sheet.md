@@ -4,6 +4,7 @@ short_title:  "Web Design Cheat Sheet"
 tags: [webdesign, tutorial]
 excerpt: After reading a lot of guides and tutorials about design I decided to pull them together in a simple cheat sheet. The aim of this document is not to teach you how to design things but to get you started.
 comments: true
+updated_at: 2017-02-28
 ---
 
 > After reading a lot of guides and tutorials about design I decided to pull them together in a simple cheat sheet.

@@ -5,5 +5,5 @@ category: posts
 subcategory: all
 ---
 
-{% assign entries = site.documents | where: 'category', 'posts' | sort: 'date' | reverse %}
+{% assign entries = site.documents | where: 'category', 'posts' | sort: 'updated_at' | reverse %}
 {% include entry_list.html entries=entries %}

@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/03/14/how-to-make-a-roguelike-entity-interactions.html
+updated_at: 2019-03-14
 ---
 
 > In the previous article we added cave exploration and scrolling, but there is not much going on

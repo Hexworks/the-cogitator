@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/14/how-to-make-a-roguelike-displaying-stats.html
+updated_at: 2019-08-11
 ---
 
 > We know a lot of things about our character. We know how hungry we are, what items

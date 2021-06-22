@@ -4,6 +4,7 @@ title:  "A New Kotlin Tutorial Project"
 short_title: "A New Kotlin Tutorial Project"
 tags: [site-update, kotlin]
 comments: true
+updated_at: 2019-04-19
 ---
 
 > As you may have seen by blog did not get updates for a while now. The reason for this is that

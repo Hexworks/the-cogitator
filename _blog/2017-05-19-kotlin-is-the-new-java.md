@@ -4,6 +4,7 @@ short_title:  "Kotlin is the new Java"
 tags: [kotlin, java]
 excerpt: If you are a Java developer you might be wondering what to learn next. Kotlin is in the sweet spot just where Java used to be and in this article my goal is to explain why.
 comments: true
+updated_at: 2017-05-19
 ---
 
 > If you are a Java developer for a while now you might be wondering what to learn next.

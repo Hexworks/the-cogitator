@@ -10,6 +10,7 @@ guest_post: true
 guest_site: https://hexworks.org
 guest_name: Hexworks
 canonical_url: https://hexworks.org/posts/tutorials/2019/06/30/how-to-make-a-roguelike-help-and-examine-dialogs.html
+updated_at: 2019-11-09
 ---
 
 > We now have a nice game which has almost all the things which are necessary for a roguelike,
