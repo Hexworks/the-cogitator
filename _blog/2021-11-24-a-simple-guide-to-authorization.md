@@ -48,10 +48,6 @@ What you can add on top is to bind *roles* to *permissions*. For example you can
                 "view_bounties",
                 "view_bounty",
                 "create_bounty",
-                "publish_draft_bounty",
-                "share_draft_bounty",
-                "edit_draft_bounty",
-                "unpublish_bounty",
                 "delete_bounty"
             ]
         },
@@ -60,10 +56,6 @@ What you can add on top is to bind *roles* to *permissions*. For example you can
                 "view_bounties",
                 "view_bounty",
                 "create_bounty",
-                "publish_draft_bounty",
-                "share_draft_bounty",
-                "edit_draft_bounty",
-                "delete_bounty"
             ]
         },
         "anonymous": {
