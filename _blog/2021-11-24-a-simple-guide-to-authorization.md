@@ -26,7 +26,7 @@ What happens if I have more complex criteria? How can I encode it properly? What
 
 A common misconception about authorization is that it is a synonym of authentication, but this is not the case. **Authentication** is the process of verifying a user's identity and credentials. **Authorization** is the process of verifying that the user has the right to perform a certain action. What usually happens is that we first authenticate the user, and when we know their identity, we can authorize them.
 
-With this out of the way let's take a look at what authorization models are out there.
+With this out of the way let's take a look at what authorization models are there.
 
 ### Access Control List
 
