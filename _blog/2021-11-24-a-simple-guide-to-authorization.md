@@ -20,7 +20,7 @@ Unfortunately on most platforms there are no good libraries that try to tackle t
 public void create(Contact contact);
 ```
 
-What happens if I have more complex criteria? How can I encode it properly? What if I want to write custom code? What happens in practice is that this is usually a part of the business logic. I'm going to try to give you some hints on what to do about this.
+What happens if I have more complex criteria? How can I encode it properly? What if I want to write custom code? What happens in practice is that this is usually a part of the business logic. In this article we'll explore how it can be done in a better way.
 
 ## Authorization Models
 
