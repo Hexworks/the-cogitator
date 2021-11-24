@@ -90,10 +90,6 @@ A **policy** is something that controls access to a function based on some attri
                 { "name": "view_bounties" },
                 { "name": "view_bounty" },
                 { "name": "create_bounty" },
-                { "name": "publish_draft_bounty" },
-                { "name": "share_draft_bounty" },
-                { "name": "edit_draft_bounty" },
-                { "name": "unpublish_bounty" },
                 { "name": "delete_bounty" }
             ]
         },
@@ -105,18 +101,6 @@ A **policy** is something that controls access to a function based on some attri
                 },
                 { "name": "view_bounty", "policies": ["allow_for_published"] },
                 { "name": "create_bounty" },
-                {
-                    "name": "publish_draft_bounty",
-                    "policies": ["allow_for_owner"]
-                },
-                {
-                    "name": "share_draft_bounty",
-                    "policies": ["allow_for_owner"]
-                },
-                {
-                    "name": "edit_draft_bounty",
-                    "policies": ["allow_for_owner"]
-                },
                 { "name": "delete_bounty", "policies": ["allow_for_owner"] }
             ]
         },
