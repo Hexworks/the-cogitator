@@ -11,7 +11,7 @@ updated_at: 2021-11-24
 
 > In this article we'll look at how to create an effective authorization system. This is only a high level overview, but it's a good starting point if you want to get started with this topic. It is also part of the overarching "How to make a Content Gateway" article series.
 
-I've worked at many places and there is one problem that often comes up, but it is usually not a primary concern. This is **authorization**. According to the latest [OWASP Top 10](https://owasp.org/www-project-top-ten/) broken access control is the most common problem.
+I've worked at many places and there is one problem that often comes up, but it is usually not a primary concern: **authorization**. According to the latest [OWASP Top 10](https://owasp.org/www-project-top-ten/) broken access control is the most common problem.
 
 Unfortunately on most platforms there are no good libraries that try to tackle this problem, and even if there are solutions for it, they are usually not centralized and using them will litter your codebase with this cross-cutting concern:
 
