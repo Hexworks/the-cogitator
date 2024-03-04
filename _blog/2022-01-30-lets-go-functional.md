@@ -4,12 +4,11 @@ title: "Let's go functional?"
 tags: [functional-programming, typescript]
 author: addamsson
 short_title: "Let's go functional?"
-series: content-gateway
 comments: true
 updated_at: 2022-01-30
 ---
 
-> In this post we're going to take a look at why we chose FP tools (like fp-ts and io-ts) for *Content Gateway* and why its pros outweighs the cons.
+> In this post we're going to take a look at why I chose FP tools (like fp-ts and io-ts) for a project I worked on and why its pros outweighs the cons.
 
 I've been thinking a lot about functional programming in the last few years and I've also contributed to some FP libraries as well. My main goal with all of this was to determine whether the hype around this topic is warranted or not. After working on programs using the functional paradigm in the last few years I concluded that the answer to that questions is the usual "It depends".
 
@@ -779,6 +778,6 @@ We've learned that what FP brings to the table apart from some arcane naming con
 
 The takeaway from all of this is that FP is just a tool that you can employ to solve some of your problems. You don't have to go **all the way** and delete all your classes to start taking advantage of what this technique brings to the table. You can just sprinkle it on your codebase where applicable and enjoy the benefits of having clear semantics and more robust code. It also lets us think about our use cases in a more fundamental way: as functions that we can compose with each other. This is a powerful technique that is often overlooked especially if someone comes from an OOP background.
 
-In the next article we'll look at some more advanced concepts so stay tuned!
+In the next *fp* article we'll look at some more advanced concepts so stay tuned!
 
 Until then, let's go forth and **kode on**!
