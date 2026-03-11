@@ -2,7 +2,7 @@ posts_page_url: "/"
 contact:
   title: "CONTACT"
   id: "contact"
-  url: "mailto:arold.adam@gmail.com"
+  url: "mailto:adam@hexworks.org"
 categories:
 - title: "Blog"
   id: "blog"
@@ -15,11 +15,11 @@ categories:
   url: "/tags/"
 - title: "Stack Overflow"
   id: "stack-overflow"
-  url: "https://stackoverflow.com/users/485337/adam-arold"
+  url: "https://stackoverflow.com/users/485337/adam-a"
 external:
 - title: "GitHub"
   id: "github"
-  url: "https://github.com/adam-arold"
+  url: "https://github.com/vibitect"
 - title: "Twitter"
   id: "twitter"
   url: "https://twitter.com/addamsson"

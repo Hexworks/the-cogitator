@@ -95,15 +95,15 @@ This created a file called `package.json` with some default settings. It should 
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adam-arold/node-with-react-js.git"
+    "url": "git+https://github.com/vibitect/node-with-react-js.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/adam-arold/node-with-react-js/issues"
+    "url": "https://github.com/vibitect/node-with-react-js/issues"
   },
-  "homepage": "https://github.com/adam-arold/node-with-react-js#readme"
+  "homepage": "https://github.com/vibitect/node-with-react-js#readme"
 }
 ```
 

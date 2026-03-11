@@ -1,12 +1,11 @@
 title: The Cogitator
 
 description: >
-  I'm Adam Arold and my aim with this site is to share insight about technologies I touch during my work. If you have any questions feel free to reach out using the Contact link above.
+  I'm Adam and my aim with this site is to share insight about technologies I touch during my work. If you have any questions feel free to reach out using the Contact link above.
 url: "http://the-cogitator.com"
 twitter_username: addamsson
-github_username:  adam-arold
-
-email: arold.adam@gmail.com
+github_username:  vibitect
+email: adam@hexworks.org
 
 # Where things are
 source:          .
